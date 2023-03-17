@@ -1,17 +1,17 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>编译原理（一） | 番茄元🍅の小窝</title><meta name="author" content="Awellfrog"><meta name="copyright" content="Awellfrog"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第0章 课程导学   第1章 绪论 1.1 什么是编译 编译： 将高级语言（源语言）翻译成汇编语言或机器语言（机器语言）的过程。      1.2 编译系统的结构 人工英汉翻译：  语义分析 语法分析 词法分析  和人先理解语义不同，编译器从细节到整体来理解系统：   1.2.1 词法分析&#x2F;扫描（Scanning） 词法分析的主要任务： 从左向右逐行扫描源程序的字符，识别出各个单词，确定单词的类型">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:title" content="编译原理（一）">
-<meta property="og:url" content="https://www.awellfrog.cc/p/9c919db4.html">
+<meta property="og:url" content="https://www.awellfrog.cc/draft/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89.html">
 <meta property="og:site_name" content="番茄元🍅の小窝">
 <meta property="og:description" content="第0章 课程导学   第1章 绪论 1.1 什么是编译 编译： 将高级语言（源语言）翻译成汇编语言或机器语言（机器语言）的过程。      1.2 编译系统的结构 人工英汉翻译：  语义分析 语法分析 词法分析  和人先理解语义不同，编译器从细节到整体来理解系统：   1.2.1 词法分析&#x2F;扫描（Scanning） 词法分析的主要任务： 从左向右逐行扫描源程序的字符，识别出各个单词，确定单词的类型">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.awellfrog.cc/img/bg56.jpg">
+<meta property="og:image" content="https://www.awellfrog.cc/img/bg83.jpg">
 <meta property="article:published_time" content="2023-02-28T00:14:14.000Z">
 <meta property="article:modified_time" content="2023-03-11T09:03:51.690Z">
 <meta property="article:author" content="Awellfrog">
 <meta property="article:tag" content="编译原理">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.awellfrog.cc/img/bg56.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.awellfrog.cc/p/9c919db4"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://www.awellfrog.cc/img/bg83.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.awellfrog.cc/draft/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
   algolia: undefined,
   localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
@@ -49,10 +49,10 @@
   isAnchor: true
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
   title: '编译原理（一）',
-  isPost: true,
+  isPost: false,
   isHome: false,
   isHighlightShrink: false,
-  isToc: true,
+  isToc: false,
   postUpdate: '2023-03-11 17:03:51'
 }</script><noscript><style type="text/css">
   #nav {
@@ -161,14 +161,14 @@ window.addEventListener('load',()=> { preloader.endLoading() })
 if (true) {
   document.addEventListener('pjax:send', () => { preloader.initLoading() })
   document.addEventListener('pjax:complete', () => { preloader.endLoading() })
-}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/lufei_acatar.jfif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg56.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">编译原理（一）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-28T00:14:14.000Z" title="发表于 2023-02-28 08:14:14">2023-02-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-11T09:03:51.690Z" title="更新于 2023-03-11 17:03:51">2023-03-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="编译原理（一）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>第0章 课程导学</h1>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301213834713.png" class title="image-20230301213834713">
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/lufei_acatar.jfif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/img/bg4.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">编译原理（一）</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1>第0章 课程导学</h1>
+ 
 <h1>第1章 绪论</h1>
 <h2 id="1-1-什么是编译">1.1 什么是编译</h2>
 <p><strong>编译：</strong> 将<font color="blue">高级语言（源语言）</font>翻译成<font color="red">汇编语言或机器语言（机器语言）</font>的过程。</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301214044675.png" class title="image-20230301214044675">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301214514071.png" class title="image-20230301214514071">
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301214534217.png" class title="image-20230301214534217">
+ 
+
+ 
 <h2 id="1-2-编译系统的结构">1.2 编译系统的结构</h2>
 <p><strong>人工英汉翻译：</strong></p>
 <ol>
@@ -177,7 +177,7 @@ if (true) {
 <li>词法分析</li>
 </ol>
 <p><strong>和人先理解语义不同，编译器从细节到整体来理解系统：</strong></p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301215052177.png" class title="image-20230301215052177">
+ 
 <h3 id="1-2-1-词法分析-扫描-scanning">1.2.1 词法分析/扫描（Scanning）</h3>
 <p><strong>词法分析的主要任务：</strong></p>
 <p>从左向右逐行扫描源程序的字符，识别出各个单词，确定单词的类型。将识别出的单词转换成统一的机内表示——**词法单元(token)**形式。</p>
@@ -224,12 +224,12 @@ if (true) {
 </tr>
 </tbody>
 </table>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301215842838.png" class title="image-20230301215842838">
+ 
 <h3 id="1-2-2-语法分析-parsing">1.2.2 语法分析（parsing）</h3>
 <p>**语法分析器(parser)**从词法分析器输出的 token 序列中识别出各类短语，并构造语法分析树（parse tree）。</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301220009974.png" class title="image-20230301220009974">
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301220050409.png" class title="image-20230301220050409">
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301220210896.png" class title="image-20230301220210896">
+ 
+ 
+ 
 <h3 id="1-2-3-语义分析">1.2.3 语义分析</h3>
 <p>语义分析的主要任务：</p>
 <p><strong>一、收集标识符的属性信息</strong></p>
@@ -244,7 +244,7 @@ if (true) {
 </li>
 <li>
 <p><strong>存储位置、长度</strong></p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301220446762.png" class title="image-20230301220446762">
+ 
 </li>
 <li>
 <p><strong>值</strong></p>
@@ -255,7 +255,7 @@ if (true) {
 <li>
 <p><strong>参数和返回值信息</strong><br>
 参数个数、参数类型、参数传递方式、返回值类型、…</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301221234086.png" class title="image-20230301221234086"> 
+  
 </li>
 </ul>
 <p><strong>二、语义检查</strong></p>
@@ -275,13 +275,13 @@ if (true) {
 <p><font color="blue" size="4">一、三地址码</font></p>
 <p>三地址码由类似于汇编语言的指令序列组成，每个指令最多有三个操作数(operand)。</p>
 <p><strong>常用的三元地址指令如下：</strong></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301222138716.png" class title="image-20230301222138716">
+
 <p><strong>三地址指令的表示：</strong></p>
 <ul>
 <li>
 <p>四元式 (Quadruples)<br>
 <code>(op, arg1, arg2, result)</code></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301222355141.png" class title="image-20230301222355141">
+
 </li>
 <li>
 <p>三元式 (Triples)<br>
@@ -293,22 +293,22 @@ if (true) {
 </ul>
 <p><font color="blue" size="4">二、语法结构树/语法树（Syntax Trees）</font></p>
 <p>一个程序片段，既可以表示为三地址码的形式（如右边蓝色的框中），也可以表示为语法结构树的形式（如下左图）。</p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301222543969.png" class title="image-20230301222543969">
+
 <h3 id="1-2-5-目标代码生成器">1.2.5 目标代码生成器</h3>
 <p>目标代码生成以源程序的<strong>中间表示形式</strong>作为输入，并把它映射到<strong>目标语言</strong>。</p>
 <p>目标代码生成的一个重要任务是为程序中使用的变量<strong>合理分配寄存器</strong>。</p>
 <h3 id="1-2-6-代码优化">1.2.6 代码优化</h3>
 <p>为改进代码所进行的等价程序变换，使其运行得更快一些、占用空间更少一些，或者二者兼顾。</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301222952042.png" class title="image-20230301222952042">
+ 
 <h2 id="1-3-编译程序的生成">1.3 编译程序的生成</h2>
 <p><font color="blue" size="5">编译器的 T 形图</font></p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301225334398.png" class title="image-20230301225334398">
+ 
 <h3 id="自展">自展</h3>
 <p><strong>在同一机器上实现不同语言的编译器。</strong></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301230200689.png" class title="image-20230301230200689">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301230229294.png" class title="image-20230301230229294">
+
+
 <h3 id="移植">移植</h3>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230301230546705.png" class title="image-20230301230546705">
+
 <h2 id="1-4-为什么要学习编译原理">1.4 为什么要学习编译原理</h2>
 <ul>
 <li>
@@ -391,14 +391,14 @@ if (true) {
 <li>由一组过程组成，每个过程对应文法的一个 <strong>非终结符</strong></li>
 <li>从文法 <strong>开始符号S</strong> 对应的过程开始，其中 <strong>递归调用</strong> 文法中其他 <strong>非终结符</strong> 对应的过程。如果 S 对应过程体恰好扫描了 <strong>整个输入串</strong> ，则成功完成语法分析。</li>
 </ul>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308185245713.png" class title="image-20230308185245713">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308185255325.png" class title="image-20230308185255325">
+
+
 <p><strong>自顶向下分析存在的问题：</strong></p>
 <ol>
 <li>
 <p>同一非终结符的多个候选式存在 <strong>共同前缀</strong> ，将导致 <strong>回溯</strong> 现象</p>
 <p>解决方法：提取左公因子</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308192117502.png" class title="image-20230308192117502">
+ 
 </li>
 <li>
 <p>左递归文法会使递归下降分析器陷入无限循环</p>
@@ -409,11 +409,11 @@ if (true) {
 </li>
 </ol>
 <p><font color="blue" size="4">消除直接左递归</font></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308190023232.png" class title="image-20230308190023232">
+
 <p><strong>消除直接左递归的一般形式：</strong></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308190617138.png" class title="image-20230308190617138">
+
 <p><font color="blue" size="4">消除间接左递归</font></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308190818330.png" class title="image-20230308190818330">
+
 <h2 id="4-2-预测分析法-predictive-parsing">4.2 预测分析法（Predictive Parsing）</h2>
 <p><strong>预测分析</strong> 是 <strong>递归下降分析</strong> 技术的一个特例，同过在输入中向前看 <strong>固定个数</strong> （通常是一个） <strong>符号</strong> 来选择正确的 A- 产生式。</p>
 <blockquote>
@@ -426,29 +426,29 @@ if (true) {
 <p>这部分 B站有个 up 讲的很好，我是跟着他学的：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yr4y1m7PX/?spm_id_from=333.337.search-card.all.click&amp;vd_source=e7300d5accad8932a257efb8871bb9ee">https://www.bilibili.com/video/BV1Yr4y1m7PX/?spm_id_from=333.337.search-card.all.click&amp;vd_source=e7300d5accad8932a257efb8871bb9ee</a></p>
 </blockquote>
 <h4 id="s-文法">S_ 文法</h4>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308192823911.png" class title="image-20230308192823911">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308193148475.png" class title="image-20230308193148475">
+
+
 <h4 id="first-集">FIRST 集</h4>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308194447203.png" class title="image-20230308194447203">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308194725756.png" class title="image-20230308194725756">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308194849819.png" class title="image-20230308194849819">
+
+
+
 <p><font color="red" size="5">FIRST 集的计算</font></p>
 <p><strong>计算方法的关键：要推导的非终结符可以推导出的第一个终结符是什么？</strong></p>
 <p>做几个例题：</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308212949856.png" class title="image-20230308212949856">
+ 
 <p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>→</mo><mi>a</mi><mi>B</mi><mi mathvariant="normal">∣</mi><mi>ε</mi><mi mathvariant="normal">∣</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">A \rightarrow aB|\varepsilon | c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord">∣</span><span class="mord mathdefault">ε</span><span class="mord">∣</span><span class="mord mathdefault">c</span></span></span></span> 结果是 A 可推导出的第一个终结符</p>
 <p>答案是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mi>a</mi><mo separator="true">,</mo><mi>ε</mi><mo separator="true">,</mo><mi>c</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{a, \varepsilon, c\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">ε</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">c</span><span class="mclose">}</span></span></span></span></p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308213218659.png" class title="image-20230308213218659">
+ 
 <p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>→</mo><mi>b</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">A \rightarrow ba</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">a</span></span></span></span></p>
 <p>答案是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mi>b</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{b\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">b</span><span class="mclose">}</span></span></span></span></p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308213312289.png" class title="image-20230308213312289">
+ 
 <p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>→</mo><mi>b</mi><mi>c</mi><mi mathvariant="normal">∣</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">A \rightarrow bc | c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">c</span><span class="mord">∣</span><span class="mord mathdefault">c</span></span></span></span></p>
 <p>答案是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{b, c\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">c</span><span class="mclose">}</span></span></span></span></p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308213420248.png" class title="image-20230308213420248">
+ 
 <p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>→</mo><mi>b</mi><mi>c</mi><mi mathvariant="normal">∣</mi><mi>b</mi><mi mathvariant="normal">∣</mi><mi>c</mi><mi mathvariant="normal">∣</mi><mi>ε</mi></mrow><annotation encoding="application/x-tex">A \rightarrow bc | b | c | \varepsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">c</span><span class="mord">∣</span><span class="mord mathdefault">b</span><span class="mord">∣</span><span class="mord mathdefault">c</span><span class="mord">∣</span><span class="mord mathdefault">ε</span></span></span></span></p>
 <p>答案是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi><mo separator="true">,</mo><mi>ε</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{b,c,\varepsilon\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">c</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">ε</span><span class="mclose">}</span></span></span></span></p>
 <h4 id="follow-a-集">FOLLOW(A) 集</h4>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308193517967.png" class title="image-20230308193517967">
+
 <p><font color="red" size="5">FOLLOW(A) 的求法</font></p>
 <p>计算过程遵照如下三条规则：</p>
 <ol>
@@ -457,7 +457,7 @@ if (true) {
 <li>右边 A 后面没有东西，<code>Follow(左边)</code> 加入 <code>Follow(A)</code></li>
 </ol>
 <p><strong>先看一个例题：</strong></p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308210923941.png" class title="image-20230308210923941">
+ 
 <p>首先求 <code>First</code> 集，按照前面的方法求：</p>
 <table>
 <thead>
@@ -506,7 +506,7 @@ if (true) {
 </tbody>
 </table>
 <p>求出 First 集后，再求 Follow 集：</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308225637377.png" class title="image-20230308225637377">
+ 
 <table>
 <thead>
 <tr>
@@ -570,25 +570,25 @@ if (true) {
 </tbody>
 </table>
 <p>最终结果如下：</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308211551714.png" class title="image-20230308211551714">
+ 
 <p>再看一个例题：同上</p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308212615896.png" class title="image-20230308212615896">
+
 <h4 id="select-集">SELECT 集</h4>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308194038743.png" class title="image-20230308194038743">
+
 <p><font color="red" size="5">Select 集计算：</font></p>
 <p>先计算 First 集和 FOLLOW 集，然后将对每个表达式文法各产生式求 SELECT 集，规则如下：</p>
 <ol>
 <li>如果推导式右部不空（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>→</mo><mi>α</mi><mi>β</mi></mrow><annotation encoding="application/x-tex">A \rightarrow \alpha \beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span></span></span></span>），则 SELECT 集为 <code>First(A)</code></li>
 <li>如果推导式右部为空（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>→</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">A \rightarrow \varepsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">ε</span></span></span></span>），则 SELECT 集为 <code>FOLLOW(A)</code></li>
 </ol>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308230859286.png" class title="image-20230308230859286">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308230942553.png" class title="image-20230308230942553">
+
+
 <h4 id="q-文法">q_ 文法</h4>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308202542458.png" class title="image-20230308202542458">
+
 <p><font color="blue" size="5">得到可以通过 SELECT 集得到预测分析表</font></p>
 <p>预测分析表用于预测对某个输入符号，可能的产生式。</p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308231554021.png" class title="image-20230308231554021">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230308232213075.png" class title="image-20230308232213075">
+
+
 <h4 id="ll-1-文法">LL(1)文法</h4>
 <p>根据 LL(1) 文法的定义来判断一个文法是不是 LL(1) 文法，分三步走：</p>
 <ol>
@@ -619,28 +619,28 @@ if (true) {
 <p>不满足条件(3)，则不是 LL(1) 文法。</p>
 </li>
 </ol>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309230048353.png" class title="image-20230309230048353">
+ 
 <h3 id="4-2-2-递归的预测分析法">4.2.2 递归的预测分析法</h3>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309214935379.png" class title="image-20230309214935379">
+
 <p><strong>举个例子：</strong></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309215114166.png" class title="image-20230309215114166">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309215120587.png" class title="image-20230309215120587">
+
+
 <p>当表达式右部推导出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">ε</span></span></span></span> 时，判断 TOKEN 是否等于其该表达式的 SELECT 集。</p>
 <h3 id="4-2-3-非递归的预测分析法">4.2.3 非递归的预测分析法</h3>
 <p>非递归的预测分析显式地维护一个栈结构，而不是通过递归调用地方式隐式地维护栈。这样地语法分析器可以模拟 <strong>最左推导</strong> 过程。</p>
 <p>这里维护栈实现了一个下推自动机（以匹配 a 串后面的 b 串的数量为例，即遇到 a 压栈，遇到 b 弹栈）。</p>
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309215633966.png" class title="image-20230309215633966">
+ 
 <p><font color="blue" size="4">表驱动的预测分析法</font></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309215944684.png" class title="image-20230309215944684">
+
 <p><font color="green" size="4">下面看一个例子：</font></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309220220867.png" class title="image-20230309220220867">
- <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309220304707.png" class title="image-20230309220304707">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309220445183.png" class title="image-20230309220445183">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309220540325.png" class title="image-20230309220540325">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309220711857.png" class title="image-20230309220711857">
+
+ 
+
+
+
 <p>后面同理，利用这种方式模拟，根据输入去预测表中选择产生式，当栈顶为终结符时，与剩余输入的第一个字符匹配，如果相等，则读出字符并将栈顶弹出。</p>
 <p><font color="blue" size="5">递归预测 vs. 非递归预测</font></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309220940712.png" class title="image-20230309220940712">
+
 <p><font color="blue" size="5">预测分析法实现步骤</font></p>
 <ol>
 <li>构造文法</li>
@@ -663,12 +663,19 @@ if (true) {
 <li>如果终结符在栈顶而不能匹配，一个简单的办法就是弹出此终结符</li>
 </ul>
 <p><strong>下面看一个例子：</strong></p>
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309230742872.png" class title="image-20230309230742872">
-<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/9c919db4/image-20230309231438569.png" class title="image-20230309231438569">
+
+
 <h2 id="4-3-自底向上的分析">4.3 自底向上的分析</h2>
 <h2 id="4-4-lr-分析法">4.4 LR 分析法</h2>
 <h2 id="4-5-语法分析器自动生成工具">4.5 语法分析器自动生成工具</h2>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://www.awellfrog.cc">Awellfrog</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.awellfrog.cc/p/9c919db4.html">https://www.awellfrog.cc/p/9c919db4.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.awellfrog.cc" target="_blank">番茄元🍅の小窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></div><div class="post_share"><div class="social-share" data-image="/img/bg56.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/p/f17a3b6b.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg70.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">C++快速入门（一）</div></div></a></div><div class="next-post pull-right"><a href="/p/b2db68a7.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg62.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">分布式系统</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/lufei_acatar.jfif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Awellfrog</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Awellfrog"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Awellfrog" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://www.awellfrog.cc"><b><font color="#5ea6e5">awellfrog.cc</font></b></a></center></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">第0章 课程导学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">第1章 绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%96%E8%AF%91"><span class="toc-text">1.1 什么是编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%BC%96%E8%AF%91%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-text">1.2 编译系统的结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90-%E6%89%AB%E6%8F%8F-scanning"><span class="toc-text">1.2.1 词法分析&#x2F;扫描（Scanning）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90-parsing"><span class="toc-text">1.2.2 语法分析（parsing）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="toc-text">1.2.3 语义分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8"><span class="toc-text">1.2.4 中间代码生成器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-5-%E7%9B%AE%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8"><span class="toc-text">1.2.5 目标代码生成器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-6-%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96"><span class="toc-text">1.2.6 代码优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%94%9F%E6%88%90"><span class="toc-text">1.3 编译程序的生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%B1%95"><span class="toc-text">自展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E6%A4%8D"><span class="toc-text">移植</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6%E4%B9%A0%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86"><span class="toc-text">1.4 为什么要学习编译原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">1.5 编译技术的应用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">第2章 语言及其文法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">第3章 词法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">第4章 语法分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E5%88%86%E6%9E%90"><span class="toc-text">4.1 自顶向下分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90%E6%B3%95-predictive-parsing"><span class="toc-text">4.2 预测分析法（Predictive Parsing）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-ll-1-%E6%96%87%E6%B3%95"><span class="toc-text">4.2.1 LL(1) 文法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#s-%E6%96%87%E6%B3%95"><span class="toc-text">S_ 文法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#first-%E9%9B%86"><span class="toc-text">FIRST 集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#follow-a-%E9%9B%86"><span class="toc-text">FOLLOW(A) 集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-%E9%9B%86"><span class="toc-text">SELECT 集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#q-%E6%96%87%E6%B3%95"><span class="toc-text">q_ 文法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ll-1-%E6%96%87%E6%B3%95"><span class="toc-text">LL(1)文法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E9%80%92%E5%BD%92%E7%9A%84%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-text">4.2.2 递归的预测分析法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E9%9D%9E%E9%80%92%E5%BD%92%E7%9A%84%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-text">4.2.3 非递归的预测分析法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%81%A2%E5%A4%8D"><span class="toc-text">4.2.4 预测分析中的错误恢复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-text">4.3 自底向上的分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-lr-%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-text">4.4 LR 分析法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7"><span class="toc-text">4.5 语法分析器自动生成工具</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Awellfrog</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+</div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/lufei_acatar.jfif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Awellfrog</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Awellfrog"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Awellfrog" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://www.awellfrog.cc"><b><font color="#5ea6e5">awellfrog.cc</font></b></a></center></div></div><div class="card-widget card-map"><div class="card-content"><div class="item-headline"><i class="fa fa-globe-asia" aria-hidden="true"></i><span>访客地图</span></div><script id="clstr_globe" type="text/javascript" defer="defer" src="//rf.revolvermaps.com/0/0/8.js?i=5xo6cih3nd5&amp;amp;m=0&amp;amp;c=ff0000&amp;amp;cr1=ffffff&amp;amp;f=arial&amp;amp;l=33"></script></div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C-C/"><span class="card-category-list-name">C/C++</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CTF/"><span class="card-category-list-name">CTF</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Git/"><span class="card-category-list-name">Git</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Hexo/"><span class="card-category-list-name">Hexo</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><span class="card-category-list-name">基础知识</span><span class="card-category-list-count">14</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B0%8FTips/"><span class="card-category-list-name">小Tips</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%AE%97%E6%B3%95/"><span class="card-category-list-name">算法</span><span class="card-category-list-count">1</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/C/" style="font-size: 1.4em; color: #99a5b6">C</a> <a href="/tags/C/" style="font-size: 1.3em; color: #99a1ac">C++</a> <a href="/tags/Chrome%E5%B0%8F%E6%8F%92%E4%BB%B6/" style="font-size: 1.1em; color: #999">Chrome小插件</a> <a href="/tags/DVWA/" style="font-size: 1.3em; color: #99a1ac">DVWA</a> <a href="/tags/Git/" style="font-size: 1.1em; color: #999">Git</a> <a href="/tags/Windows11/" style="font-size: 1.2em; color: #999da3">Windows11</a> <a href="/tags/butterfly/" style="font-size: 1.1em; color: #999">butterfly</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 1.4em; color: #99a5b6">人工智能</a> <a href="/tags/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" style="font-size: 1.4em; color: #99a5b6">体系结构</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%90%9C%E7%B4%A2/" style="font-size: 1.1em; color: #999">算法-搜索</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 1.1em; color: #999">计算机组成原理</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 1.5em; color: #99a9bf">计算机网络</a></div></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">30</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2022-11-08T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">122k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-03-17T02:39:32.568Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Awellfrog</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
   const init = () => {
     twikoo.init(Object.assign({
       el: '#twikoo-wrap',
