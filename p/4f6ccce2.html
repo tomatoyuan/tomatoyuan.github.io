@@ -1,0 +1,428 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>MeliusNet | 番茄元🍅の小窝</title><meta name="author" content="tomatoyuan"><meta name="copyright" content="tomatoyuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MeliusNet: Can Binary Neural Networks Achieve MobileNet-level Accuracy?  2020 arXiv code : https:&#x2F;&#x2F;github.com&#x2F;hpi-xnor&#x2F;BMXNet-v2  0. 摘要翻译 以往的方法通过提升通道数和使用多个二值基（binary bases）的方法来避免二值化带来的精度损失（低质量的和低容量的特征">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MeliusNet">
+<meta property="og:url" content="https://www.awellfrog.cc/p/4f6ccce2.html">
+<meta property="og:site_name" content="番茄元🍅の小窝">
+<meta property="og:description" content="MeliusNet: Can Binary Neural Networks Achieve MobileNet-level Accuracy?  2020 arXiv code : https:&#x2F;&#x2F;github.com&#x2F;hpi-xnor&#x2F;BMXNet-v2  0. 摘要翻译 以往的方法通过提升通道数和使用多个二值基（binary bases）的方法来避免二值化带来的精度损失（低质量的和低容量的特征">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.awellfrog.cc/img/bg44.jpg">
+<meta property="article:published_time" content="2023-11-29T01:32:54.000Z">
+<meta property="article:modified_time" content="2023-12-09T05:38:16.562Z">
+<meta property="article:author" content="tomatoyuan">
+<meta property="article:tag" content="BNN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.awellfrog.cc/img/bg44.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.awellfrog.cc/p/4f6ccce2"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: tomatoyuan","link":"链接: ","source":"来源: 番茄元🍅の小窝","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MeliusNet',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-09 13:38:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">51</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg44.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MeliusNet</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-29T01:32:54.000Z" title="发表于 2023-11-29 09:32:54">2023-11-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-09T05:38:16.562Z" title="更新于 2023-12-09 13:38:16">2023-12-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/paper-reading/">paper_reading</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MeliusNet"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>MeliusNet: Can Binary Neural Networks Achieve MobileNet-level Accuracy?</h1>
+<blockquote>
+<p>2020 arXiv</p>
+<p>code : <a target="_blank" rel="noopener" href="https://github.com/hpi-xnor/BMXNet-v2">https://github.com/hpi-xnor/BMXNet-v2</a></p>
+</blockquote>
+<h2 id="0-摘要翻译">0. 摘要翻译</h2>
+<p>以往的方法通过提升通道数和使用多个二值基（binary bases）的方法来避免二值化带来的精度损失（低质量的和低容量的特征映射）。这篇文章中，作者提出了一个新的架构：MeliusNet。由交替出现的 DenseBlock 组成，提升了特征的容量；提出的 ImprovementBlock 提升了特征的质量。在 ImageNet 上的实验证实了，其相比其他 BNN 模型在计算量和准确度上都更有优势。本文训练的 BNN 模型，首次实现了与 MoblieNet-v1 在模型尺寸，操作数量和准确性上相匹配。<font color="red">不理解为什么要在模型尺寸上相匹配？模型大了，准确率高有什么亮点吗？可能是 MoblieNet-v1 本身就是比较轻量的，可以部署在嵌入式设备上的模型，模型尺寸相匹配，可能想说明 MeliusNet 也同样轻量吧。</font></p>
+<h2 id="我想知道什么？">我想知道什么？</h2>
+<p>浏览了标题和所有图表。想知道一下内容：</p>
+<ul>
+<li>group conv ：好像是可以通过增加结构，反而减少 OPs 的一种结构；</li>
+<li>想知道 MoblieNet-v1 0.5 0.75 1.0 这都是什么，是参数量的0.5倍？还是什么意思？</li>
+<li>着重理解作者提出的新架构是什么样的？</li>
+</ul>
+<h2 id="1-introduction">1. INTRODUCTION</h2>
+<p>为了将深度学习模型部署在移动或嵌入式设备上，目前的研究方法有：</p>
+<ul>
+<li>knowledge disillation</li>
+<li>network pruning</li>
+<li>compact network designs</li>
+<li>low-bit quantization</li>
+</ul>
+<p>减小二值网络和实值网络之间的精度差距的方法：</p>
+<ul>
+<li>使用多权重基（multiple weight bases）</li>
+<li>提升特征映射的通道数</li>
+</ul>
+<p>MobileNet-v1 是一种紧凑(compact)网络，这种 compact 网络的出现，尤其是 MobileNet-v2、v3 的出现，让 BNN 显得很狼狈，本文希望展示出 BNN 的竞争力，证明 BNN 还是有发展的希望的。</p>
+<p>先前的工作大都是基于 AlexNet 和 ResNet 进行的，没有为 BNN 特别设计网络结构。作者提到两个涉及到网络结构设计的工作，一个增加了加性的 residual shortcut，一个对 BNN 应用了 DenseNet 中的 dense shortcuts。本文中，作者可以设计 build blocks 的 MeliusNet 来改善特征映射的低质量和低容量。并且对网络中使用 32-bit 的部分进行了重新设计。</p>
+<p>本文的主要贡献：</p>
+<ol>
+<li>
+<p>一个新的 BNN 架构来有效改善特征映射低质量和低容量的缺陷；</p>
+</li>
+<li>
+<p>对于所有的二值网络（binary networks），提供了一个更准确且更高效的初始分组卷积层集合；</p>
+<blockquote>
+<p><strong>初始分组卷积层集合（Initial set of grouped convolution layers）</strong>: 这指的是在网络的开始阶段就使用了分组卷积层。分组卷积是一种卷积神经网络中的技术，它将输入通道分成若干组，每组进行卷积操作，然后将结果合并。这种技术可以在一定程度上减少计算成本，提高效率。</p>
+<p>【<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/490685194">分组卷积</a>】</p>
+</blockquote>
+</li>
+<li>
+<p>第一个能够和 MobileNet-v1 0.5, 0.75, 1.0 相匹配的 BNN；</p>
+</li>
+</ol>
+<h2 id="2-related-work">2. Related Work</h2>
+<p>作者认为 Bi-RealNet 和 Binary-DenseNet 和本文的工作最相似。他们仅仅使用一个二值卷积，应用网络结构来提升 BNN 的精度。但是他们没有测试其方法是仅对 BNNs 有效，还是对提升 32-bit 网络也有效。</p>
+<blockquote>
+<p>发文章要提出之前方法的问题，加上自己的改进，这里看到作者说之前的方法没有对比在 32-bit 网络上是否也有效，我觉得说法怪怪的，既然是针对 BNNs 提出的结构改进，何必要适用 32-bit 网络呢？</p>
+</blockquote>
+<h2 id="3-meliusnet">3. MeliusNet</h2>
+<p>提出该方法的动机是：用二值代替 32-bit 值的权重和输入有两个主要的缺点。</p>
+<ul>
+<li>权重值从 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>32</mn></msup></mrow><annotation encoding="application/x-tex">2^{32}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> 减少到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 种，带来了一定的量化误差，使得特征的质量下降。</li>
+<li>输入的范围同样减小，使得特征的可用容量大大减小，32-bit 的细粒度特征消失。</li>
+</ul>
+<p>下面分别介绍：</p>
+<ol>
+<li>MeliusNet 如何有效提高特征的质量和容量；</li>
+<li>如何减少二值网络中保留的 32-bit 部分的操作数；</li>
+<li>BNN layers 的实现细节。</li>
+</ol>
+<h3 id="3-1-increasing-capacity-and-improving-quality">3.1 Increasing Capacity and Improving Quality</h3>
+<p>如下图1(a)所示，MeliusNet 的构建模块由 Dense Block 后接一个 Improvement Block 实现。Dense Block 用来提升特征的容量，Improvment Block 用来提升特征的质量。</p>
+<ul>
+<li>
+<p>Dense Block 中可以看出，256 通道的输入，再经过处理得到 64 个新通道，和原来的输入组合得到 320 个通道。从而实现了特征容量的扩展；</p>
+</li>
+<li>
+<p>Improvement Block 中可以看出，原来的 256 个通道不做改动，320 个通道再次处理得到 64 个新通道，通过残差累加到 Dense Block 新增的 64 个通道中，从而实现了特征质量的提高。</p>
+<p>这也是本文题目的来源：melius 在拉丁语中意思是 improvment。</p>
+</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231209133814796.png" class title="image-20231209133814796">
+<p>如果直接用 residual connection 来替代 Improvement Block 的操作。将会导致特征特征图每个部分被改善的次数极度偏向最初计算的特征。由于要匹配特征通道和输出通道的数量，这将引入更多的操作数。</p>
+<blockquote>
+<p><strong>特征图的改善次数偏向于最初计算的特征</strong>：这意味着采用这种简单的方法，对于生成特征图的不同部分，其改善或更新的次数存在不平衡。有些部分可能在最初的计算中得到了较多的关注和调整，而其他部分则较少。这可能导致模型对于某些特征的学习过于强调，而对其他特征的学习不足。</p>
+</blockquote>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129164218315.png" class title="image-20231129164218315">
+<p>作者发现，一样大的网络，在 ImageNet 数据集上 residual connection 的效果要比 Improvement Block 差大约 3%。</p>
+<p>如上图1(b)该网络由 Dense Block 和 Improvement Block 交替重复实现网络主体。重复的次数决定了网络的大小和运算量。网络处理过程分为 4 个阶段，中间由 transition 模块连接。transition 中利用 MaxPooling 模块将特征映射的 height 和 width 减半。</p>
+<h3 id="3-2-creating-an-efficient-stem-architecture">3.2 Creating an Efficient Stem Architecture</h3>
+<p>作者和之前的工作一样，没有对第一层、最后一层和 1x1(‘downsampling’)卷积进行二值化，以保留精度。但是这些层占据了大部分的计算，所以作者重新设计了第一层。</p>
+<p>与之前的 BNNs 相比，MobileNet-v1 0.5 仅需要 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.49</mn><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">1.49 \cdot 10^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">4</span><span class="mord">9</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span> 操作数，可以在 ImageNet 上实现 63.7% 的准确率。最接近它的 BNN 是 Bi-RealNet34 ，精度只有 62.2% ，需要 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.93</mn><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">1.93 \cdot 10^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">9</span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span> 的操作数。看起来 compact 结构要比 BNNs 更有应用价值，尤其是现在还有很多比 MobileNet 更强的 compact 网络。本文想减小这个 gap 。</p>
+<p>RealNet18 中 7x7 卷积层占据了整个网络计算量的 65%（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.18</mn><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">1.18 \cdot 10^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">1</span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span>），3个 1 × 1 下采样卷积占用了另外 10% （<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.69</mn><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">0.69 \cdot 10^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">6</span><span class="mord">9</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span>）的操作数。可见 32-bit 的卷积占据了 75% 的操作数，作者聚焦这一部分来减少操作数。</p>
+<p>作者借鉴 stem network 中的思想，用 3 个 3 x 3 的卷积来近似 1 个 7 x 7 的卷积；再借鉴 grouped convolutions 的思想，设计了图2(b)中的结构，相同参数量的情况下，节省了超过 40% 的运算。（grouped stem）</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129161048332.png" class title="image-20231129161048332">
+<p>同样的 1 x 1 的下采样卷积也可以使用固定的 groups 来处理，并增加了通道清洗 channel shuffle operation。</p>
+<p>通过上述改进，BNNs 的操作数已经和 MobileNet-v1 差不多了，并且取得了相似的效果。</p>
+<h3 id="3-3-implementation-details">3.3 Implementation Details</h3>
+<p>使用 sign 函数来二值化权重和激活：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129162558259.png" class title="image-20231129162558259">
+<p>sign 函数的不可微问题是利用 Straight-Through Estimator (STE)和梯度裁剪解决的。</p>
+<p>前向传播和反向传播过程如下：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129162812323.png" class title="image-20231129162812323">
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span> 是 loss，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是实值输入，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mrow><mi>c</mi><mi>l</mi><mi>i</mi><mi>p</mi></mrow></msub></mrow><annotation encoding="application/x-tex">t_{clip}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9011879999999999em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">p</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> 是 clipping 的阈值。并且使用了 XNOR 和 popcount 来加速。</p>
+<p>BinaryDenseNet 一文中提到 XNOR-Net 中提出的尺度缩放因子的功能可能被 BatchNorm 层中和掉，本文实验中发现该尺度因子没有带来提升，所以没有使用尺度因子。而使用了典型的 (BatchNorm →sign → BinaryConv) 顺序。于是作者使用 3x3 的 1-bit 卷积层替代了由 1x1 和 3x3 卷积组成的实值网络的 backbone。</p>
+<h2 id="4-results-and-discussion">4. Results and Discussion</h2>
+<blockquote>
+<p>感觉文章很大篇幅在实验结果比较和讨论这一部分。</p>
+</blockquote>
+<p>在 ImageNet 上进行图像分类的实验来测试网络结构。</p>
+<p>本文的代码实现基于 BMXNet 和 BinaryDenseNet。</p>
+<p>为了于 SotA 进行比较，作者设计了不同模型大小和操作数的 MeliusNet，如下表1：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129164427468.png" class title="image-20231129164427468">
+<h3 id="4-1-grouped-stem-ablation-study-and-training-details">4.1 Grouped Stem Ablation Study and Training Details</h3>
+<p>下图比较了使用本文提出的 grouped stem 结构前后的效果。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129165259923.png" class title="image-20231129165259923">
+<h3 id="4-2-ablation-study-on-32-bit-networks">4.2 Ablation Study on 32-bit Networks</h3>
+<p>通过下图3的实验结果可以看出，本文提出的结构仅仅对 BNNs 有提升效果，对 32-bit 的网络并无提升。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129165916958.png" class title="image-20231129165916958">
+<h3 id="4-3-comparison-to-state-of-the-art">4.3 Comparison to State-of-the-art</h3>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129170050728.png" class title="image-20231129170050728">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/4f6ccce2/image-20231129170720018.png" class title="image-20231129170720018">
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://www.awellfrog.cc">tomatoyuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.awellfrog.cc/p/4f6ccce2.html">https://www.awellfrog.cc/p/4f6ccce2.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.awellfrog.cc" target="_blank">番茄元🍅の小窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/BNN/">BNN</a></div><div class="post_share"><div class="social-share" data-image="/img/bg44.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/p/cf70db9e.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg19.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">漫谈Attention-Mechanism[注意力机制]</div></div></a></div><div class="next-post pull-right"><a href="/p/42697727.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg29.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">李宏毅ML2022(1)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/473fedfd.html" title="BASIC BINARY CONVOLUTION UNIT FOR BINARIZEDIMAGE RESTORATION NETWORK"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg107.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-05</div><div class="title">BASIC BINARY CONVOLUTION UNIT FOR BINARIZEDIMAGE RESTORATION NETWORK</div></div></a></div><div><a href="/p/8db67728.html" title="Bi-Real-Net"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg28.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-20</div><div class="title">Bi-Real-Net</div></div></a></div><div><a href="/p/9ab2390.html" title="FABNet"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg90.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-15</div><div class="title">FABNet</div></div></a></div><div><a href="/p/60822102.html" title="ReActNet"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-27</div><div class="title">ReActNet</div></div></a></div><div><a href="/p/2cb6e0c2.html" title="XNOR-Net"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg88.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-13</div><div class="title">XNOR-Net</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">tomatoyuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">51</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tomatoyuan"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tomatoyuan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://www.awellfrog.cc"><b><font color="#5ea6e5">awellfrog.cc</font></b></a></center></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">MeliusNet: Can Binary Neural Networks Achieve MobileNet-level Accuracy?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E6%91%98%E8%A6%81%E7%BF%BB%E8%AF%91"><span class="toc-text">0. 摘要翻译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E6%83%B3%E7%9F%A5%E9%81%93%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">我想知道什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-introduction"><span class="toc-text">1. INTRODUCTION</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-related-work"><span class="toc-text">2. Related Work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-meliusnet"><span class="toc-text">3. MeliusNet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-increasing-capacity-and-improving-quality"><span class="toc-text">3.1 Increasing Capacity and Improving Quality</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-creating-an-efficient-stem-architecture"><span class="toc-text">3.2 Creating an Efficient Stem Architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-implementation-details"><span class="toc-text">3.3 Implementation Details</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-results-and-discussion"><span class="toc-text">4. Results and Discussion</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-grouped-stem-ablation-study-and-training-details"><span class="toc-text">4.1 Grouped Stem Ablation Study and Training Details</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-ablation-study-on-32-bit-networks"><span class="toc-text">4.2 Ablation Study on 32-bit Networks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-comparison-to-state-of-the-art"><span class="toc-text">4.3 Comparison to State-of-the-art</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By tomatoyuan</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script defer src="/js/light.js"></script><script defer src="/js/cursor.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'c189a6faa11e45499d5f54f4af4961b9';
+  var gaud_map_key = 'f373eae7d7ddbee8cd012fdc2720f4e5';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
