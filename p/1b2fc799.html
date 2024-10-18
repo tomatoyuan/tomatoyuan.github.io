@@ -1,0 +1,597 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>模型压缩方法 | 番茄元🍅の小窝</title><meta name="author" content="tomatoyuan"><meta name="copyright" content="tomatoyuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="模型压缩方法  剪枝、蒸馏、量化、二值化。     参考视频： 理论【传送门】【传送门】【传送门】【MIT的模型压缩与优化】 实战【传送门】【传送门】 1. 量化 将高精度降为低比特。 模型量化是指将神经网络中的连续取值的权重或激活值近似为有限多个离散值的过程。 优势：  压缩参数 提升速度 降低内存占用  劣势：  模型精度下降           量化方法：   量化训练（Quant Awar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模型压缩方法">
+<meta property="og:url" content="https://tomatoyuan.github.io/p/1b2fc799.html">
+<meta property="og:site_name" content="番茄元🍅の小窝">
+<meta property="og:description" content="模型压缩方法  剪枝、蒸馏、量化、二值化。     参考视频： 理论【传送门】【传送门】【传送门】【MIT的模型压缩与优化】 实战【传送门】【传送门】 1. 量化 将高精度降为低比特。 模型量化是指将神经网络中的连续取值的权重或激活值近似为有限多个离散值的过程。 优势：  压缩参数 提升速度 降低内存占用  劣势：  模型精度下降           量化方法：   量化训练（Quant Awar">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tomatoyuan.github.io/img/bg59.jpg">
+<meta property="article:published_time" content="2024-09-01T13:51:48.000Z">
+<meta property="article:modified_time" content="2024-10-12T06:39:20.012Z">
+<meta property="article:author" content="tomatoyuan">
+<meta property="article:tag" content="nlp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tomatoyuan.github.io/img/bg59.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tomatoyuan.github.io/p/1b2fc799"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: tomatoyuan","link":"链接: ","source":"来源: 番茄元🍅の小窝","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '模型压缩方法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-12 14:39:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg59.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">模型压缩方法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-09-01T13:51:48.000Z" title="发表于 2024-09-01 21:51:48">2024-09-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-12T06:39:20.012Z" title="更新于 2024-10-12 14:39:20">2024-10-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/motheds/">motheds</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="模型压缩方法"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>模型压缩方法</h1>
+<blockquote>
+<p>剪枝、蒸馏、量化、二值化。</p>
+  <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240906192512403.png" class title="image-20240906192512403">
+</blockquote>
+<p>参考视频：</p>
+<p>理论【<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1384y187tL/?spm_id_from=333.337.search-card.all.click&amp;vd_source=e7300d5accad8932a257efb8871bb9ee">传送门</a>】<font color="red">【<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1pg4y1J73p/?spm_id_from=333.788.recommend_more_video.6&amp;vd_source=e7300d5accad8932a257efb8871bb9ee">传送门</a>】</font>【<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1aF411v7Va/?p=2&amp;spm_id_from=pageDriver&amp;vd_source=e7300d5accad8932a257efb8871bb9ee">传送门</a>】【<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1N1421X7WJ/?spm_id_from=333.337.search-card.all.click&amp;vd_source=e7300d5accad8932a257efb8871bb9ee">MIT的模型压缩与优化</a>】</p>
+<p>实战【<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Pc411M7yU/?spm_id_from=333.337.search-card.all.click&amp;vd_source=e7300d5accad8932a257efb8871bb9ee">传送门</a>】【<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ux4y1P7te/?spm_id_from=333.788.recommend_more_video.4&amp;vd_source=e7300d5accad8932a257efb8871bb9ee">传送门</a>】</p>
+<h2 id="1-量化">1. 量化</h2>
+<p>将高精度降为低比特。</p>
+<p>模型量化是指将神经网络中的连续取值的权重或激活值近似为有限多个离散值的过程。</p>
+<p>优势：</p>
+<ul>
+<li>压缩参数</li>
+<li>提升速度</li>
+<li>降低内存占用</li>
+</ul>
+<p>劣势：</p>
+<ul>
+<li>模型精度下降</li>
+</ul>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909224312943.png" class title="image-20240909224312943">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908220927796.png" class title="image-20240908220927796">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908221353852.png" class title="image-20240908221353852">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908222518617.png" class>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908222549860.png" class title="image-20240908222549860">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908222618339.png" class title="image-20240908222618339">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908222724673.png" class title="image-20240908222724673">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908222733222.png" class title="image-20240908222733222">
+<p><font color="red" size="5">量化方法：</font></p>
+<ul>
+<li>
+<p>量化训练（Quant Aware Training, QAT）</p>
+<p>量化训练让模型感知量化运算对模型精度带来的影响，通过finetune训练降低量化误差。</p>
+</li>
+<li>
+<p>动态离线量化（Post Training Quantization Dynamic, PTQ Dynamic）</p>
+<p>动态离线量化仅将模型中特定算子的权重从FP32类型映射成 INT8/16 类型。</p>
+</li>
+<li>
+<p>静态离线量化（Post Training Quantization Static, PTQ Static）</p>
+<p>静态离线量化使用少量无标签校准数据，采用KL散度等方法计算量化比例因子。</p>
+</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240904213118705.png" class title="image-20240904213118705">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240904212942323.png" class title="image-20240904212942323">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240904213015898.png" class title="image-20240904213015898">
+<h2 id="2-模型剪枝">2. 模型剪枝</h2>
+<h3 id="font-color-red-size-5-模型剪枝分类-font"><font color="red" size="5">模型剪枝分类</font></h3>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909230329814.png" class title="image-20240909230329814">
+<ul>
+<li>
+<p>Unstructured Pruning（非结构化剪枝）</p>
+<ul>
+<li>
+<p>Pros：剪枝算法简单，模型压缩比高</p>
+</li>
+<li>
+<p>Cons：精度不可控，剪枝后权重矩阵稀疏，没有专用硬件难以实现压缩和加速的效果</p>
+</li>
+<li>
+<p>方法：</p>
+<ul>
+<li>
+<p>最简单的方法是定义一个阈值，低于这个阈值的权重被减去，高于的被保留。</p>
+<p>缺点：</p>
+<ol>
+<li>阈值与稀疏性没有直接联系；</li>
+<li>不同的层应该具有不同的灵敏度；</li>
+<li>这样设置阈值可能会剪掉太多信息没无法恢复原来的精度。</li>
+</ol>
+</li>
+<li>
+<p>还有一种方法是使用一个拼接函数来屏蔽权重</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>w</mi><mo>=</mo><mo>−</mo><mi>η</mi><mfrac><mrow><mi mathvariant="normal">∂</mi><mi mathvariant="script">L</mi></mrow><mrow><mi mathvariant="normal">∂</mi><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo><mi>w</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\Delta w=-\eta \frac{\partial \mathcal{L}}{\partial(h(w) w)}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Δ</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.30744em;vertical-align:-0.936em;"></span><span class="mord">−</span><span class="mord mathdefault" style="margin-right:0.03588em;">η</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.37144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mopen">(</span><span class="mord mathdefault">h</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mclose">)</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathcal">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>里面 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">h(w)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">h</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mclose">)</span></span></span></span> 逐渐将不必要的权重减少到0。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>w</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.3599999999999999em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>0</mn><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> if </mtext><mi>a</mi><mo>&gt;</mo><mi mathvariant="normal">∣</mi><mi>w</mi><mi mathvariant="normal">∣</mi><mo separator="true">,</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>T</mi><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> if </mtext><mi>a</mi><mo>≤</mo><mi mathvariant="normal">∣</mi><mi>w</mi><mi mathvariant="normal">∣</mi><mo>&lt;</mo><mi>b</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>1</mn><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> if </mtext><mi>b</mi><mo>≤</mo><mi mathvariant="normal">∣</mi><mi>w</mi><mi mathvariant="normal">∣</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">h(w)= \begin{cases}0, &amp; \text { if } a&gt;|w|, \\ T, &amp; \text { if } a \leq|w|&lt;b \\ 1, &amp; \text { if } b \leq|w|\end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">h</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:4.32em;vertical-align:-1.9099999999999997em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.35002em;"><span style="top:-2.19999em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-2.19499em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-2.20499em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-3.15001em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.2950099999999996em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-4.30501em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-4.60002em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.8500199999999998em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span><span class="mpunct">,</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mpunct">,</span></span></span><span style="top:-1.5300000000000002em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">1</span><span class="mpunct">,</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.9099999999999997em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord"> if </span></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord">∣</span><span class="mpunct">,</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord"> if </span></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">b</span></span></span><span style="top:-1.5300000000000002em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord"> if </span></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord">∣</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.9099999999999997em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Structured Pruning（结构化剪枝）</p>
+<ul>
+<li>Pros：大部分算法在channel或者layer上进行剪枝，保留原始卷积结构，不需要专用硬件来实现</li>
+<li>Cons：剪枝算法复杂</li>
+</ul>
+</li>
+</ul>
+<h3 id="font-color-red-size-5-模型剪枝流程-font"><font color="red" size="5">模型剪枝流程</font></h3>
+<p>三种常见做法：</p>
+<ol>
+<li>训练一个模型 -》 对模型进行剪枝 -》对剪枝后的模型进行微调</li>
+<li>在模型训练过程中进行剪枝-》对剪枝后的模型进行微调</li>
+<li>进行剪枝-》从头训练剪枝后的模型</li>
+</ol>
+<p><strong>1. 静态剪枝</strong></p>
+<p>静态剪枝在训练后和推理前进行剪枝、在推理过程中，不需要对网络进行额外的剪枝。</p>
+<p>静态剪枝通常包括三个部分:</p>
+<p>1 剪枝参数的选择;<br>
+2 剪枝的方法;<br>
+3 选择性微调或再训练</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909232536043.png" class title="image-20240909232536043">
+<p>静态剪枝，储存成本低，适用于资源有限的边缘设备。</p>
+<p>缺点：</p>
+<ol>
+<li>通道的删除是永久性的，某些通道被永久性的减掉后，对于一些较为复杂的输入数据可能无法达到很好的精度；</li>
+<li>需要精心设计需要剪掉的部分，不然很容易造成计算资源的浪费；</li>
+<li>神经元的重要性并不是静态的，很大程度上依赖于输入数据，静态的剪枝很容易降低模型的推理性能。</li>
+</ol>
+<p><strong>2. 动态剪枝</strong></p>
+<p>网络中有一些奇怪的权重，他们在某些迭代中作用不大，但在其他的迭代却很重要。动态剪枝就是通过动态的恢复权重来得到更好的网络性能。动态剪枝在运行时才决定哪些层、通道或滤波器不会参与进一步的活动。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909232804699.png" class title="image-20240909232804699">
+<p>动态剪枝能够显著提高卷积神经网络的表达能力，从而在预测精度方面取得更好得性能。</p>
+<p>动态剪枝也存在一些问题:</p>
+<p>1:之前有方法通过强化学习来实现动态剪枝，但在训练过程中要消耗非常多的运算资源。</p>
+<p>2:很多动态剪枝的方法都是通过强化学习的方式来实现的，但是”阀门的开关“，是不可微的，也就是说，梯度下降法在这里是用不了的。</p>
+<p>3:存储成本高，不适用于资源有限的边缘设备。</p>
+<p><strong>1. 硬剪枝</strong></p>
+<p>在每个epoch后会将卷积核直接剪掉，被剪掉的卷积核在下一个epoch中不会再出现。</p>
+<p>存在的问题:</p>
+<p>1)模型性能降低;</p>
+<p>2)依赖预先训练的模型。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909232954820.png" class title="image-20240909232954820">
+<p><strong>2. 软剪枝</strong></p>
+<p>相比较硬剪枝，软剪枝剪枝后进行训练时上一个epoch中被剪掉的卷积核在当前epoch训练时仍参与迭代，只是将其参数置为0，因此那些卷积核不会被直接丢弃。</p>
+<p>一般有四个步骤:</p>
+<ol>
+<li>滤波器选择</li>
+<li>滤波器剪枝</li>
+<li>重建</li>
+<li>获得紧凑模型</li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909233044561.png" class title="image-20240909233044561">
+<ol>
+<li>使用 L2 范数来评估每个滤波器的重要性，具有较小L2范数的滤波器的卷积结果会导致相对较低的激活值，从而对网络模型的最终预测结果有较小的影响，所以这种具有较小L2范数的滤波器更容易被剪掉。</li>
+<li>将所选滤波器的值暂时设置为0，这可以暂时消除他们对网络输出的影响，但是在接下来的阶段，这些滤波器仍然可以被更新以保持模型的高性能，在滤波器剪枝过程中，可以同时修剪所有加权层，此外要对所有加权层使用相同的剪枝率。</li>
+<li>在剪枝步骤之后，再训练一轮来重构修剪后的滤波器，修剪滤波器通过反向传播被更新为非0，这样经过软剪枝的模型可以具有和模型相当的性能。</li>
+<li>获得一个紧凑模型，重复上述三个步骤</li>
+</ol>
+<p>当模型收敛后，可以获得一个包含许多0滤波器的稀疏模型，一个0滤波器对应一个特征图，对应于那些0滤波器的特征图在推理过程中将总是0，移除这些滤波器以及相应的特征图不会有任何影响。</p>
+<h3 id="剪枝实践">剪枝实践</h3>
+<p>SparseGPT</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909100718427.png" class title="image-20240909100718427">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909133549986.png" class title="image-20240909133549986">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909145811288.png" class title="image-20240909145811288">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909145821910.png" class title="image-20240909145821910">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909150141491.png" class title="image-20240909150141491">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909150422473.png" class title="image-20240909150422473">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909150919816.png" class title="image-20240909150919816">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909151214814.png" class title="image-20240909151214814">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909151259451.png" class title="image-20240909151259451">
+<blockquote>
+<p>前提：该VGG每一层保证结构为：CONV-&gt;BN-&gt;RELU，每个BN层对应一个卷积层</p>
+</blockquote>
+<p>L1正则化</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909153306287.png" class title="image-20240909153306287">
+<p>取出所有BN中的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span></span></span></span>值</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909153259702.png" class title="image-20240909153259702">
+<p>对BN值排序，根据裁剪比例计算出保留的索引位置</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909153420542.png" class title="image-20240909153420542">
+<p>剪枝，此时没有对原模型动刀，只是将不想要的权重部分通过mask置为0</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909153844706.png" class title="image-20240909153844706">
+<p>测试准确率，此时准确率将会出现大幅下降：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909154347371.png" class title="image-20240909154347371">
+<p>进行真正的剪枝：</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909154747787.png" class title="image-20240909154747787">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909154655468.png" class title="image-20240909154655468">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909154723727.png" class title="image-20240909154723727">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909155033687.png" class title="image-20240909155033687">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909155347707.png" class title="image-20240909155347707">
+<blockquote>
+<p><code>idx1 和 idx0</code> 是使用<code>isinstance</code>方法找到mask之后保留的参数位置。</p>
+</blockquote>
+<p>我们要对每个卷积层mask掉一部分参数后的剪枝模型进行再训练，此时不需要正则化等操作，此时不希望进行稀疏化表示，不需要再次筛选：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909155719038.png" class title="image-20240909155719038">
+<h3 id="剪枝策略">剪枝策略</h3>
+<p>剪枝为什么会有效果呢？因为模型如人脑，丢弃掉一些无用的信息，专注在一些重要的信息上表现会更好。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909160457162.png" class title="image-20240909160457162">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909161923195.png" class title="image-20240909161923195">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909165802036.png" class title="image-20240909165802036">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909165906302.png" class title="image-20240909165906302">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240909170009907.png" class title="image-20240909170009907">
+<h2 id="3-知识蒸馏-knowledge-distillation-kd">3. 知识蒸馏（Knowledge Distillation, KD）</h2>
+<h3 id="知识蒸馏概念">知识蒸馏概念</h3>
+<ul>
+<li>
+<p><strong>离线蒸馏（offline distillation）</strong>：学生完全向老师学习</p>
+<ul>
+<li>step1: 蒸馏前，教师网络在训练集上进行训练</li>
+<li>step2: 教师网络通过logits层信息或者中间层信息，提取知识，引导学生网络进行训练</li>
+<li>缺点：
+<ul>
+<li>教师网络比较庞大，模型复杂，需要大量的训练时间</li>
+<li>需要注意学生网络和教师网络之间的差异，当差异过大时，学生网络可能很难学好这些知识</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>在线蒸馏（online distillation）</strong>：学生和老师一起学习</p>
+<ul>
+<li>教师网络和学生网络都是正在训练的状态，在没有现成的大教师网络模型的时候可以考虑</li>
+</ul>
+</li>
+<li>
+<p><strong>自蒸馏（self-distillation）</strong>：学生自己学习</p>
+<ul>
+<li>可以看成特殊的在线学习，教师模型和学生模型使用相同的模型</li>
+<li>第一种是使用不用样本信息进行相互蒸馏，其他样本的软标签可以避免样本过拟合，甚至可以通过最小化不同样本间的预测分布来提高网络的性能</li>
+<li>另一类是单个网络的网络层间进行自蒸馏，最通常的做法是使用深层网络的特征去指导浅层网络的学习</li>
+</ul>
+</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910113146256.png" class title="image-20240910113146256">
+<h3 id="师生网络架构">师生网络架构</h3>
+<p>学生网络一般是:</p>
+<ol>
+<li>教师网络的简化版本，具有较少的层和每层中较少的信道。</li>
+<li>教师网络的量化版本，其中网络的结构被保留。</li>
+<li>具有高效基本操作的小型网络。</li>
+<li>具有优化的整体网络结构的小型网络。</li>
+<li>与教师相同的网络。</li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240908154639987.png" class title="image-20240908154639987">
+<h3 id="蒸馏流程">蒸馏流程</h3>
+<p>知识蒸馏可以分为4个步骤：</p>
+<ul>
+<li>步骤一：训练教师模型。这个步骤非常简单。</li>
+<li>步骤二：利用高温T产生教师网络和学生网络的Soft-target，用T=1产生学生网络的Hard-target。</li>
+<li>步骤三：利用步骤二生成的Soft-target和Hard-target同时训练 Student 模型。</li>
+<li>步骤四：设置T=1，Student模型做线上推理。</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910133810552.png" class title="image-20240910133810552">
+<p>步骤二和步骤三统一称为高温蒸馏的过程，T为温度参数。总的损失函数L由Lsoft和Lhard加权得到。Lsoft 对应的是高温，Lhard对应的是T=1。Lsoft中的piT是教师模型在温度等于T的条件下 softmax 在第i类上的输出值，qiT是指学生模型在温度等于T的条件下 softmax 输出在第i类上的值。高温时，T的值很大，由指数函数图像很容易可以知道，T越大，不同类的概率差异会越小。</p>
+<p>损失函数： <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">L</mi><mo>=</mo><mi>α</mi><msub><mi mathvariant="normal">L</mi><mtext>soft </mtext></msub><mo>+</mo><mi>β</mi><msub><mi mathvariant="normal">L</mi><mtext>hard </mtext></msub></mrow><annotation encoding="application/x-tex">\mathrm{L}=\alpha \mathrm{L}_{\text {soft }}+\beta \mathrm{L}_{\text {hard }}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathrm">L</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mord"><span class="mord"><span class="mord mathrm">L</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">soft </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mord"><span class="mord"><span class="mord mathrm">L</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">hard </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><br>
+其 中: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace width="1em"><msub><mi mathvariant="normal">L</mi><mtext>sott </mtext></msub><mo>=</mo><mo>−</mo><msubsup><mo>∑</mo><mi>i</mi><mi>N</mi></msubsup><msubsup><mi mathvariant="normal">p</mi><mi>i</mi><mi mathvariant="normal">T</mi></msubsup><mi>log</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msubsup><mi mathvariant="normal">q</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">T</mi></msubsup><mo fence="true">)</mo></mrow><mspace width="1em"><msub><mi mathvariant="normal">L</mi><mtext>hard </mtext></msub><mo>=</mo><mo>−</mo><msubsup><mo>∑</mo><mi mathvariant="normal">i</mi><mi>N</mi></msubsup><msub><mi mathvariant="normal">c</mi><mi mathvariant="normal">i</mi></msub><mi>log</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msubsup><mi mathvariant="normal">q</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">l</mi></msubsup><mo fence="true">)</mo></mrow></mspace></mspace></mrow><annotation encoding="application/x-tex">\quad \mathrm{L}_{\text {sott }}=-\sum_i^N \mathrm{p}_i^{\mathrm{T}} \log \left(\mathrm{q}_{\mathrm{i}}^{\mathrm{T}}\right) \quad \mathrm{L}_{\text {hard }}=-\sum_{\mathrm{i}}^N \mathrm{c}_{\mathrm{i}} \log \left(\mathrm{q}_{\mathrm{i}}^{\mathrm{l}}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">L</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">sott </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.331241em;vertical-align:-0.35001em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">p</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.441336em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mord"><span class="mord"><span class="mord mathrm">q</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.435498em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.264502em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">L</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">hard </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.331241em;vertical-align:-0.35001em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">c</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31750199999999995em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mord"><span class="mord"><span class="mord mathrm">q</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.435498em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">l</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.264502em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span></span></span></span></p>
+<p>而<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="normal">p</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">T</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathrm{p}_{\mathrm{i}}^{\mathrm{T}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.105833em;vertical-align:-0.264502em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">p</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.435498em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.264502em;"><span></span></span></span></span></span></span></span></span></span>是 Teacher 模型在温度等于T的条件下 softmax 输出在第i类上的值，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="normal">q</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">T</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathrm{q}_{\mathrm{i}}^{\mathrm{T}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.105833em;vertical-align:-0.264502em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">q</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.435498em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.264502em;"><span></span></span></span></span></span></span></span></span></span>指是Student 模型在温度等于T的条件下 softmax 输出在第i类上的值。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="normal">p</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">T</mi></msubsup><mo>=</mo><mfrac><mrow><mi>exp</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi>v</mi><mi>i</mi></msub><mi mathvariant="normal">/</mi><mi>T</mi><mo fence="true">)</mo></mrow></mrow><mrow><munderover><mo>∑</mo><mi>k</mi><mi>N</mi></munderover><mi>exp</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi>v</mi><mi>k</mi></msub><mi mathvariant="normal">/</mi><mi>T</mi><mo fence="true">)</mo></mrow></mrow></mfrac><mspace width="1em"><msubsup><mi mathvariant="normal">q</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">T</mi></msubsup><mo>=</mo><mfrac><mrow><mi>exp</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi>z</mi><mi>i</mi></msub><mi mathvariant="normal">/</mi><mi>T</mi><mo fence="true">)</mo></mrow></mrow><mrow><munderover><mo>∑</mo><mi>k</mi><mi>N</mi></munderover><mi>exp</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi>z</mi><mi>j</mi></msub><mi mathvariant="normal">/</mi><mi>T</mi><mo fence="true">)</mo></mrow></mrow></mfrac></mspace></mrow><annotation encoding="application/x-tex">\mathrm{p}_{\mathrm{i}}^{\mathrm{T}}=\frac{\exp \left(v_i / T\right)}{\sum_k^N \exp \left(v_k / T\right)} \quad \mathrm{q}_{\mathrm{i}}^{\mathrm{T}}=\frac{\exp \left(z_i / T\right)}{\sum_k^N \exp \left(z_j / T\right)}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.138331em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">p</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.597941em;vertical-align:-1.170941em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.128769em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">exp</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">exp</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.170941em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">q</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-2.4530000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">i</span></span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">T</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.597941em;vertical-align:-1.170941em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.128769em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">exp</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.04398em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">exp</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.04398em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.170941em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>下图中，soft predictions指包含除正确结果外的冗余信息（例如，图片识别为1【GT】，图片长得像7和9【冗余但是有用的信息】）。</p>
+<ul>
+<li>
+<p>soft loss 学生的预测结果与老师预测结果的loss</p>
+</li>
+<li>
+<p>hard loss 学生预测结果与GT的比较</p>
+</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240904222623575.png" class title="image-20240904222623575">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910130715024.png" class title="image-20240910130715024">
+<h3 id="蒸馏算法">蒸馏算法</h3>
+<p>为了改进在更复杂的环境中传递知识的过程，已经出现了许多不同的知识蒸馏算法。下面，我们一起回顾知识蒸馏领域中最近提出的几种典型的蒸馏方法。</p>
+<h4 id="1-对抗蒸馏">1. 对抗蒸馏</h4>
+<p>在对抗性学习中，对抗网络中的鉴别器用来估计样本来自训练数据分布的概率，而生成器试图使用生成的数据样本来欺骗鉴别器。受此启发，已经出现了许多基于对抗的知识蒸馏方法，以使教师和学生网络能够更好地理解真实的数据分布。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910132817492.png" class title="image-20240910132817492">
+<h4 id="2-多教师蒸馏">2. 多教师蒸馏</h4>
+<p>不同的教师架构可以为学生网络提供不同有用的知识。在训练学生网络期间，多个教师网络可以单独地，也可以整体地用于蒸馏。为了传递来自多个教师的知识，最简单的方法是使用来自所有教师的平均响应作为监督信号。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910132953918.png" class title="image-20240910132953918">
+<h4 id="3-交叉模式蒸馏">3. 交叉模式蒸馏</h4>
+<p>在训练或测试期间，某些数据或标签可能不可用。因此，在不同的模型之间传递知识是很重要的。然而，当模型存在差异时，跨模型知识蒸馏是一项具有挑战性的研究，例如当不同模式之间缺乏配对的样本时。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910133046554.png" class title="image-20240910133046554">
+<h4 id="4-基于图形的蒸馏">4. 基于图形的蒸馏</h4>
+<p>基于图的蒸馏方法的主要思想是</p>
+<ol>
+<li>用图作为教师知识的载体;</li>
+<li>用图来控制教师知识的信息传递。</li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910133152761.png" class title="image-20240910133152761">
+<h4 id="5-无数据蒸馏">5. 无数据蒸馏</h4>
+<p>为了克服由隐私、合法性、安全性和保密性问题等原因引起的不可用数据的问题，出现了一些无数据知识蒸馏的方法。无数据蒸馏中的合成数据通常是从预训练教师模型的特征表示中生成的。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910133248990.png" class title="image-20240910133248990">
+<h4 id="6-量化蒸馏">6. 量化蒸馏</h4>
+<p>一个大的高精度的教师网络将知识传递给一个小的低精度的学生网络。为了确保小的学生网络精确地模仿大的教师网络，首先在特征图上量化教师网络，然后将知识从量化的教师转移到量化的学生网络。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910133326532.png" class title="image-20240910133326532">
+<h4 id="7-其他知识蒸馏算法">7. 其他知识蒸馏算法</h4>
+<p>基于注意力的蒸馏，终身蒸馏，NAS蒸馏。</p>
+<h2 id="4-低秩分解">4. 低秩分解</h2>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/1b2fc799/image-20240910221706721.png" class title="image-20240910221706721">
+<p>卷积核矩阵的低秩特性，通过一些低秩的基础张量，去近似原始的大规模卷积核矩阵，低秩分解，它不仅能够降低存储空间的需求，也会降低计算复杂度。低秩分解的方法主要有奇异值分解，然后通过逼近的方式去求解这些，分解之后的矩阵，</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io">tomatoyuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io/p/1b2fc799.html">https://tomatoyuan.github.io/p/1b2fc799.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://tomatoyuan.github.io" target="_blank">番茄元🍅の小窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/nlp/">nlp</a></div><div class="post_share"><div class="social-share" data-image="/img/bg59.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/p/5743e977.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg38.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">A Survey on Automatic Chart Understanding in the Era of Large Foundation Models</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/5743e977.html" title="A Survey on Automatic Chart Understanding in the Era of Large Foundation Models"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg38.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-16</div><div class="title">A Survey on Automatic Chart Understanding in the Era of Large Foundation Models</div></div></a></div><div><a href="/p/e782e2a5.html" title="ChartBench"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg74.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-08</div><div class="title">ChartBench</div></div></a></div><div><a href="/p/9cfb766.html" title="ChartInstruct"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg20.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-22</div><div class="title">ChartInstruct</div></div></a></div><div><a href="/p/98cfd6d8.html" title="ChartQA"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg43.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-06</div><div class="title">ChartQA</div></div></a></div><div><a href="/p/2106501d.html" title="ChartReader"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg104.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-16</div><div class="title">ChartReader</div></div></a></div><div><a href="/p/734809d2.html" title="PlotQA"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg72.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-15</div><div class="title">PlotQA</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">tomatoyuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tomatoyuan"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tomatoyuan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://tomatoyuan.github.io"><b><font color="#5ea6e5">tomatoyuan.github.io</font></b></a></center></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">模型压缩方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%87%8F%E5%8C%96"><span class="toc-text">1. 量化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A8%A1%E5%9E%8B%E5%89%AA%E6%9E%9D"><span class="toc-text">2. 模型剪枝</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#font-color-red-size-5-%E6%A8%A1%E5%9E%8B%E5%89%AA%E6%9E%9D%E5%88%86%E7%B1%BB-font"><span class="toc-text">模型剪枝分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#font-color-red-size-5-%E6%A8%A1%E5%9E%8B%E5%89%AA%E6%9E%9D%E6%B5%81%E7%A8%8B-font"><span class="toc-text">模型剪枝流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%AA%E6%9E%9D%E5%AE%9E%E8%B7%B5"><span class="toc-text">剪枝实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%AA%E6%9E%9D%E7%AD%96%E7%95%A5"><span class="toc-text">剪枝策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F-knowledge-distillation-kd"><span class="toc-text">3. 知识蒸馏（Knowledge Distillation, KD）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F%E6%A6%82%E5%BF%B5"><span class="toc-text">知识蒸馏概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%88%E7%94%9F%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84"><span class="toc-text">师生网络架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%92%B8%E9%A6%8F%E6%B5%81%E7%A8%8B"><span class="toc-text">蒸馏流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%92%B8%E9%A6%8F%E7%AE%97%E6%B3%95"><span class="toc-text">蒸馏算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%AF%B9%E6%8A%97%E8%92%B8%E9%A6%8F"><span class="toc-text">1. 对抗蒸馏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%A4%9A%E6%95%99%E5%B8%88%E8%92%B8%E9%A6%8F"><span class="toc-text">2. 多教师蒸馏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%BA%A4%E5%8F%89%E6%A8%A1%E5%BC%8F%E8%92%B8%E9%A6%8F"><span class="toc-text">3. 交叉模式蒸馏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%BD%A2%E7%9A%84%E8%92%B8%E9%A6%8F"><span class="toc-text">4. 基于图形的蒸馏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E6%97%A0%E6%95%B0%E6%8D%AE%E8%92%B8%E9%A6%8F"><span class="toc-text">5. 无数据蒸馏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E9%87%8F%E5%8C%96%E8%92%B8%E9%A6%8F"><span class="toc-text">6. 量化蒸馏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F%E7%AE%97%E6%B3%95"><span class="toc-text">7. 其他知识蒸馏算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BD%8E%E7%A7%A9%E5%88%86%E8%A7%A3"><span class="toc-text">4. 低秩分解</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By tomatoyuan</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script defer src="/js/light.js"></script><script defer src="/js/cursor.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'c189a6faa11e45499d5f54f4af4961b9';
+  var gaud_map_key = 'f373eae7d7ddbee8cd012fdc2720f4e5';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

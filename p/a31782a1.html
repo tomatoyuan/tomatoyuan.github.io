@@ -1,0 +1,793 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>计算机网络（三） | 番茄元🍅の小窝</title><meta name="author" content="tomatoyuan"><meta name="copyright" content="tomatoyuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="计算机网络（三） 第3章 运输层 3.1 概述和运输层服务 运输层协议为运行在不同主机上的应用进程之间提供了 逻辑通信（logic communication） 功能。 运输层协议是在端系统中而不是在路由器中实现的。在发送端，运输层将发送应用程序进程发来的报文转换为运输层分组，称为运输层 报文段（segment） 。实现的方法是将应用报文划分为较小的块，并为每块加上一个运输层首部以生成运输层报文段">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络（三）">
+<meta property="og:url" content="https://tomatoyuan.github.io/p/a31782a1.html">
+<meta property="og:site_name" content="番茄元🍅の小窝">
+<meta property="og:description" content="计算机网络（三） 第3章 运输层 3.1 概述和运输层服务 运输层协议为运行在不同主机上的应用进程之间提供了 逻辑通信（logic communication） 功能。 运输层协议是在端系统中而不是在路由器中实现的。在发送端，运输层将发送应用程序进程发来的报文转换为运输层分组，称为运输层 报文段（segment） 。实现的方法是将应用报文划分为较小的块，并为每块加上一个运输层首部以生成运输层报文段">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tomatoyuan.github.io/img/bg14.jpg">
+<meta property="article:published_time" content="2023-02-08T14:57:20.000Z">
+<meta property="article:modified_time" content="2023-02-16T14:16:09.471Z">
+<meta property="article:author" content="tomatoyuan">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tomatoyuan.github.io/img/bg14.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tomatoyuan.github.io/p/a31782a1"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: tomatoyuan","link":"链接: ","source":"来源: 番茄元🍅の小窝","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机网络（三）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-16 22:16:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg14.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机网络（三）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-08T14:57:20.000Z" title="发表于 2023-02-08 22:57:20">2023-02-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-16T14:16:09.471Z" title="更新于 2023-02-16 22:16:09">2023-02-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">12.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>38分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机网络（三）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>计算机网络（三）</h1>
+<h1>第3章 运输层</h1>
+<h2 id="3-1-概述和运输层服务">3.1 概述和运输层服务</h2>
+<p>运输层协议为运行在不同主机上的应用进程之间提供了 <strong>逻辑通信（logic communication）</strong> 功能。</p>
+<p>运输层协议是在端系统中而不是在路由器中实现的。在发送端，运输层将发送应用程序进程发来的报文转换为运输层分组，称为运输层 <strong>报文段（segment）</strong> 。实现的方法是将应用报文划分为较小的块，并为每块加上一个运输层首部以生成运输层报文段。然后，在发送端系统中，运输层将这些报文段传递给网络层，网络层将其封装成网络层分组（即数据报）并向目的地发送。</p>
+<p>注意：网络路由器仅作用于该数据报的网络层字段；不检查封装在该数据报的运输层报文段的字段。在接收端，网络层从数据包中提取运输层报文段，并将该报文段上交给运输层。运输层处理接收到的报文段，使其中数据为接收应用进程所使用。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230209112805767.png" class title="image-20230209112805767">
+<h3 id="3-1-1-运输层和网络层的关系">3.1.1 运输层和网络层的关系</h3>
+<p>网络层提供了 <strong>主机</strong> 之间的逻辑通信，而运输层为运行在不同主机上的进程之间提供了逻辑通信。</p>
+<p>运输层协议只工作在端系统中。在端系统中，运输层协议将来自应用进程的报文移动到网络边缘（即网络层），反过来也一样，但对有关这些报文在网络核心中如何移动并不做任何规定。</p>
+<p>运输协议能够提供的服务常常受制于底层网络层协议的服务模型。如果网络层协议无法为主机之间发送的运输层报文段提供时延好或带宽保证的话，运输层协议就无法为进程之间发送的应用程序报文提供时延或带宽保证。但是，即使底层完了过协议不能在网络层提供相应的服务，运输层协议也能提供某些服务。例如，即使底层网络协议是不可靠的，也就是说网络层协议会使分组丢失、篡改和冗余，运输协议也能为应用程序提供可靠的数据传输服务。</p>
+<blockquote>
+<p>举例说明，两家人住的很远，需要写信沟通， 每家有一个孩子负责收家里的信件交给邮政，接收邮政信件分发给家人。</p>
+<p>用上述例子中的人物类比网络的运行：</p>
+<p>应用层报文 = 信封上的字符</p>
+<p>进程 = 写信的每个人</p>
+<p>主机（又称端系统） = 家庭</p>
+<p>运输层协议 = 每家负责收发信件的人</p>
+<p>网络层协议 = 邮政服务</p>
+</blockquote>
+<h3 id="3-1-2-因特网运输层概述">3.1.2 因特网运输层概述</h3>
+<p>简要介绍一下网络层协议。因特网网络层协议有一个名字叫做 IP ，即网际协议。IP 为主机之间提供了逻辑通信。IP 的服务模型是 <strong>尽力而为交付服务（best-effort delivery service）</strong> 。它不确保报文段的交付，不保证报文段的按序交付，不保证报文段中数据的完整性。</p>
+<p>运输层协议 UDP 和 TCP 最基本的责任是，将两个端系统间 IP 的交付服务扩展为运行在端系统上的两个进程之间的交付服务。将主机间交付扩展到进程间交付被称为 <strong>运输层的多路复用（transport-layer multiplexing）</strong> 与 <strong>多路分解（demultiplexing）</strong> 。</p>
+<p>进程到进程的数据交付和差错检查是两种最低限度的运输层服务，也是 UDP 所能提供的仅有的两种服务。</p>
+<p>TCP 为应用程序提供了几种附加服务：</p>
+<ul>
+<li>
+<p>可靠数据传输（reliable data transfer）</p>
+</li>
+<li>
+<p>拥塞控制（congestion control）</p>
+<p>TCP 力求为每个通过一条拥塞网络链路的连接平等地共享网络链路带宽。</p>
+<p>UDP 流量是不可调节的。使用 UDP 传输的应用程序可以根据其需要以其愿意的任何速率发送数据。</p>
+</li>
+</ul>
+<h2 id="3-2-多路复用和多路分解">3.2 多路复用和多路分解</h2>
+<p>一个进程（作为网络应用的一部分）有一个或多个 <strong>套接字（socket）</strong> ，它相当于从网络向进程出传递数据和从进程向网络传递数据的门户。在接收主机中的运输层实际上并没有直接将数据交付给进程，而是将数据交给了一个中间的套接字。</p>
+<p><font color="red">多路分解（demultiplexing）</font> 将运输层报文段中的数据交付到正确的套接字。</p>
+<p><font color="red">多路复用（multiplexing）</font> 源主机从不同套接字中收集数据块，并为每个数据块封装上首部信息（这将在以后用于分解）从而生成报文段，然后将报文段传递到网络层。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230209112840076.png" class title="image-20230209112840076">
+<blockquote>
+<p>继续上面的例子，</p>
+<p>从邮递员处收到一批信件，并通过查看收信人名字将信件亲手交付给家人门的过程执行的是分解操作。</p>
+<p>从家人们手中收集信件交付给邮递员时，执行的是多路复用操作。</p>
+</blockquote>
+<p>运输层多路复用的要求：</p>
+<ol>
+<li>套接字有唯一的标识符；</li>
+<li>每个报文段有特殊字段来指示该报文段所要交付到的套接字。（特殊字段是 <strong>源端口号字段（source port number field）</strong> 和 <strong>目的端口号字段（destination port number field）</strong> ）。（UDP 和 TCP 报文段还有一些其他的字段。）</li>
+</ol>
+<blockquote>
+<p>端口号是一个 16 比特的数，其大小在 0~65535 之间。0~1023 范围的端口号称为 <strong>周知端口号（well-known port number）</strong> ，是受限制的，是保留给注入 HTTP （端口号 80） 和 FTP （端口号 21） 之类的周知应用层协议使用。</p>
+<p>当我们开发一个新的应用程序时，必须为其分配一个端口号。</p>
+</blockquote>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230209112853400.png" class title="image-20230209112853400">
+<h3 id="1-无连接的多路复用与多路分解">1. 无连接的多路复用与多路分解</h3>
+<p><code>clientSocket = socket(AF_INET, SOCK_DGRAM)</code></p>
+<p>当用这种方式创建一个 UDP 套接字时，运输层自动地为该套接字分配一个端口号。特别是，运输层从范围 1024~65535 内分配一个端口号，该端口号是当前未被该主机中任何其他 UDP 端口使用的号。</p>
+<p><code>clientSocket.bind(('', 19157))</code></p>
+<p>另一种方法是，再创建一个套接字后，通过套接字 <code>bind()</code> 方法为这个 UDP 套接字关联一个特定的端口号（如 19157）。</p>
+<p><font color="blue">一个 UDP 套接字是由一个二元组全面标识的，该二元组包含一个目的 IP 地址和一个目的端口号。</font></p>
+<p>即使两个 UDP 报文段有不同的源 IP 地址和（或）源端口号，但具有相同的目的 IP 地址和目的端口号，那么这两个报文段将通过相同的目的套接字被定向到相同的目的进程。</p>
+<blockquote>
+<p>服务器可以使用 <code>recvfrom()</code> 方法从接收到的报文段中提取出客户端（源）端口号，然后，它将所提取的源端口号作为目的端口号，向客户发送一个新的报文段。</p>
+</blockquote>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230209160636582.png" class title="image-20230209160636582">
+<h3 id="2-面向连接的多路复用与多路分解">2. 面向连接的多路复用与多路分解</h3>
+<p><font color="blue">TCP 套接字是由一个四元组（源 IP 地址，源端口号，目的 IP 地址，目的端口号）来标识的。</font></p>
+<p>当一个 TCP 报文段从网络到达一台主机时，该主机使用全部 4 个值来将报文段定向（分解到）相应的套接字。特别与 UDP 不同的是，两个具有不同源 IP 地址或源端口号的 TCP 报文段将被定向到两个不同的套接字，除非 TCP 报文段携带了初始创建连接的请求。</p>
+<blockquote>
+<p>再次理解 SOCKET 编程中 TCP 客户—服务器例子：</p>
+<ul>
+<li>
+<p>TCP 服务器应用程序有一个 “欢迎套接字” ，它在 12000 号端口上等待来自 TCP 客户的连接建立请求。</p>
+</li>
+<li>
+<p>TCP 客户使用下面代码创建一个套接字并发送一个连接建立请求报文段：</p>
+</li>
+</ul>
+<p><code>clientSocket = socket(AF_INET, SOCK_STREAM)</code></p>
+<p><code>clientSocket.connect((serverName, 12000))</code></p>
+<ul>
+<li>
+<p>一条连接建立请求是一个目的端口号为 12000，TCP 首部的特定“连接建立位”置位的 TCP 报文段。该报文段包含一个有客户选择的源端口号。</p>
+</li>
+<li>
+<p>当运行服务器进程的计算机的主机操作系统收到具有目的端口 12000 的入连接请求报文段后，它就定位服务器进程，该进程正在端口号 12000 等待接受连接。该服务器进程则创建一个新的套接字：</p>
+</li>
+</ul>
+<p><code>connectionSocket, addr = serverSocket.accept()</code></p>
+<ul>
+<li>该服务器在运输层查看连接请求报文段中的 TCP 套接字信息，如果 4 个值都匹配，则被分解到这个套接字中。随着 TCP 连接完成，客户和服务器便可相互发送数据了。</li>
+</ul>
+</blockquote>
+<p>如下图，即便目的端口号相同，只要源 IP 和源端口号之一不同，即可区分不同的 TCP 套接字。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230209160821870.png" class title="image-20230209160821870">
+<h3 id="3-web-服务器与-tcp">3. Web 服务器与 TCP</h3>
+<p>一台 Web 服务器为每条连接生成一个新进程。如上图 3-5 ，每个这样的进程都有自己的连接套接字，通过这些套接字可以收到 HTTP 请求和发送 HTTP 响应。</p>
+<blockquote>
+<p>然而，连接套接字与进程之间并非总是一一对应的关系。当今的高性能 Web 服务器通常只使用一个进程，但是为每个新客户连接创建一个具有新连接套接字的新线程。（线程可被看作是一个轻量级的子进程。）</p>
+</blockquote>
+<h2 id="3-3-无连接运输：udp">3.3 无连接运输：UDP</h2>
+<p>UDP 从应用进程得到数据，附加上用于多路复用/分解服务的源和目的端口号字段，以及两个其他的小字段，然后将形成的报文段交给网络层。网络层将该运输层报文段封装到一个 IP 数据报中，然后尽力而为地尝试将此报文段交付给接收主机。如果该报文段到达接收主机，UDP 使用目的端口号将报文段中地数据交付给正确的应用进程。</p>
+<blockquote>
+<p>使用 UDP 时，在发送报文段之前，发送方和接收方的运输层实体之间没有握手，所以称 UDP 是 <strong>无连接的</strong> 。</p>
+</blockquote>
+<p>DNS 是一个通常使用 UDP 的应用层协议的例子。</p>
+<p>数据传输中 TCP 不总是首选，因为有许多应用更适合用 UDP ，原因如下：</p>
+<ol>
+<li>关于发送什么数据以及何时发送的应用层控制更为精细。事实应用通常要求最小的发送速率，不希望过分地延迟报文段地传送，且能容忍一些数据丢失，TCP 服务模型并不是特别适合这些应用的需要。这些应用可以使用 UDP ，并将作为应用的一部分来实现所需的、超出 UDP 的不提供不必要报文段交付服务之外的额外功能。</li>
+<li>无须连接建立。UDP 无需任何准备即可进行数据传输，因此不会引入建立连接的时延。这也是 DNS 运行在 UDP 之上而不是 TCP 上的主要原因。HTTP 使用 TCP 是因为对于具有文本数据的 Web 网页来说，可靠性是至关重要的。用于谷歌的 Chrome 浏览器中的 QUIC 协议（快速 UDP 因特网连接）将 UDP 作为其支撑运输协议并在 UDP 之上的应用层协议中实现可靠性。</li>
+<li>无连接状态。UDP 不维护连接状态（接收和发送缓存），也不跟踪参数（拥塞控制参数以及序号与确认号的参数）。</li>
+<li>分组首部开销小。每个 TCP 报文段都有 20 个字节的首部开销，而 UDP 仅有 8 字节。</li>
+</ol>
+<blockquote>
+<p>电子邮件、远程终端访问、Web 以及文件传输都运行在 TCP 之上。因为所有这些应用都需要 TCP 的可靠数据传输服务。</p>
+<p>UDP 用于承载网络管理数据（SNMP）。此时，UDP 要优于 TCP，因为网络管理应用程序通常必须在该网络处于重压状态时运行，而正是在这个时候可靠的、拥塞受控的数据传输难以实现。所以 DNS 运行在 UDP 之上，从而避免了 TCP 连接创建时延。</p>
+  <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230210150536697.png" class title="image-20230210150536697">
+</blockquote>
+<blockquote>
+<p>当分组丢包率低时，为了安全，某些机构阻塞 UDP 流量，对于流式媒体传输来说，TCP 变的越来越有吸引力了。</p>
+</blockquote>
+<p>使用 UDP 的应用时可能实现可靠数据传输的。这可通过在应用程序自身中建立可靠性机制来完成（例如，可通过增加确认与重传机制来实现）。谷歌的 Chrome 浏览器用的 QUIC 协议就是在 UDP 的应用层协议中实现了可靠性。</p>
+<h3 id="3-3-1-udp-报文段结构">3.3.1 UDP 报文段结构</h3>
+<p><strong>长度</strong>字段指明了包括首部在内的 UDP 报文段长度（以字节为单位）。</p>
+<p><strong>检验和：</strong> 接收方用检验和来检测在该报文段中是否出现了差错。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230210151026980.png" class title="image-20230210151026980">
+<h3 id="3-3-2-udp-检验和">3.3.2 UDP 检验和</h3>
+<p>发送方的 UDP 对报文段中的所有 16 比特字求和，溢出回卷（即高位进位的话加在低位），对和求反，得到检验和。</p>
+<p>接受方处报文段中所有 16 比特字求和，再与检验和相加，如果结果全为 1 ，则没有出现差错，有一位出现 0 则该分组中已经出现差错。</p>
+<blockquote>
+<p>举例如下：</p>
+<p>假定有下面三个比特的字：</p>
+   <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230210152141134.png" class title="image-20230210152141134">
+</blockquote>
+<p>再既无法确保链路的可靠性，又无法确保内存中的差错检测的情况下，如果端到端数据传输服务要提供差错检测，UDP 就必须在端到端基础上在运输层提供差错检验。这时一个在系统设计中被称颂的 <strong>端到端原则（end-end principle）</strong> 的例子，该原则表述为在系统设计中因为某种功能（在此时为差错检测）必须基于端到端实现：”与在较高级别提供这些功能的代价相比，在较低级别上设置的功能可能是冗余的或几乎没有价值的。“</p>
+<p>虽然 UDP 提供差错检测，但对差错恢复无能为力。UDP 的某种实现只是丢弃受损的报文段；其他实现是将受损的报文段交给应用程序并给出警告。</p>
+<h2 id="3-4-可靠数据传输原理">3.4 可靠数据传输原理</h2>
+<p>一般场景下考虑可靠数据传输问题。</p>
+<p>下图说明了可靠数据传输的框架。为上层实体提供的服务抽象是：数据可以通过一条可靠的信道进行传输。借助于可靠信道，传输数据比特就不会受到损坏（由 0 变为 1 ，或者相反）或丢失，而且所有数据都是按照其发送顺序进行交付。这恰好就是 TCP 向调用它的因特网应用所提供的服务模型。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211071937020.png" class title="image-20230211071937020">
+<p>实现这种服务抽象是 <strong>可靠数据传输协议（reliable data transfer protocol）</strong> 的责任。</p>
+<p>除了交换含有待传输的数据的分组之外，rdt 的发送端和接收端还需往返交换控制分组（请求与响应的交互）。rdt 的发送端和接收端都要通过调用 <code>udt_send()</code> 发送分组给对方（<code>udt</code> 表示不可靠数据传输）。</p>
+<h3 id="3-4-1-构造可靠数据传输协议">3.4.1 构造可靠数据传输协议</h3>
+<p>下面利用有限状态自动机逐步研究更为复杂的的协议，最后得到一个完美、可靠的数据传输协议。</p>
+<blockquote>
+<p>首先介绍一下 <strong>有限自动机（Finite-State Machine，FSM）</strong> 的图例，引起变迁的事件显示在表示变迁的横线上方，事件发生时所采取的动作显示在横线下方。将在横线上方或下发使用符号 <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211073002514.png" class title="image-20230211073002514">，以分别明确地表示缺少动作或事件。初始状态用虚线表示。</p>
+</blockquote>
+<p>下面研究 <strong>停等协议（stop-and-wait protocol）</strong> 。</p>
+<p><font color="blue" size="4">1. 经完全可靠信道的可靠数据传输：rdt1.0</font></p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211073501984.png" class title="image-20230211073501984">
+<p>​	rdt 的发送端只通过 <code>rdt_send(data)</code> 事件接收来自较高层的数据，产生一个包含该数据的分组（经由 <code>make_pkt(data)</code> 动作），并将分组发送到信道中。实际上，<code>rdt_send(data)</code> 事件是由较高层应用的过程调用产生的（例如， <code>rdt_send()</code>）。</p>
+<p>​	在接收端，rdt 通过 <code>rdt_rcv(packet)</code> 事件从底层信道接收一个分组，从分组中取出数据（经由 <code>extract(packet, data)</code> 动作），并将数据上传给较高层（通过 <code>deliver_data(data)</code> 动作）。实际上，<code>rdt_rcv(packet)</code> 事件是由较低层协议的过程调用产生的（例如，<code>rdt_rcv()</code>）。</p>
+<p><font color="blue" size="4">2. 经具有比特差错信道的可靠数据传输：rdt2.0</font></p>
+<p>网络物理部件中会出现比特差错，还是假设所有发送的分组（虽然比特可能受损）将按其发送的顺序被接收。</p>
+<p>利用 <strong>肯定确认</strong> 与 <strong>否定确认</strong> 这种控制报文使得接收方可以让发送方知道哪些内容被正确接收，哪些内容接收有误并需要重传。基于这样重传机制的可靠数据传输协议称为 <strong>自动重传机制（Automatic Repeat reQuest，ARQ）协议</strong> 。</p>
+<p>ARQ 协议中还需要另外三种协议功能来处理存在比特差错的情况：</p>
+<ul>
+<li>差错检测。</li>
+<li>接收方反馈。从接收方向发送方回送 ACK 与 NAK 分组。</li>
+<li>重传。接收方收到有差错的分组时，发送方将重传该分组文。</li>
+</ul>
+<p>rdt2.0 这样的协议又被称为 <strong>停等协议（stop-and-wait）</strong> ，是因为只有当发送方确信接收方已经正确接收当前分组，发送方才会发送一块新数据。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211085103632.png" class title="image-20230211085103632">
+<p>但是上面这种协议，没有考虑到，如果 ACK 或 NAK 分组受损的可能性！</p>
+<p>考虑处理受损 ACK 和 NAK 时的 3 种可能性：</p>
+<ol>
+<li>如果 ACK 和 NAK 受损，要求接收方重发一次，但是发出要求的报文也可能受损，通信将陷入混乱。</li>
+<li>增加足够的检验和比特，使发送方不仅可以检测差错，还可以恢复差错。</li>
+<li>当发送方收到含糊不清的 ACK 或 NAK 分组时，只需重传当前数据分组即可。然而，这种方法在发送方到接收方的信道种引入了 <strong>冗余分组（duplicate packet）</strong> 。冗余分组的根本困难在于接收方不知道它上次所发送的 ACK 或 NAK 是否被发送方正确地收到。因此它无法事先知道接收到的分组时新的还是一次重传。</li>
+</ol>
+<p>此处利用第三种可能方法来解决 ACK 或 NAK 受损的问题。为了让接收方能确定接收到的分组是新的还是一次重传，在数据分组中添加一新字段，让发送方对其数据分组编号，即将发送数据分组的 <strong>序号（sequence number）</strong> 放在该字段。</p>
+<p>对停等协议这种简单情况，1 比特序号就够了。只需要判断刚收到的分组序号与最近确定的分组序号不同，则接收到了新的分组，如果序号相同则为重传分组。实现的 FSM 如下：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211090626050.png" class title="image-20230211090626050">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211090643223.png" class title="image-20230211090643223">
+<p>或将 ACK 的 0，1 直接打包在报文中</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211090959773.png" class title="image-20230211090959773">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211091017974.png" class title="image-20230211091017974">
+<p><font color="blue" size="4">3. 经具有比特差错的丢包信道的可靠数据传输：rdt3.0（停等协议）</font></p>
+<p>现在假设除了比特受损外， 底层信道还会丢包。</p>
+<p>实践中采取的方法是：发送方明智的选择一个时间值，以判定可能发生丢包（尽管不能确保）。如果在这个时间内没有收到 ACK，则重传分组。</p>
+<p>无论是 ACK 丢失，或者只是 分组或 ACK 过度延时，都只需要重传即可解决。</p>
+<p>为了实现重传机制，需要一个 <strong>倒计数定时器（countdown timer）</strong> ，在一个给定的时间量过期后，可中断发送方。发送方需要做到：</p>
+<ol>
+<li>每次发送一个分组（包括第一次分组和重传分组）是，便可启动一个定时器。</li>
+<li>响应定时器中断（采取适当的动作）。</li>
+<li>终止定时器。</li>
+</ol>
+<p>因为分组序号在 0 和 1 之间交替，因此 rdt3.0 又是被称为 <strong>比特交替协议（alternationg-bit protocol）</strong> 。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230216195415925.png" class title="image-20230216195415925">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211091953692-16760783996711.png" class title="image-20230211091953692">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211092018278.png" class title="image-20230211092018278">、
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211092032013.png" class title="image-20230211092032013">
+<h3 id="3-4-2-流水线可靠数据传输协议">3.4.2 流水线可靠数据传输协议</h3>
+<p>rdt3.0 信道利用率很低，性能问题的核心在于它是一个停等协议。</p>
+<p>流水线技术可用来大幅提升可靠数据传输协议的性能：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211092251250.png" class title="image-20230211092251250">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211092307725.png" class title="image-20230211092307725">、
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211092322674.png" class title="image-20230211092322674">
+<p>由上图可以看出，流水线技术对可靠数据传输协议可带来如下影响：</p>
+<ul>
+<li>必须增加序号范围，每个输送中的分组（重传的除外）必须有一个唯一的序号，而且也许有多个在输送中未确认的报文。</li>
+<li>协议的发送方需要缓存以发送但是还没有确认的分组。接收方需要缓存那些已经正确接收的分组。</li>
+<li>不同的解决方法对序号范围和缓冲要求不同。解决流水线的差错恢复有两种基本方法： <strong>回退 N 步（Go-Back-N，GBN）</strong> 和 <strong>选择重传（Selective Repeat，SR）</strong> 。</li>
+</ul>
+<h3 id="3-4-3-回退-d-步-gbn-又称滑动窗口协议">3.4.3 回退 D 步（GBN，又称滑动窗口协议）</h3>
+<p>在 GBN 协议中，允许发送方发送多个分组（当有多个分组可用时）而不需要等待确认，但它也受限于在流水线中未确认的分组数不能超过某个最大允许数 N 。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211093407690.png" class title="image-20230211093407690">
+<p>随着协议的运行，该窗口在序号空间向前滑动。N 常被称为 <strong>窗口长度（window size）</strong> ，GBN 协议也常被称为 <strong>滑动窗口协议（sliding-window protocol）</strong> 。</p>
+<p>一个分组的序号承载在分组首部的一个固定长度的字段中。如果分组序号字段的比特数为 k，则该序号范围是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><msup><mn>2</mn><mi>k</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,2^k-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.099108em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 。在一个优点序号范围内，所有涉及序号的运算必须模 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">2^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span></span></span></span> 。TCP 有一个 32 比特的序号字段，其中的 TCP 序号就是按字节流中的字节进行计数的，而不是按分组计数。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211094359482.png" class title="image-20230211094359482">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211094421124.png" class title="image-20230211094421124">
+<p>GBN 发送方必须响应三种类型的事件：</p>
+<ul>
+<li>上层的调用。当上层调用 <code>rdt_send()</code> 时，发送方首先检查发送窗口是否已满，即是否有 N 个已发送但未被确认的分组。如果窗口未满，则产生一个分组并将其发送，并相应更新变量。如果窗口已满，发送方只需将数据返回给上层，隐式地指出上层该窗口已满。然后上层可能过一会儿再试。实际中，发送方更可能缓存这些数据，或者使用同步机制允许上层仅在当窗口不满时才能调用 <code>rdt_send()</code> 。</li>
+<li>收到一个 ACK 。在 GBN 协议中，对序号为 n 地分组采取 <strong>累积确认（cumulative acknowledgment）</strong> 的方式，表明接收方已正确接收到序号为 n 的以前包括 n 在内的所有分组。</li>
+<li>超时事件。协议称为”回退 N 步“来源于出现丢失和延时过长分组时发送方的行为。就像停等协议，定时器用于恢复数据或确认分组丢失。如果出现超时，发送方重传所有已发送但还未被确认过的分组。发送方仅使用一个定时器，它可被认为是最早的已发送但未被确认的分组所使用的定时器。如果收到一个 ACK ，但仍有已发送但未被确认的分组，则定时器被重新启动。如果没有已发送但未被确认的分组，停止该计时器。</li>
+</ul>
+<p>在 GBN 种，接收方的动作也很简单。如果一个序号为 n 的分组被正确接收到，并且按需（即上次交付给上层的数据是序号为 n-1 的分组），则接收方为分组 n 发送一个 ACK，并将该分组中的数据部分交付到上层。在所有其他情况下，接收方丢弃该分组，并且为最近按序接收的分组重新发送 ACK 。注意到因为一次交付给上层一个分组，如果分组 k 已接收并交付，则所有序号比 k 小的分组也已经交付。因此，使用累计确认是 GBN 一个自然的选择。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211100010658.png" class title="image-20230211100010658">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230216204320873.png" class title="image-20230216204320873">
+<h3 id="3-4-4-选择重传-sr">3.4.4 选择重传（SR）</h3>
+<p>单个分组的差错就能够引起 GBN 重传大量分组，许多分组根本没有必要重传。</p>
+<p>选择重传（SR）协议通过让发送方仅重传那些它怀疑在接收方出错（即丢失或损失）的分组而避免了不必要的重传。这种个别的、按需的重传要求接收方逐个地确认正确接收的分组。再次用窗口长度 N 来限制流水线中为完成、未被确认的分组数。</p>
+<p>可以不按顺序到达，每接收或确认一个都标记一下，直到满足一次发送或上传数据的要求，则窗口滑动。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211100435428.png" class title="image-20230211100435428">
+<p><font color="blue" size="4">SR 发送方的事件与动作</font></p>
+<ol>
+<li>从上层收到数据。当从上层收到数据后，SR 发送方检查下一个可用于该分组的序号。如果序号位于发送方的窗口内，则将数据打包并发送；否则就像在 GBN 中一样，要么将数据缓存，要么将其返回给上层以便以后传输。</li>
+<li>超时。现在每个分组必须拥有其自己的逻辑定时器，因为超时发生后就只能发送一个分组。可以使用单个硬件定时器模拟多个逻辑定时器的操作。</li>
+<li>收到 ACK。如果收到 ACK，若该分组序号在窗口内，则 SR 发送方将哪个被确认的分组标记为已接收。如果该分组的序号等于 <code>send_base</code> ，则窗口基序号向前移动到具有最小序号的未确认分组处。如果窗口移动了并且有序号落在窗口内未发送分组，则发送这些分组。</li>
+</ol>
+<p><font color="blue" size="4">SR 接收方的事件与动作</font></p>
+<ol>
+<li>序号在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mi>r</mi><mi>c</mi><mi>v</mi><mi mathvariant="normal">_</mi><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo separator="true">,</mo><mi>r</mi><mi>e</mi><mi>c</mi><mi mathvariant="normal">_</mi><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo>+</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[rcv\_base, rec\_base+N-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault">b</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault">b</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 内的分组被正确接收。在此情况下，收到的分组落在接受方的窗口内，一个选择 ACK 被会送给发送方。如果该分组以前没有收到过，则缓存该分组。如果该分组的序号等于接收窗口的基序号，则该分组以及以前缓存的序号连续的分组交付给上层。例，当收到一个序号为 recv_base =  2 的分组时，如果已缓存了分组3、4、5，则将分组2、3、4、5 交付给上层。</li>
+<li>序号在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mi>r</mi><mi>c</mi><mi>v</mi><mi mathvariant="normal">_</mi><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo>−</mo><mi>N</mi><mo separator="true">,</mo><mi>r</mi><mi>e</mi><mi>c</mi><mi mathvariant="normal">_</mi><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[rcv\_base-N, rec\_base-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault">b</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.00444em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault">b</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 内的分组被正确接收到。在此情况下，必须产生一个 ACK，即使该分组是接收方以前已确认过的分组。（又收到之前的分组可能是发送方没有收到确认信号 ACK。）</li>
+<li>其他情况。忽略该分组。</li>
+</ol>
+<p>发送方和接收方的窗口并不总是一致的。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211102256998.png" class title="image-20230211102256998">
+<p>观察下图中的两种情况，它们是等同的。没有办法区分是第 1 个分组的重传还是第 5 个分组的初次传输。显然，窗口长度比序号空间小 1 时，协议无法工作。</p>
+<p><font color="red">对于 SR 协议，窗口长度必须小于或等于序号空间大小的一半。</font></p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211102655223.png" class title="image-20230211102655223">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211102703804.png" class title="image-20230211102703804">
+<blockquote>
+<p>对于分组排序，信道地一定时延可被看成基本上是在缓存分组，并且在将来任意时刻自然地释放出这些分组。由于序号可以被重新使用，那么可能会出现冗余分组。实际应用中采用地方法是，确保一个序号不被重新使用，直到发送方”确信“军人和先前发送的序号为 x 的分组都不再在网络中为止。通过假定一个分组在网络中的”存活“事件不会超过某个固定最大时间量来做到这一点。在高速网络的 TCP 扩展中，最长的分组寿命被假定为大约 3 分钟。</p>
+</blockquote>
+<h2 id="3-5-面向连接的运输：tcp">3.5 面向连接的运输：TCP</h2>
+<h3 id="3-5-1-tcp-连接">3.5.1 TCP 连接</h3>
+<p>由于 TCP 协议只在端系统中运行，而不在中间的网络元素（路由器和链路层交换机）中运行，所以中间的网络元素不会维持 TCP 的连接状态。</p>
+<p>TCP 连接提供的是</p>
+<ul>
+<li><strong>全双工（full-duplex service）：</strong> 应用层数据可以从进程 A 流向进程 B，也可以从进程 B 流向进程 A。</li>
+<li><strong>点对点（point-to-point）:</strong> 两台主机是一对，不存在一对多传输数据。</li>
+</ul>
+<p>客户进程通过套接字（该进程之门）传递数据流。数据一旦通过该门，TCP 将这些数据引导到该连接的 <strong>发送缓存（send buffer）</strong> 里，发送缓存是发起三次握手期间设置的缓存之一。</p>
+<p>TCP 可从缓存中取出并放入报文段中的数据数量受限于 <strong>最大报文段长度（Maximum Segment Size，MSS）</strong> 。</p>
+<blockquote>
+<p>注意：MSS 是指在报文段里应用层数据的最大长度，而非包括首部的 TCP 报文段的最大长度。</p>
+</blockquote>
+<p>MSS 通常根据最初确定的由本地发送主机发送的最大链路层帧长度（即所谓的 <strong>最大传输单元（Maximum Transmission Unit，MTU）</strong> ）来设置。</p>
+<p><code>MSS = MTU - TCP/IP首部长度（通常 40 字节）</code></p>
+<blockquote>
+<p>以太网和 PPP 链路层协议都具有 1500 字节的 MTU，因此 MSS 的典型值为 1460 字节。</p>
+</blockquote>
+<p>TCP 连接的组成包括，一台主机上的缓存、变量和进程连接的套接字，以及另一台主机上的另一组缓存、变量和于进程连接的套接字。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211213104590.png" class title="image-20230211213104590">
+<h3 id="3-5-2-tcp-报文段结构">3.5.2 TCP 报文段结构</h3>
+<p>TCP 报文段由首部字段和一个数据字段组成。</p>
+<blockquote>
+<p>TCP 首部一般是 20 字节（比 UDP 首部多 12 字节）。</p>
+</blockquote>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211213249519.png" class title="image-20230211213249519">
+<p>TCP 把数据看成一个无结构的、有序的字节流。</p>
+<p>一个报文段的序号就是该报文段数据字段首字节的序号。</p>
+<p>确认号就是主机正在等待的数据的下一个字节序号。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211214000810.png" class title="image-20230211214000810">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211214024991.png" class title="image-20230211214024991">
+<h3 id="3-5-3-往返时间的估计与超时">3.5.3 往返时间的估计与超时</h3>
+<p><font color="blue" size="4">1. 估计往返时间</font></p>
+<p>在任意时刻，仅为一个已发送的但目前尚未被确认的报文段估计 SampleRTT，从而产生一个接近每个 RTT 的新 SampleRTT 值。</p>
+<p>TCP 维持一个 SampleRTT 的均值（称为 EstimatedRTT）。一旦获得一个新的 SampleRTT，TCP 就会根据下列公式来更新 EstimatedRTT：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>s</mi><mi>t</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>d</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false">)</mo><mo>∗</mo><mi>E</mi><mi>s</mi><mi>t</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>d</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mi>α</mi><mo>∗</mo><mi>S</mi><mi>a</mi><mi>m</mi><mi>p</mi><mi>l</mi><mi>e</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">EstimatedRTT = (1-\alpha) * EstimatedRTT + \alpha * SampleRTT
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.46528em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault">a</span><span class="mord mathdefault">m</span><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></span></p>
+<p>用 DevRTT 估算 SampleRTT 偏离 EstimatedRTT 的程度：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo stretchy="false">)</mo><mo>∗</mo><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mi>β</mi><mo>∗</mo><mi mathvariant="normal">∣</mi><mi>S</mi><mi>a</mi><mi>m</mi><mi>p</mi><mi>l</mi><mi>e</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>−</mo><mi>E</mi><mi>s</mi><mi>t</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>d</mi><mi>R</mi><mi>T</mi><mi>T</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">DevRTT = (1-\beta)*DevRTT +\beta * | SampleRTT - EstimatedRTT|
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault">a</span><span class="mord mathdefault">m</span><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord">∣</span></span></span></span></span></p>
+<p><font color="blue" size="4">2. 设置和管理重传超时间隔</font></p>
+<p>超时间隔应该大于等于 EstimatedRTT ，否则，将造成不必要的重传。但是超时间隔也不应该比 EstimatedRTT 大太多，否则当报文段丢失时，TCP 不能很快地重传该报文段，导致数据传输时延大。所以超时间隔设置为 EstimatedRTT 加上一定余量。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>I</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>v</mi><mi>a</mi><mi>l</mi><mo>=</mo><mi>E</mi><mi>s</mi><mi>t</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>d</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mn>4</mn><mo>∗</mo><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">TimeoutInterval = EstimatedRTT + 4 * DevRTT
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">i</span><span class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">n</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></span></p>
+<h3 id="3-5-4-可靠数据传输">3.5.4 可靠数据传输</h3>
+<p>TCP 在 IP 不可靠的尽力而为服务之上创建了一种 <strong>可靠数据传输服务（reliable data transfer service）</strong> 。</p>
+<p>超时机制外，还使用冗余确认技术。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211223701059.png" class title="image-20230211223701059">
+<p><font color="blue" size="4">1. 一些有趣的情况</font></p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211223937536.png" class title="image-20230211223937536">
+<p>图 3-34 中，当主机 B 收到重传报文段时，它将通过序列号发现该报文段包含了已收到的数据，即发往主机 A 的确认报文丢失了，TCP 丢弃该重传报文，重新发送 ACK。</p>
+<p>图 3-35 中，当超时事件发生时，主机 A 重传序号 92 的第一个报文段，并重启定时器。只要第二个报文段的 ACK 在新的超时发生以前到达，则第二个报文段将不会被重传。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211224410049.png" class title="image-20230211224410049">
+<p>图 3-36 中，第一个报文段的确认报文在网络丢失，但在超时事件发生之前主机 A 收到一个确认号为 120 的确认报文。主机 A 因知道主机B 已经收到了序号为 119 及之前的所有字节，所以主机 A 不会重传这两个报文段中的任何一个。</p>
+<p><font color="blue" size="4">2. 超时间隔加倍</font></p>
+<p>每次 TCP 重传时都会将下一次的超时间隔设置为先前值得两倍（呈指数增长）。然而，当再次正常执行时，TimeoutInterval 由最近得 EstimatedRTT 值与 DevRTT 值推算得到。</p>
+<blockquote>
+<p>在拥塞得时候，如果源持续重传分组，会使拥塞更加严重。相反，TCP 使用更文雅的方式，每个发送方的重传都是经过越来越长的额事件间隔后进行的。</p>
+</blockquote>
+<p><font color="blue" size="4">3. 快速重传</font></p>
+<blockquote>
+<p><strong>冗余 ACK</strong> （duplicate ACK）就是再次请确认某个报文段的 ACK，而发送方先前已经收到对该报文段的确认。</p>
+</blockquote>
+<p>一旦收到 3 个冗余 ACK，TCP 就执行 快<strong>速重传（fast retransmit）</strong> ，即在该报文段的定时器过期之前重传丢失的报文段。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211225952155.png" class title="image-20230211225952155"> 
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211225622103.png" class title="image-20230211225622103">
+<p><font color="blue" size="4">4. 是回退 N 步还是选择重传</font></p>
+<p>TCP 确认是累积式的，正确接收但失序的报文段是不会被接收方逐个确认的。TCP 发送方仅需维持已发送过但未被确认的字节的最小序号（SendBase）和下一个要发送的字节的序号（NextSeqNum）。</p>
+<blockquote>
+<p>当发送方发送的一组报文段 1，2，…，N，对分组 n &lt; N 分组的确认报文丢失，但其余 N - 1 个确认报文在分别超时以前到达发送端。</p>
+<ul>
+<li>
+<p>GBN 不仅会重传分组 n，还会重传所有后继的分组 n+1，n+2, …，N。</p>
+</li>
+<li>
+<p>TCP 将重传至多一个报文段，即报文段 n。</p>
+<p>此外，如果对报文段 n+1 的确认报文在报文段 n 超时之前到达，TCP 甚至不会重传报文段 n。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="3-5-5-流量控制">3.5.5 流量控制</h3>
+<p>如果某应用程序读取数据时相对缓慢，而发送方发送得太多、太快，发送得数据就会很容易地使该连接的接收缓存溢出。</p>
+<blockquote>
+<p>拥塞控制（congestion control）：TCP 发送方可能因为 IP 网络的拥塞而被遏制。</p>
+<p>拥塞控制与流量控制是针对完全不同的原因采取的措施。</p>
+</blockquote>
+<p>TCP 通过让发送方维护一个称为 <strong>接收窗口（receive window）</strong> 的变量来提供流量控制。TCP 是全双工通信，在连接两端的发送方都各自维护一个接收窗口。</p>
+<p>假设主机 A 通过一条 TCP 向主机 B 发送一个大文件。主机 B 为该连接分配了一个接收缓存，并用 RevBuffer 来表示其大小。主机 B 上的应用进程不时从该缓存中读取数据。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211232025301.png" class title="image-20230211232025301">
+<p>主机 B 通过把当前的 rwnd 值放入它发送给主机 A 的报文接收窗口字段中，通知主机 A 它在该连接缓存中还有多少可用空间。</p>
+<p>当主机 B 的接收窗口为 0 时，主机 A 继续发送只有一个字节数据的报文段。这些报文段将会被接收方确认。最终缓存开始清空，B 发给 A  的确认报文里将包含一个非 0 的 rwnd 值。</p>
+<blockquote>
+<p>UDP 不提供流量控制，报文段由于缓存溢出可能在接收方丢失。</p>
+</blockquote>
+<h3 id="3-5-6-tcp-连接管理">3.5.6 TCP 连接管理</h3>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211232819382.png" class title="image-20230211232819382">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211232831859.png" class title="image-20230211232831859">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211232844580.png" class title="image-20230211232844580">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230211232927667.png" class title="image-20230211232927667">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230216210528669.png" class title="image-20230216210528669">
+<h2 id="3-6-拥塞控制原理">3.6 拥塞控制原理</h2>
+<blockquote>
+<p>流量控制：如果某应用程序读取数据时相对缓慢，而发送方发送得太多、太快，发送得数据就会很容易地使该 <strong>连接的接收缓存溢出</strong> 。</p>
+<p>拥塞控制：丢包一般是当网络变得拥塞时，由于 <strong>路由器缓存溢出</strong> 引起的。</p>
+</blockquote>
+<h3 id="3-6-1-拥塞原因与代价">3.6.1 拥塞原因与代价</h3>
+<p>暂不关注如何对拥塞做出反应或避免拥塞，随着主机增加其发送速率并使网络变得拥塞，这时会发生的情况：</p>
+<p><font color="blue" size="4">1. 情况 1：两个发送方和一台具有 <strong>无穷大</strong> 缓存的路由器</font></p>
+<blockquote>
+<p>每连接的吞吐量（per-connection throughput）：接收方每秒接收的字节数。</p>
+</blockquote>
+<p>图 a 说明吞吐量的上限是由两条连接之间的共享链路容量造成的。</p>
+<p>图 b 说明拥塞网络的一种代价是：当分组的到达速率接近链路容量时，分组经历巨大的排队时延。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212065217656.png" class title="image-20230212065217656">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212065227998.png" class title="image-20230212065227998">
+<p><font color="blue" size="4">2. 情况 2：两个发送方和一台具有 <strong>有限</strong> 缓存的路由器</font></p>
+<blockquote>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>λ</mi><mrow><mi>i</mi><mi>n</mi></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msubsup></mrow><annotation encoding="application/x-tex">\lambda_{in}&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.010556em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> ：运输层向网络中发送报文段（含有初始数据或重传数据）的速率。单位：字节/秒。</p>
+</blockquote>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212065728062.png" class title="image-20230212065728062">
+<p>图 a 是没有丢包重传时的， <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>=</mo><msubsup><mi>λ</mi><mrow><mi>i</mi><mi>n</mi></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msubsup></mrow><annotation encoding="application/x-tex">\lambda_{in} = \lambda_{in}&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.010556em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> ，连接吞吐量就是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\lambda_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 。</p>
+<p>图 b 为发送方仅当在确定了一个分组已经丢失时才重传。可以看到此时的一种网络拥塞代价是：发送方必须执行重传以补偿因为缓存溢出而丢弃的分组。</p>
+<p>图 c 为发送方提前发生超时并重传在队列中已被推迟但还未丢失的分组。此时的一种网络拥塞代价是：发送方在遇到大时延时所进行的不必要的重传会引起路由器利用其链路带宽来转发不必要的分组副本。（由于每个分组被转发（平均）两次，档期供给载荷接近 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">R/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord">/</span><span class="mord">2</span></span></span></span> 时，其吞吐量将渐进 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi mathvariant="normal">/</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">R/4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord">/</span><span class="mord">4</span></span></span></span> 。）</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212070420894.png" class title="image-20230212070420894">
+<p><font color="blue" size="4">3. 情况 3：4 个发送方和具有有限缓存的多台路由器及多跳路径</font></p>
+<p>有 4 台主机发送分组，每台都通过交叠的两跳路径传输。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212070856972.png" class title="image-20230212070856972">
+<p>以主机 A 向主机 C 发送报文的吞吐量为例，可以看出当 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>λ</mi><mrow><mi>i</mi><mi>n</mi></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msubsup></mrow><annotation encoding="application/x-tex">\lambda_{in}&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.010556em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 较小时，随着 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>λ</mi><mrow><mi>i</mi><mi>n</mi></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msubsup></mrow><annotation encoding="application/x-tex">\lambda_{in}&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.010556em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 增大 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\lambda_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 也增大。</p>
+<p>而当流量很大时，A-C 流量就会和 B-D 流量竞争 R2 有限的缓存空间。B-D 流量到达速率将比 A-C 流量的到达速率大的多，所以在重载的极限情况下 A-C 端到端吞吐量将趋近于 0 。此时 A-C 流量在第一跳路由器 R1 上就做了无用功。</p>
+<p>由于拥塞而丢弃分组的另一种代价是：当一个分组沿着一条路径被丢弃是，每个上游路由器用于转发该分组到丢弃该分组而使用的传输容量最终被浪费了。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212071548363.png" class title="image-20230212071548363">
+<h3 id="3-6-2-拥塞控制方法">3.6.2 拥塞控制方法</h3>
+<p>事件中所采用的两种主要拥塞控制方法：在最为宽泛的级别上，我们可根据网络层是否为运输层拥塞控制提供了显式帮助来区分拥塞控制方法：</p>
+<ul>
+<li>
+<p>端到端拥塞控制。在端到端拥塞控制方法中，网络层没有为运输层拥塞控制提供显示支持。TCP 报文段的丢失（通过超时或 3 次冗余确认而得知）被认为式网络拥塞的一个迹象，TCP 会相应地减少其窗口长度。</p>
+</li>
+<li>
+<p>网络辅助的拥塞控制。路由器向发送方提供关于网络中拥塞状态的显式反馈信息。</p>
+<p>拥塞信息从网络反馈到发送方通常有两种方式：</p>
+<ul>
+<li>直接反馈信息可以由网络路由器发给发送方。通常使用 <strong>阻塞分组（choke packet）</strong> 的形式（主要是说：”我拥塞了！“）。</li>
+<li>更为通用的是，路由器标记或更新从发送方流向接收方的分组中的某个字段来只是拥塞的产生。一旦收到一个标记分组后，接收方就会向发送方通知该网络拥塞指示。（该形式的通知至少要经过一个完整的往返时间。）</li>
+</ul>
+</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212072212811.png" class title="image-20230212072212811">
+<h2 id="3-7-tcp-拥塞控制">3.7 TCP 拥塞控制</h2>
+<p>TCP 必须使用端到端拥塞控制而不是使用网络辅助的拥塞控制，因为 IP 层不向端系统提供显式的网络拥塞反馈。</p>
+<p>TCP 所采用的方法是让每一个发送方根据所感知到的网络拥塞程度来限制其能向连接发送流量的速率。</p>
+<p><strong>TCP 发送方如何限制向其连接发送流量？</strong></p>
+<p>TCP 连接的每一端都是由一个接收缓存、一个发送缓存和几个变量（LastByteRead、rwnd 等）组成。运行在发送方的 TCP 拥塞控制机制跟踪一个额外的变量，即 <strong>拥塞窗口（congestion window）</strong> 。拥塞窗口表示为 cwnd，它对一个 TCP 发送方能向网络中发送流量的速率进行了限制。</p>
+<blockquote>
+<p>在一个发送方中未被确认的数据量不会超过 cwnd 与 rwnd 中的最小值。</p>
+</blockquote>
+<p><strong>TCP 发送方如何感知在它与目的地之间的路径上出现了拥塞？</strong></p>
+<p>将一个 TCP 发送方的”丢包事件“定义为：要么出现超时，要么收到来自接收方的 3 个冗余 ACK。</p>
+<p>当出现过度的拥塞时，在沿着这条路径上的一台（或多台）路由器的缓存会溢出，引起一个数据报（包含一个 TCP 报文段）被丢失。</p>
+<p><strong>TCP 发送方感知到端到端的拥塞时，采用何种算法来改变其发送速率？</strong></p>
+<p>TCP 使用确认来触发（或计时）增大它的拥塞窗口长度，TCP 被说成是 <strong>自计时（self-clocking）</strong> 的。</p>
+<p>TCP 控制发送速率的目的是：既使得网络不会拥塞，与此同时又能充分利用所有可用的带宽：</p>
+<ul>
+<li>一个丢失的报文段意味着拥塞，因此当丢失报文段时应当降低 TCP 发送方的速率（减小它的拥塞窗口长度）。</li>
+<li>一个确认报文段指示该网络正在向接收方交付发送方的报文段，因此，对先前未确认的报文确认到达时，能够增加发送方的速率。</li>
+<li>带宽探测。给定 ACK 指示源到目的地路径无拥塞，而丢包事件指示路径拥塞，TCP 调节其传输速率的策略是增加其速率以响应到达的 ACK ，除非出现丢包事件，此时才减小传输速率。</li>
+</ul>
+<p><strong>TCP 拥塞控制算法（TCP congestion control algorithm）</strong> 包括三个部分：①慢启动；②拥塞避免；③快速恢复。</p>
+<p>慢启动和拥塞避免是 TCP 的强制部分，两者的差异在于对收到的 ACK 做出反应时增加 cwnd 长度的方式。</p>
+<p>快速恢复是推荐部分，对 TCP 非必须。</p>
+<p><font color="blue" size="4">1. 慢启动</font></p>
+<p><strong>慢启动（slow-start）</strong> 状态，cwnd 的值以 1 个 MSS 开始并且每当传输报文段被确认，cwnd 就呈指数增长（乘 2）。</p>
+<p><strong>何时结束这种增长？</strong></p>
+<ol>
+<li>如果存在一个由超时指示的丢包事件（即拥塞），TCP 发送方将 cwnd 设置为 1 并重新开始慢启动。还将第二个状态变量值 ssthresh （”慢启动阈值 “的速记）设置为 cwnd / 2，即检测到拥塞时，将 ssthresh 设置为拥塞窗口值得一半。</li>
+<li>当 cwnd 达到或者超过 ssthresh 的值时，继续使 cwnd 翻番可能有些鲁莽。因此，当 cwnd 的值等于 ssthresh 时，结束慢启动就并且 TCP 转移到<strong>拥塞避免模式</strong>（TCP 更为谨慎地增加 cwnd ，线性增加）。</li>
+<li>如果检测到 3 个冗余 ACK ，这时 TCP 执行一种快速重传并进入<strong>快速恢复状态</strong>（cwnd 减半再线性增加）。</li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212095329868.png" class title="image-20230212095329868">
+<p><font color="blue" size="4">2. 拥塞避免</font></p>
+<p>​	一旦进入拥塞避免状态，cwnd 的值大约是到了上次遇到拥塞值得一半，应该使用保守的方法，每个 RTT 只将 cwnd 的值增加一个 MSS。</p>
+<blockquote>
+<p>例如，如果 MSS 是 1460 字节并且 cwnd 是 14600 字节， 则在一个 RTT 内发送 10 个报文段。每个到达 ACK （假定每个 报文段一个 ACK）增加 1/10MSS 的拥塞窗口长度，因此在收到对所有 10 个报文段的确认后，拥塞窗口的值将增加了一个 MSS。</p>
+</blockquote>
+<p><strong>何时应当结束拥塞避免的线性增长（每 RTT 1  MSS）？</strong></p>
+<ul>
+<li>当出现超时时，与慢启动一样，cwnd 的值设为 1 个 MSS，ssthresh 值更新为 cwnd 的一半。</li>
+<li>当收到三个冗余 ACK 事件触发时，TCP 将 cwnd 的值减半，将 ssthresh 值更新为 cwnd 的一半加三（加上已收到的 3 个冗余的 ACK 其离开网络带来的 3 个 MSS）。接下来进入快速恢复状态。</li>
+</ul>
+<p><font color="blue" size="4">3. 快速恢复</font></p>
+<p>具体来说快速恢复的主要步骤是：</p>
+<ol>
+<li>
+<p>当收到3个重复ACK时，把ssthresh设置为cwnd的一半，把cwnd设置为ssthresh的值加3，然后重传丢失的报文段，加3的原因是因为收到3个重复的ACK，表明有3个“老”的数据包离开了网络。</p>
+</li>
+<li>
+<p>再收到重复的ACK时，拥塞窗口增加1。</p>
+</li>
+<li>
+<p>当收到新的数据包的ACK时，把cwnd设置为第一步中的ssthresh的值。原因是因为该ACK确认了新的数据，说明从重复ACK时的数据都已收到，该恢复过程已经结束，可以回到恢复之前的状态了，也即再次进入拥塞避免状态。</p>
+</li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212101423100.png" class title="image-20230212101423100">
+<p><font color="blue" size="4">4. TCP 拥塞控制：回顾</font></p>
+<p>忽略一条连接开始时的慢启动阶段，假定丢包由 3 个冗余的 ACK 而不是超时指示，TCP 的拥塞控制是：每个 RTT 内 cwnd 线性（加性）增加 1 MSS，然后出现 3 个冗余 ACK 事件时 cwnd 减半（乘性减）。因此，TCP 拥塞控制常常被称为 <strong>加性增、乘性减（Additive-Increase，Multiplicative-Decrease，AIMD）拥塞控制方式</strong> 。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212101434867.png" class title="image-20230212101434867">
+<p><font color="blue" size="4">5. 对 TCP 吞吐量的宏观描述</font></p>
+<p>忽略开始的慢启动阶段，每次拥塞，先减半在线性增加，于是：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>一条连接的平均吞吐量</mtext><mo>=</mo><mfrac><mrow><mn>0.75</mn><mo>∗</mo><mi>W</mi></mrow><mrow><mi>R</mi><mi>T</mi><mi>T</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">一条连接的平均吞吐量=\frac{0.75*W}{RTT}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord cjk_fallback">一</span><span class="mord cjk_fallback">条</span><span class="mord cjk_fallback">连</span><span class="mord cjk_fallback">接</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">平</span><span class="mord cjk_fallback">均</span><span class="mord cjk_fallback">吞</span><span class="mord cjk_fallback">吐</span><span class="mord cjk_fallback">量</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span><span class="mord">.</span><span class="mord">7</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230216221530680.png" class title="image-20230216221530680">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230216215058371.png" class title="image-20230216215058371">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230216220702723.png" class title="image-20230216220702723">
+<h3 id="3-7-1-公平性">3.7.1 公平性</h3>
+<p>考虑 K 条 TCP 连接，每条都有不同的端到端路径，但是都经过一段传输速率为 R bps 瓶颈链路。</p>
+<blockquote>
+<p>所谓瓶颈链路，是指对于每条链接，沿着该连接路径上的所有其他段链路都不拥塞，而且与该瓶颈链路的传输容量相比，它们都有充足的传输容量。</p>
+</blockquote>
+<p>如果每条连接的平均传输速率都接近 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi mathvariant="normal">/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">R/K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord">/</span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span></span></span></span> ，即每条连接都得到相同份额的链路带宽，则认为该拥塞控制机制是公平的。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212103544047.png" class title="image-20230212103544047">
+<p>如下图，TCP 连接在TCP 拥塞控制机制的运作下，不断线性增加拥塞窗口，然后减半，最后吞吐量大的减小，吞吐量小的增大，最终趋于平等带宽共享。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212103605618.png" class title="image-20230212103605618">
+<p><font color="blue">1. 公平性和 UDP</font></p>
+<p>一些媒体应用使用 UDP 进行传输，占用网络资源，有可能压制 TCP 流量，现在有关于阻止 UDP 过分占用网络吞吐量的研究。</p>
+<p><font color="blue">2. 公平性和并行 TCP 连接</font></p>
+<p>基于 TCP 的应用使用多个并行连接占用较多份数的带宽。</p>
+<h3 id="3-7-2-明确拥塞通告：网络辅助拥塞控制">3.7.2 明确拥塞通告：网络辅助拥塞控制</h3>
+<p>对于 IP 和 TCP 的扩展方案【RFC 3168】已经提出并已经实现和部署，该方案允许网络明确向 TCP 发送方和接收方发出拥塞控制信号。这种形式的网络辅助拥塞控制称为 <strong>明确拥塞通告（Explicit Congestion Notification，ECN）</strong> 。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230212104249579.png" class title="image-20230212104249579">
+<p>如上图，当接收主机中的 TCP 通过一个接收到的数据报收到了一个 ECN 拥塞指示时，接收主机中的 TCP 通过在接收方到发送方的 TCP ACK 报文段中设置 ECE（明确拥塞通告回显）比特，通知发送主机中的 TCP 收到拥塞指示。接下来 TCP 发送方通过减半拥塞窗口对一个具有 ECE 拥塞指示的 ACK 作出反应，就像它对丢失报文段使用快速重传反应一样，并在下一个传输的 TCP 发送方到接收方的报文段首部中队 CWR（拥塞窗口缩减）比特进行设置。</p>
+<h2 id="附加一些缩写解释">附加一些缩写解释</h2>
+<p>感谢颜🐂。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/a31782a1/image-20230216221428668.png" class title="image-20230216221428668">
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io">tomatoyuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io/p/a31782a1.html">https://tomatoyuan.github.io/p/a31782a1.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://tomatoyuan.github.io" target="_blank">番茄元🍅の小窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="/img/bg14.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/p/ee0921f3.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg9.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">计算机网络（二）</div></div></a></div><div class="next-post pull-right"><a href="/p/143a9bc4.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg26.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计算机网络（四）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/de1fcd2b.html" title="计算机网络（一）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg44.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-28</div><div class="title">计算机网络（一）</div></div></a></div><div><a href="/p/ee0921f3.html" title="计算机网络（二）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-03</div><div class="title">计算机网络（二）</div></div></a></div><div><a href="/p/143a9bc4.html" title="计算机网络（四）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg26.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-12</div><div class="title">计算机网络（四）</div></div></a></div><div><a href="/p/791d6685.html" title="计网错题整理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg47.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-18</div><div class="title">计网错题整理</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">tomatoyuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tomatoyuan"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tomatoyuan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://tomatoyuan.github.io"><b><font color="#5ea6e5">tomatoyuan.github.io</font></b></a></center></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">计算机网络（三）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">第3章 运输层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%A6%82%E8%BF%B0%E5%92%8C%E8%BF%90%E8%BE%93%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-text">3.1 概述和运输层服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E8%BF%90%E8%BE%93%E5%B1%82%E5%92%8C%E7%BD%91%E7%BB%9C%E5%B1%82%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">3.1.1 运输层和网络层的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E5%9B%A0%E7%89%B9%E7%BD%91%E8%BF%90%E8%BE%93%E5%B1%82%E6%A6%82%E8%BF%B0"><span class="toc-text">3.1.2 因特网运输层概述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E5%92%8C%E5%A4%9A%E8%B7%AF%E5%88%86%E8%A7%A3"><span class="toc-text">3.2 多路复用和多路分解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%A0%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B8%8E%E5%A4%9A%E8%B7%AF%E5%88%86%E8%A7%A3"><span class="toc-text">1. 无连接的多路复用与多路分解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B8%8E%E5%A4%9A%E8%B7%AF%E5%88%86%E8%A7%A3"><span class="toc-text">2. 面向连接的多路复用与多路分解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-web-%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8E-tcp"><span class="toc-text">3. Web 服务器与 TCP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E6%97%A0%E8%BF%9E%E6%8E%A5%E8%BF%90%E8%BE%93%EF%BC%9Audp"><span class="toc-text">3.3 无连接运输：UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-udp-%E6%8A%A5%E6%96%87%E6%AE%B5%E7%BB%93%E6%9E%84"><span class="toc-text">3.3.1 UDP 报文段结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-udp-%E6%A3%80%E9%AA%8C%E5%92%8C"><span class="toc-text">3.3.2 UDP 检验和</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8E%9F%E7%90%86"><span class="toc-text">3.4 可靠数据传输原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E6%9E%84%E9%80%A0%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="toc-text">3.4.1 构造可靠数据传输协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="toc-text">3.4.2 流水线可靠数据传输协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-3-%E5%9B%9E%E9%80%80-d-%E6%AD%A5-gbn-%E5%8F%88%E7%A7%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E5%8D%8F%E8%AE%AE"><span class="toc-text">3.4.3 回退 D 步（GBN，又称滑动窗口协议）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-4-%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0-sr"><span class="toc-text">3.4.4 选择重传（SR）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%BF%90%E8%BE%93%EF%BC%9Atcp"><span class="toc-text">3.5 面向连接的运输：TCP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-tcp-%E8%BF%9E%E6%8E%A5"><span class="toc-text">3.5.1 TCP 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-2-tcp-%E6%8A%A5%E6%96%87%E6%AE%B5%E7%BB%93%E6%9E%84"><span class="toc-text">3.5.2 TCP 报文段结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-3-%E5%BE%80%E8%BF%94%E6%97%B6%E9%97%B4%E7%9A%84%E4%BC%B0%E8%AE%A1%E4%B8%8E%E8%B6%85%E6%97%B6"><span class="toc-text">3.5.3 往返时间的估计与超时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-4-%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="toc-text">3.5.4 可靠数据传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-5-%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-text">3.5.5 流量控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-6-tcp-%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86"><span class="toc-text">3.5.6 TCP 连接管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E5%8E%9F%E7%90%86"><span class="toc-text">3.6 拥塞控制原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-1-%E6%8B%A5%E5%A1%9E%E5%8E%9F%E5%9B%A0%E4%B8%8E%E4%BB%A3%E4%BB%B7"><span class="toc-text">3.6.1 拥塞原因与代价</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-2-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%96%B9%E6%B3%95"><span class="toc-text">3.6.2 拥塞控制方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7-tcp-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-text">3.7 TCP 拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-1-%E5%85%AC%E5%B9%B3%E6%80%A7"><span class="toc-text">3.7.1 公平性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-2-%E6%98%8E%E7%A1%AE%E6%8B%A5%E5%A1%9E%E9%80%9A%E5%91%8A%EF%BC%9A%E7%BD%91%E7%BB%9C%E8%BE%85%E5%8A%A9%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-text">3.7.2 明确拥塞通告：网络辅助拥塞控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%BC%A9%E5%86%99%E8%A7%A3%E9%87%8A"><span class="toc-text">附加一些缩写解释</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By tomatoyuan</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script defer src="/js/light.js"></script><script defer src="/js/cursor.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'c189a6faa11e45499d5f54f4af4961b9';
+  var gaud_map_key = 'f373eae7d7ddbee8cd012fdc2720f4e5';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

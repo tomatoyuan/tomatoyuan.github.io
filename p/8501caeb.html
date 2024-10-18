@@ -1,0 +1,547 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C语言——一些进阶知识（一） | 番茄元🍅の小窝</title><meta name="author" content="tomatoyuan"><meta name="copyright" content="tomatoyuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="C语言——存储相关 1. 局部变量与全局变量  局部变量函数运行结束后即释放。 局部变量会在作用域内屏蔽同名的全局变量。    2. 作用域与链接 2.1 作用域  2.1.1 代码块作用域（block scope）  在代码块中定义的变量，具有代码块作用域。作用范围是从变量定义的位置开始，到标志该代码块结束的右大括号(&amp;#125;）处。 尽管函数的形式参数不在大括号内定义，但其同样具有代码块作用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言——一些进阶知识（一）">
+<meta property="og:url" content="https://tomatoyuan.github.io/p/8501caeb.html">
+<meta property="og:site_name" content="番茄元🍅の小窝">
+<meta property="og:description" content="C语言——存储相关 1. 局部变量与全局变量  局部变量函数运行结束后即释放。 局部变量会在作用域内屏蔽同名的全局变量。    2. 作用域与链接 2.1 作用域  2.1.1 代码块作用域（block scope）  在代码块中定义的变量，具有代码块作用域。作用范围是从变量定义的位置开始，到标志该代码块结束的右大括号(&amp;#125;）处。 尽管函数的形式参数不在大括号内定义，但其同样具有代码块作用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tomatoyuan.github.io/img/bg80.jpg">
+<meta property="article:published_time" content="2023-02-24T03:10:48.000Z">
+<meta property="article:modified_time" content="2023-02-25T08:37:01.800Z">
+<meta property="article:author" content="tomatoyuan">
+<meta property="article:tag" content="C">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tomatoyuan.github.io/img/bg80.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tomatoyuan.github.io/p/8501caeb"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: tomatoyuan","link":"链接: ","source":"来源: 番茄元🍅の小窝","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C语言——一些进阶知识（一）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-25 16:37:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg80.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C语言——一些进阶知识（一）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-24T03:10:48.000Z" title="发表于 2023-02-24 11:10:48">2023-02-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-25T08:37:01.800Z" title="更新于 2023-02-25 16:37:01">2023-02-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C-C/">C/C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C语言——一些进阶知识（一）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>C语言——存储相关</h1>
+<h2 id="1-局部变量与全局变量">1. 局部变量与全局变量</h2>
+<ul>
+<li>局部变量函数运行结束后即释放。</li>
+<li>局部变量会在作用域内屏蔽同名的全局变量。</li>
+</ul>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224103345808.png" class title="image-20230224103345808">
+<h2 id="2-作用域与链接">2. 作用域与链接</h2>
+<h3 id="2-1-作用域">2.1 作用域</h3>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224105251737.png" class title="image-20230224105251737">
+<h4 id="2-1-1-代码块作用域-block-scope">2.1.1 代码块作用域（block scope）</h4>
+<ul>
+<li><strong>在代码块中定义的变量，具有代码块作用域。作用范围是从变量定义的位置开始，到标志该代码块结束的右大括号(<code>&#125;</code>）处。</strong></li>
+<li><strong>尽管函数的形式参数不在大括号内定义，但其同样具有代码块作用域,隶属于包含函数体的代码块。</strong></li>
+</ul>
+<p>以前不知道括号有什么用，原来可以用来划分作用域。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123; <span class="comment">// 作用域 1</span></span><br><span class="line">    <span class="type">int</span> i = <span class="number">1</span>;</span><br><span class="line">    &#123; <span class="comment">// 作用域 2</span></span><br><span class="line">        <span class="type">int</span> i = <span class="number">2</span>;</span><br><span class="line">        &#123; <span class="comment">// 作用域 3</span></span><br><span class="line">            <span class="type">int</span> i = <span class="number">3</span>;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">        &#125;</span><br><span class="line">        &#123; <span class="comment">// 作用域 4</span></span><br><span class="line">            <span class="type">int</span> i = <span class="number">4</span>;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224111716433.png" class title="image-20230224111716433">
+<h4 id="2-1-2-文件作用域-file-scope">2.1.2 文件作用域（file scope）</h4>
+<ul>
+<li>任何在代码块之外声明的标识符都具有文件作用域，作用范围是从它们的声明位置开始,到文件的结尾处都是可以访问的。</li>
+<li>尽管函数的形式参数不在大括号内定义，但其同样具有代码块作用域，隶属于包含函数体的代码块。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span>; <span class="comment">// 声明 func 函数在后面实现了</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123; <span class="comment">// C99 规定，没有参数时，要加上 void，更规范</span></span><br><span class="line">    <span class="keyword">extern</span> <span class="type">int</span> count; <span class="comment">// 此处声明 count 在文件其他地方定义了，告诉编译器先别报错，去后面找</span></span><br><span class="line"></span><br><span class="line">    func();</span><br><span class="line">    count++;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;In main, count = %d\n&quot;</span>, count);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> count; <span class="comment">// 全局变量，作用域是整个文件</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    count++;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;In func, count = %d\n&quot;</span>, count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224112906221.png" class title="image-20230224112906221">
+<h4 id="2-1-3-原型作用域-prototype-scope">2.1.3 原型作用域（prototype scope）</h4>
+<p>原型作用域只适用于那些在函数原型中声明的参数名。函数在声明的时候可以不写参数的名字（但参数类型是必须要写上的）,其实函数原型的参数名还可以随便写一个名字,不必与形式参数相匹配（当然,这样做没有任何意义!）。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224112149981.png" class title="image-20230224112149981">
+<h4 id="2-1-4-函数作用域-function-scope">2.1.4 函数作用域（function scope）</h4>
+<p>函数作用域只适用于 goto 语句的标签，作用将 goto 语句的标签暖制在同一个函数内部，以及防止出现重名标签。</p>
+<h4 id="2-1-5-区分定义和声明">2.1.5 区分定义和声明</h4>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224110111046.png" class title="image-20230224110111046">
+<h3 id="2-2-链接属性">2.2 链接属性</h3>
+<p>链接：将编译后的文件与库文件链接起来。</p>
+<p>比如，<code>printf</code> 等函数并没有自己实现，但是可以直接调库使用。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224142756743.png" class title="image-20230224142756743">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224142937533.png" class title="image-20230224142937533">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224142947011.png" class title="image-20230224142947011">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224142954655.png" class title="image-20230224142954655">
+<p>static 可以用于保护一个变量不被其他文件修改。</p>
+<p>同时如果希望一个函数只能在当前文件中执行，可以在函数前加上。</p>
+<h2 id="3-生存期和存储类型">3. 生存期和存储类型</h2>
+<h3 id="3-1-生存空间">3.1 生存空间</h3>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224143239851.png" class title="image-20230224143239851">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224143355668.png" class title="image-20230224143355668">
+<h3 id="3-2-存储类型">3.2 存储类型</h3>
+<p><strong>自动变量（auto）</strong></p>
+<ul>
+<li>
+<p>在代码块中声明的变量默认的存储类型就是自动变量，使用关键字 <code>auto</code> 来描述。</p>
+</li>
+<li>
+<p>由于这时默认的存储类型，所以不写 auto 是完全没问题的。（当某处要用局部变量屏蔽全局变量的话，可以使用 auto 作为提示）</p>
+</li>
+</ul>
+<p><strong>寄存器变量（register）</strong></p>
+<ul>
+<li>将一个变量声明为寄存器变量，那么该变量<strong>可能</strong>被存放于 CPU 的寄存器中。（由于寄存器数量有限，可能会分配失败，也可能编译器觉得另一个变量更适合放入 register，从而忽略程序员的想法。）</li>
+<li>寄存器变量和自动变量子在很多方面是一样的， 他们都拥有代码块作用域，自动存储期和空连接属性。</li>
+<li>寄存器变量无法通过取址符获取它的地址。（寄存器本身就没有分配地址空间，自身就是空间。）</li>
+</ul>
+<p><strong>静态变量（static）</strong></p>
+<p>声明为静态变量的局部变量，将不会随着函数执行的结束而被释放。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;count = %d\n&quot;</span>, count);</span><br><span class="line"></span><br><span class="line">    count++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) func();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224144433634.png" class title="image-20230224144433634">
+<p>如果修改为普通局部变量，则函数执行结束时释放：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;count = %d\n&quot;</span>, count);</span><br><span class="line"></span><br><span class="line">    count++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224144541831.png" class title="image-20230224144541831">
+<p><font color="blue" size="4">有时候没有用 <code>extern</code> 关键字声明也不会报错，是因为隐式声明了（说白了还是声明了）。</font></p>
+<p><code>test.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">int</span> count = <span class="number">520</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    func();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>test1.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> count; <span class="comment">// 此处只是声明 等价于 extern int count;</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;count = %d\n&quot;</span>, count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224145207022.png" class title="image-20230224145207022">
+<p>从上面的例子可以看出编译器按照 <code>main()</code> 到其他函数的顺序编译，<code>count</code> 认为是在 <code>test.c</code> 中定义的，而在 <code>test1.c</code> 视为声明。</p>
+<p><code>test1.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> count = <span class="number">1</span>; <span class="comment">// 此处只是声明，如果再赋值则视为重复定义，编译器将报错</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;count = %d\n&quot;</span>, count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224145523945.png" class title="image-20230224145523945">
+<h2 id="4-动态内存管理">4. 动态内存管理</h2>
+<ul>
+<li>
+<p><code>malloc</code></p>
+<p>申请动态内存空间</p>
+</li>
+<li>
+<p><code>free</code></p>
+<p>释放内存空间</p>
+</li>
+<li>
+<p><code>calloc</code></p>
+<p>申请并初始化一系列内存空间</p>
+</li>
+<li>
+<p><code>realloc</code></p>
+<p>重新分配内存空间</p>
+</li>
+</ul>
+<h3 id="4-1-malloc">4.1 malloc</h3>
+<p><strong>函数原型：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *<span class="title function_">malloc</span><span class="params">(<span class="type">size_t</span> size)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><code>malloc</code> 函数向系统申请分配 size 个字节的内存空间，并返回一个指向这块空间的指针。</p>
+</li>
+<li>
+<p>如果函数调用成功，返回一个指向申请的内存空间的指针，由于返回类型是 void 指针 <code>（void *)</code> ，所以它可以被转换成任何类型的数据；如果函数调用失败，返回值是 NULL 。另外，如果 size 参数设置为 0 ，返回值也可能是 NULL ,但这并不意味着函数调用失败。</p>
+</li>
+</ul>
+<p>用法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> *ptr;</span><br><span class="line"></span><br><span class="line">    ptr = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)); <span class="comment">// 动态申请内存空间，并进行数据；类型的转换</span></span><br><span class="line">    <span class="keyword">if</span> (ptr == <span class="literal">NULL</span>) &#123; <span class="comment">// 检查是否分配成功</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;内存分配失败\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        *ptr = <span class="number">10</span>; <span class="comment">// 使用分配的空间</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-free">4.2 free</h3>
+<p><strong>函数原型：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">free</span><span class="params">(<span class="type">void</span> *ptr)</span>;</span><br></pre></td></tr></table></figure>
+<p>free 函数释放 ptr 参数指向的内存空间。该内存空间必须是由 malloc ， calloc 或 realloc 函数申请的。否则，该函数将导致未定义行为。如果 ptr 参数是 NULL ，则不执行任何操作。</p>
+<blockquote>
+<p>注意：该函数并不会修改 ptr 参数的值，所以调用后它仍然指向原来的地方（变为非法空间）。</p>
+<p>下面例子将演示该事实：</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> *ptr;</span><br><span class="line"></span><br><span class="line">    ptr = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    <span class="keyword">if</span> (ptr == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;内存分配失败\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        *ptr = <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free 前 *ptr = %d\n&quot;</span>, *ptr);</span><br><span class="line">    <span class="built_in">free</span>(ptr);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;free 后 *ptr = %d\n&quot;</span>, *ptr);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224162649597.png" class title="image-20230224162649597">
+<h4 id="内存泄漏">内存泄漏</h4>
+<blockquote>
+<p>注意：如果申请动态内存不及时释放可能导致 <strong>内存泄漏</strong> 。</p>
+<p>某些高级语言有垃圾回收机制，在使用完动态分配的内存后会自动释放，但是C 语言没有垃圾回收机制。</p>
+</blockquote>
+<p>可以释放动态内存，但是不能释放局部变量的值，因为局部变量存储在栈上，而不在堆中。</p>
+<p><strong>导致内存泄漏的主要原因有两种：</strong></p>
+<ul>
+<li>隐式内存泄漏（即用完内存块没有及时使用 free 函数释放。）</li>
+<li>丢失内存块地址（分配内存后，指针指向其他地址，导致动态内存的地址丢失。此时若没有垃圾回收机制，将会导致该部分内存无法回收。）</li>
+</ul>
+<h3 id="4-3-calloc">4.3 calloc</h3>
+<p><strong>函数原型：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *<span class="title function_">calloc</span><span class="params">(<span class="type">size_t</span> nmemb, <span class="type">size_t</span> size)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>calloc 函数在内存中动态地申请 nmemb 个长度为 size 的连续内存空间（即申请的总空间尺寸为 nmemb*size ），这些内存空间全部被初始化为 0 。</p>
+</li>
+<li>
+<p>calloc 函数与 malloc 函数的一个重要区别是：</p>
+<ul>
+<li>calloc 函数在申请完内存后，自动初始化该内存空间为 0 。</li>
+<li>malloc 函数不进行初始化操作，里边的数据是随机的。</li>
+</ul>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224163822961.png" class title="image-20230224163822961">
+</li>
+</ul>
+<p><strong>如果申请完一块动态内存，用着用着发现不够用了怎么办？</strong></p>
+<p>最好的方法是，再申请一片更大的动态内存，将之前的数据拷贝进去。（之所以用新的一部分，是为了让数据的空间局部性得到更好的利用，即每次申请的空间是连续的一块，而两次申请的内存并不连续。）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">int</span> *ptr1 = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="type">int</span> *ptr2 = <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第一次申请内存空间</span></span><br><span class="line">    ptr1 = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="number">10</span> * <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 进行若干操作之后发现 ptr1 申请的内存空间竟然不够用了！！！</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第二次申请的内存空间</span></span><br><span class="line">    ptr2 = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="number">20</span> * <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将 ptr1 中的数据拷贝到 ptr2 申请的空间中</span></span><br><span class="line">    <span class="built_in">memcpy</span>(ptr2, ptr1, <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">free</span>(ptr1); <span class="comment">// 释放空间便于之后其他用户申请使用</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 对 ptr2 的空间进行操作</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 使用后释放空间</span></span><br><span class="line">    <span class="built_in">free</span>(ptr2);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-4-realloc">4.4 realloc</h3>
+<p>可以修改动态申请的内存大小。</p>
+<p><strong>函数原型：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *<span class="title function_">realloc</span><span class="params">(<span class="type">void</span> *ptr, <span class="type">size_t</span> size)</span>;</span><br></pre></td></tr></table></figure>
+<p>以下几点是需要注意的：</p>
+<ul>
+<li>realloc 函数修改 ptr 指向的内存空间大小为 size 字节；</li>
+<li>如果新分配的内存空间比原来的大，则旧内存块的数据不会发生改变；如果新的内存空间大小小于旧的内存空间，可能会导致数据丢失，慎用！</li>
+<li>该函数将移动内存空间的数据并返回新的指针；</li>
+<li>如果 ptr 参数（值）为 NULL ，那么调用该函数就相当于调用 <code>malloc(size)</code>；</li>
+<li>如果 size 参数为 0 ，并且 ptr 参数不为 NULL ，那调用该函数就相当于调用 <code>free(ptr)</code> ;</li>
+<li>除非 ptr 参数为 NULL ，否则 ptr 的值必须由先前调用 malloc ，calloc 或 realloc 函数返回。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, num;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> *ptr = <span class="literal">NULL</span>; <span class="comment">// 注意：这里必须初始化为 NULL</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">do</span> &#123; <span class="comment">// 每输入一个数字，就多分配一部分内存空间将其保存</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请输入一个数字，（输入-1表示结束）：&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;num);</span><br><span class="line">        count++;</span><br><span class="line"></span><br><span class="line">        ptr = (<span class="type">int</span> *)<span class="built_in">realloc</span>(ptr, count * <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">        <span class="keyword">if</span> (ptr == <span class="literal">NULL</span>) <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        ptr[count - <span class="number">1</span>] = num;</span><br><span class="line">    &#125; <span class="keyword">while</span> (num != <span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;输入的整数分别是：&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; count; i++) <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, ptr[i]);</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">    <span class="built_in">free</span>(ptr);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224170049794.png" class title="image-20230224170049794">
+<h2 id="5-c语言的内存布局">5. C语言的内存布局</h2>
+<h3 id="5-1-内存布局实例及特点分析">5.1 内存布局实例及特点分析</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> global_uninit_var;</span><br><span class="line"><span class="type">int</span> global_init_var1 = <span class="number">520</span>;</span><br><span class="line"><span class="type">int</span> global_init_var2 = <span class="number">880</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">int</span> local_var1;</span><br><span class="line">    <span class="type">int</span> local_var2;</span><br><span class="line"></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> static_uninit_var;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> static_init_var = <span class="number">456</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *str1 = <span class="string">&quot;I love awellfrog.cc!&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *str2 = <span class="string">&quot;You are right!&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> *malloc_var = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of func -&gt; %p\n&quot;</span>, func);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of str1 -&gt; %p\n&quot;</span>, str1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of str2 -&gt; %p\n&quot;</span>, str2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of global_init_var1 -&gt; %p\n&quot;</span>, &amp;global_init_var1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of global_init_var2 -&gt; %p\n&quot;</span>, &amp;global_init_var2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of static_init_var -&gt; %p\n&quot;</span>, &amp;static_init_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of static_uninit_var -&gt; %p\n&quot;</span>, &amp;static_uninit_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of global_uninit_var -&gt; %p\n&quot;</span>, &amp;global_uninit_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of malloc_var -&gt; %p\n&quot;</span>, malloc_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of local_var1 -&gt; %p\n&quot;</span>, &amp;local_var1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;addr of local_var2 -&gt; %p\n&quot;</span>, &amp;local_var2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224180453673.png" class title="image-20230224180453673">
+<p>由上图各种变量的地址分配情况可以看出，C 语言的内存布局有如下规律。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224180603528.png" class title="image-20230224180603528">
+<p>从 2 个局部变量和 2 个全局变量的地址可以看出，栈的地址分配从高位向低位分配，而其他则是从低位向高位分配。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224180550073.png" class title="image-20230224180550073">
+<h3 id="5-2-内存区域">5.2 内存区域</h3>
+<h4 id="5-2-1-代码段-text-segment">5.2.1 代码段（Text segment）</h4>
+<p>代码段通常是指用来存放 <strong>程序执行代码</strong> 的一块内存区域。这部分区域的大小再程序运行前就已经确定，并且内存区域通常属于 <strong>只读</strong> 。在代码段中，也有可能包含一些只读的常数变量，例如字符串常量等。</p>
+<h4 id="5-2-2-数据段-initialized-data-segment">5.2.2 数据段（Initialized data segment）</h4>
+<p>数据段通常用来存放 <strong>已经初始化的全局变量</strong> 和 <strong>局部静态变量</strong> 。</p>
+<h4 id="5-2-3-bss-段-bss-segment-uninitialized-data-segment">5.2.3 BSS 段（Bss segment/Uninitialized data segment）</h4>
+<p>通常是指用来存放程序中 <strong>未初始化的全局变量</strong> 的一块内存区域。BSS 是英文 Block Started by Symbol 的简称，这个区段中的数据在程序运行前将被自动初始化未数字 0。</p>
+<h4 id="5-2-4-堆">5.2.4 堆</h4>
+<p>堆是用于存放进程运行中 <strong>被动态分配的内存段</strong> ，它的大小并不固定，可动态扩展或缩小。当进程调用 malloc 等函数分配内存时，新分配的内存就被动态添加到堆上；当利用 free 等函数释放内存时，被释放的内存从堆中被剔除。</p>
+<h4 id="5-2-5-栈">5.2.5 栈</h4>
+<p>平时听得比较多得是堆栈，特指栈。栈是 <strong>函数执行的内存区域</strong> ，通常和堆共享同一片区域。</p>
+<p><strong>函数的参数，函数的返回值</strong> 等都放在栈中。</p>
+<blockquote>
+<p><font color="blue" size="5">堆和栈的区别</font></p>
+<ul>
+<li>申请方式：
+<ul>
+<li>堆由程序员手动申请</li>
+<li>栈由系统自动分配</li>
+</ul>
+</li>
+<li>释放方式：
+<ul>
+<li>堆由程序员手动释放</li>
+<li>栈由系统自动释放</li>
+</ul>
+</li>
+<li>生存周期：
+<ul>
+<li>堆的生存周期由动态申请到程序员主动释放为止，不同函数之间均可自由访问</li>
+<li>栈的生存周期由函数调用开始到函数返回时结束，函数之间的局部变量不能互相访问</li>
+</ul>
+</li>
+<li>发展方向：
+<ul>
+<li>堆和其他区段一样，都是从低地址向高地址发展</li>
+<li>栈则相反，是由高地址向低地址发展</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="代码实例">代码实例</h4>
+<p><strong>实例1：</strong></p>
+<p>下面实例可以看出栈的地址由高-》低；而堆的地址由低-》高。</p>
+<p>而且栈两个变量之间地址相差为 8，而堆的两个变量之间地址相差 32。可见栈堆内存的利用率更高。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">int</span> *ptr1 = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="type">int</span> *ptr2 = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    ptr1 = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    ptr2 = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;stack: %p -&gt; %p\n&quot;</span>, &amp;ptr1, &amp;ptr2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;heap:  %p -&gt; %p\n&quot;</span>, ptr1, ptr2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224182721138.png" class title="image-20230224182721138">
+<p><strong>实例2：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;heap:  %p -&gt; %p\n&quot;</span>, ptr1, ptr2);</span><br><span class="line"></span><br><span class="line">ptr1 = (<span class="type">int</span> *)<span class="built_in">realloc</span>(ptr1, <span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="type">int</span>)); <span class="comment">// 扩展为 2 * sizeof(int)</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;heap: %p -&gt; %p\n&quot;</span>, ptr1, ptr2);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224183138167.png" class title="image-20230224183138167">
+<p>观察上面的运行结果，重新多给 ptr1 分配一个 int 大小的空间，可以看到，ptr1 之后的空闲空间还可分配，所以首地址不变，在 ptr1 的基础上扩充即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;heap:  %p -&gt; %p\n&quot;</span>, ptr1, ptr2);</span><br><span class="line"></span><br><span class="line">ptr1 = (<span class="type">int</span> *)<span class="built_in">realloc</span>(ptr1, <span class="number">20</span> * <span class="keyword">sizeof</span>(<span class="type">int</span>)); <span class="comment">// 扩展为 20 * sizeof(int)</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;heap: %p -&gt; %p\n&quot;</span>, ptr1, ptr2);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224183537290.png" class title="image-20230224183537290">
+<p>观察上面的运行结果显示，给 ptr1 再扩展到 20 * sizeof(int) 时，其后的空间不足，所以重新开辟了一片空间。</p>
+<p><strong>实例3：</strong></p>
+<p>这是一个有趣的例子，看下面的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">char</span> a = <span class="number">0</span>, b = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> *p = (<span class="type">int</span> *)&amp;b;</span><br><span class="line"></span><br><span class="line">    *p = <span class="number">258</span>;   <span class="comment">// 高位地址 1 0000 0010 低位地址</span></span><br><span class="line">                <span class="comment">//           a    b</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a=%d b=%d\n&quot;</span>, a, b);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/8501caeb/image-20230224184043278.png" class title="image-20230224184043278">
+<p>由于 char 地址空间不够存放一个 int ，于是覆盖了相邻的连续区间。</p>
+<p>具体解释见注释部分。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io">tomatoyuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io/p/8501caeb.html">https://tomatoyuan.github.io/p/8501caeb.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://tomatoyuan.github.io" target="_blank">番茄元🍅の小窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C/">C</a></div><div class="post_share"><div class="social-share" data-image="/img/bg80.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/p/791d6685.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg47.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">计网错题整理</div></div></a></div><div class="next-post pull-right"><a href="/p/b5172633.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg115.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C语言——一些进阶知识（二）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/f8098561.html" title="C语言——一些进阶知识（三）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg103.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-25</div><div class="title">C语言——一些进阶知识（三）</div></div></a></div><div><a href="/p/b5172633.html" title="C语言——一些进阶知识（二）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg115.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-24</div><div class="title">C语言——一些进阶知识（二）</div></div></a></div><div><a href="/p/e1473528.html" title="C语言——指针"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg7.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-09</div><div class="title">C语言——指针</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">tomatoyuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tomatoyuan"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tomatoyuan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://tomatoyuan.github.io"><b><font color="#5ea6e5">tomatoyuan.github.io</font></b></a></center></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">C语言——存储相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E4%B8%8E%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-text">1. 局部变量与全局变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%93%BE%E6%8E%A5"><span class="toc-text">2. 作用域与链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-text">2.1 作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-%E4%BB%A3%E7%A0%81%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F-block-scope"><span class="toc-text">2.1.1 代码块作用域（block scope）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-%E6%96%87%E4%BB%B6%E4%BD%9C%E7%94%A8%E5%9F%9F-file-scope"><span class="toc-text">2.1.2 文件作用域（file scope）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-3-%E5%8E%9F%E5%9E%8B%E4%BD%9C%E7%94%A8%E5%9F%9F-prototype-scope"><span class="toc-text">2.1.3 原型作用域（prototype scope）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-4-%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F-function-scope"><span class="toc-text">2.1.4 函数作用域（function scope）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-5-%E5%8C%BA%E5%88%86%E5%AE%9A%E4%B9%89%E5%92%8C%E5%A3%B0%E6%98%8E"><span class="toc-text">2.1.5 区分定义和声明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7"><span class="toc-text">2.2 链接属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%9F%E5%AD%98%E6%9C%9F%E5%92%8C%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B"><span class="toc-text">3. 生存期和存储类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%94%9F%E5%AD%98%E7%A9%BA%E9%97%B4"><span class="toc-text">3.1 生存空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B"><span class="toc-text">3.2 存储类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">4. 动态内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-malloc"><span class="toc-text">4.1 malloc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-free"><span class="toc-text">4.2 free</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="toc-text">内存泄漏</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-calloc"><span class="toc-text">4.3 calloc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-realloc"><span class="toc-text">4.4 realloc</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-c%E8%AF%AD%E8%A8%80%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-text">5. C语言的内存布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E5%AE%9E%E4%BE%8B%E5%8F%8A%E7%89%B9%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-text">5.1 内存布局实例及特点分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-text">5.2 内存区域</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-%E4%BB%A3%E7%A0%81%E6%AE%B5-text-segment"><span class="toc-text">5.2.1 代码段（Text segment）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-%E6%95%B0%E6%8D%AE%E6%AE%B5-initialized-data-segment"><span class="toc-text">5.2.2 数据段（Initialized data segment）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-3-bss-%E6%AE%B5-bss-segment-uninitialized-data-segment"><span class="toc-text">5.2.3 BSS 段（Bss segment&#x2F;Uninitialized data segment）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-4-%E5%A0%86"><span class="toc-text">5.2.4 堆</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-5-%E6%A0%88"><span class="toc-text">5.2.5 栈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E4%BE%8B"><span class="toc-text">代码实例</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By tomatoyuan</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script defer src="/js/light.js"></script><script defer src="/js/cursor.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'c189a6faa11e45499d5f54f4af4961b9';
+  var gaud_map_key = 'f373eae7d7ddbee8cd012fdc2720f4e5';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

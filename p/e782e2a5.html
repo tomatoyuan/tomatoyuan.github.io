@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>ChartBench | 番茄元🍅の小窝</title><meta name="author" content="tomatoyuan"><meta name="copyright" content="tomatoyuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ChartBench: A Benchmark for Complex Visual Reasoning in Charts Abstract 多模态大型语言模型（MLLMs）展现出令人印象深刻的图像理解和生成能力。然而，现有基准测试使用的图表有限，且与现实世界场景偏离，这对准确评估MLLMs的图表理解能力构成了挑战。为了克服这一限制，我们提出了ChartBench，这是一个专门设计来评估MLLM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ChartBench">
+<meta property="og:url" content="https://tomatoyuan.github.io/p/e782e2a5.html">
+<meta property="og:site_name" content="番茄元🍅の小窝">
+<meta property="og:description" content="ChartBench: A Benchmark for Complex Visual Reasoning in Charts Abstract 多模态大型语言模型（MLLMs）展现出令人印象深刻的图像理解和生成能力。然而，现有基准测试使用的图表有限，且与现实世界场景偏离，这对准确评估MLLMs的图表理解能力构成了挑战。为了克服这一限制，我们提出了ChartBench，这是一个专门设计来评估MLLM">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tomatoyuan.github.io/img/bg74.jpg">
+<meta property="article:published_time" content="2024-03-08T14:26:29.000Z">
+<meta property="article:modified_time" content="2024-03-11T12:40:51.725Z">
+<meta property="article:author" content="tomatoyuan">
+<meta property="article:tag" content="nlp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tomatoyuan.github.io/img/bg74.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tomatoyuan.github.io/p/e782e2a5"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: tomatoyuan","link":"链接: ","source":"来源: 番茄元🍅の小窝","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ChartBench',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-11 20:40:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg74.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ChartBench</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-08T14:26:29.000Z" title="发表于 2024-03-08 22:26:29">2024-03-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-11T12:40:51.725Z" title="更新于 2024-03-11 20:40:51">2024-03-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/paper-reading/">paper_reading</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ChartBench"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>ChartBench: A Benchmark for Complex Visual Reasoning in Charts</h1>
+<h2 id="abstract">Abstract</h2>
+<p>多模态大型语言模型（MLLMs）展现出令人印象深刻的图像理解和生成能力。然而，现有基准测试使用的图表有限，且与现实世界场景偏离，这对准确评估MLLMs的图表理解能力构成了挑战。为了克服这一限制，我们提出了ChartBench，这是一个专门设计来评估MLLMs在图表理解和数据可靠性方面通过复杂视觉推理的全面图表基准测试。ChartBench包括42个类别、2.1K个图表和16.8K个问答对。与以往的基准测试不同，ChartBench避免使用直接标注数据点的图表或元数据提示。相反，它迫使MLLMs利用图表固有的元素，如颜色、图例或坐标系统，来推导与人类理解相似的值。此外，我们提出了一个增强的评估指标Acc+，它无需劳动密集型的手工努力或基于GPT的昂贵评估就能够促进MLLMs的评估。我们广泛的实验评估涉及12个广泛使用的开源MLLMs和2个专有的MLLMs，揭示了MLLMs在解释图表方面的限制，并提供了宝贵的洞察，鼓励更仔细地审视这一方面。</p>
+<h2 id="1-introduction">1. INTRODUCTION</h2>
+<p>鉴于大型语言模型（LLMs）[Radford et al., 2021; Brown et al., 2020; Chowdhery et al., 2023; Touvron et al., 2023a]的突破性进展，多模态大型语言模型（MLLMs）[Li et al., 2023c; Liu et al., 2023b; Zhu et al., 2023]已成为多模态学习领域的主导方法，展现了强大的感知和推理能力。值得注意的是，MLLMs展现了对整体视觉语义理解的强大把握，并且甚至能够理解梗图中的幽默[OpenAI, 2023; Wang et al., 2023]。然而，MLLMs在有效阅读、理解和总结包含嵌入式图表的文章方面仍面临挑战[Masry et al., 2022; Han et al., 2023; Li and Tajbakhsh, 2023]。与通常基于可辨识物体、相对位置或交互关系来解释的自然图像不同，图表通过趋势线或颜色编码的图例等视觉逻辑传达细微的语义含义。它们以视觉格式提供详细且复杂的数据叙述。因此，评估MLLMs在理解这些视觉表示形式方面的图表理解能力和数据可靠性是至关重要的。</p>
+<p>先前的工作，如ChartQA [Masry et al., 2022]，试图解决这个问题，但遭受了一些局限性。1) 它们主要关注3种常规图表类型（例如，线图、饼图和条形图），忽略了更复杂的格式，如散点图或组合图表，这些在现实世界场景中同样普遍。健壮的MLLMs应能熟练处理多种图表类型。2) 它们严重依赖于点注释图表或作为文本提示的元表数据[Masry et al., 2022; Han et al., 2023]来评估MLLMs，这样它们可以轻易获得候选答案并忽略图表的视觉逻辑。3) 所采用的评估指标（伴随宽松误差范围的判断或填空题），可能产生夸大的基线性能，需要进行改进，以提高评估的客观性和精确性。</p>
+<p>ChartBench 提供了全面的评估，覆盖了感知和概念两个方面。评估包括4种不同类型的图表问答任务：图表类型识别（CR）、值提取（VE）、值比较（VC）和全局概念（GC）（参见图3进行可视化）。为了确保严格和精确的评估，我们引入了一个新的度量标准Acc+，灵感来源于MME [Fu et al., 2023a]。Acc+度量标准要求MLLMs对基本断言的正面和负面观点都提供准确的判断。这种新颖的度量标准提供了两个优点。1) 它努力在正面和负面查询之间保持一致性，仅在真值（GT）上有所不同。这种预防措施最小化了由随机选择导致的幸运猜测的可能性，因为如果MLLMs未能理解图表，它们可能会对两种查询类型产生相同的响应。2) 负面查询的GT值来自同一图表内的其他数据，消除了不现实的情境，并增强了评估过程的有效性。</p>
+<p>我们评估了12个主流开源和2个闭源MLLMs的零样本性能。研究发现表明，当面对复杂图表时，MLLMs通常表现出有限的推理能力，这引起了人们对它们数据解释可靠性的关注。即使是性能高的MLLMs，如GPT-4V [OpenAI, 2023]，也需要多步骤的手工指导才能得出准确的答案，如附录所示。对ChartBench的详细检查揭示了MLLMs在图表上表现不佳的原因，突出了ChartBench的细致策划，以探索图表推理的细微差别。此外，我们提出了一种手工制作的思维链提示，称为ChartCoT（见图4），以指导MLLMs解释图表，类似于人类的理解。这种简单而有效的增强旨在刺激未来研究中更多创新性的提议。我们的贡献可以总结如下：</p>
+<ul>
+<li>我们引入了ChartBench，显著扩大了图表类型的种类和数量。值得注意的是，ChartBench避免了直接标注数据点或使用表格数据作为文本提示，促进MLLMs通过视觉推理导出答案。</li>
+<li>我们提出了一种新颖的Acc+度量标准，显著减少了随机猜测的情况，提供了一种更准确、更有效的评估方法。</li>
+<li>我们提出了一个简单而有效的基线ChartCoT，指导MLLMs更类似于人类地解释图表。ChartCoT还显著提高了MLLMs的图表理解能力。</li>
+<li>通过广泛的实验，我们证明了现有MLLMs在图表理解方面存在不足。这些发现揭示了优化未来MLLMs在这一方面的潜在方向。</li>
+</ul>
+<h2 id="2-related-works">2. Related Works</h2>
+<h3 id="2-1-多模态大型语言模型-mllms">2.1 多模态大型语言模型（MLLMs）</h3>
+<p>自从Transformer [Vaswani et al., 2017]出现以来，大型语言模型（LLMs）得到了爆炸式的发展 [Radford et al., 2018; Brown et al., 2020; Zhang et al., 2022; Chowdhery et al., 2023; Touvron et al., 2023a,b]。通过指令调优，LLMs可以弥合自回归预测训练目标与遵循人类指令目标之间的差距 [Ouyang et al., 2022; Li et al., 2023a; Wang et al., 2022]。通过将LLMs扩展到多模态学习领域，MLLMs已成为主导方法。VisualGPT [Chen et al., 2022] 在使用LLMs作为视觉-语言（V-L）解码器方面显示出有希望的结果。Flamingo [Alayrac et al., 2022] 在预训练的LLM内对来自冻结视觉编码器的特征进行对齐，展现出优秀的少量学习能力。BLIP2 [Li et al., 2023c] 提出了Q-Former，通过多个相关目标有效地对齐视觉编码器和LLM的特征。MiniGPT4 [Zhu et al., 2023; Chen et al., 2023a]，mPLUGOwl [Ye et al., 2023a] 和 InstructBLIP [Dai et al., 2023] 使用Q-Former将仅限语言的指令调优扩展到多模态任务。LLaVA [Liu et al., 2023b,a] 通过线性投影层将视觉特征映射到LLaMA嵌入空间，同时与LLaMA [Touvron et al., 2023a] 进行微调。闭源的百度ERNIE 1和GPT-4V [OpenAI, 2023] 进一步展示了令人满意的图像理解能力。尽管现有MLLMs [Ding et al., 2021; Du et al., 2022; Zhang et al., 2023; Bai et al., 2023b; Chen et al., 2023b; Lin et al., 2023] 在常见多模态任务（如VQA [Antol et al., 2015] 和图像字幕生成 [Vinyals et al., 2015]）中取得了令人印象深刻的成就，但它们的重点主要在于更广泛背景下的图像，忽视了专业领域中图表数据的理解。只有有限的研究 [Masry et al., 2022; Li and Tajbakhsh, 2023; Han et al., 2023] 关注了MLLMs的图表理解。</p>
+<h3 id="2-2-多模态基准测试">2.2 多模态基准测试</h3>
+<p>MLLMs已在众多传统基准测试上进行评估 [Goyal et al., 2017; Hudson and Manning, 2019; Xu et al., 2023; Ye et al., 2023b; Fu et al., 2023a; Yu et al., 2023; Li et al., 2023b; Liu et al., 2023c]，这些测试通常覆盖通用世界数据，同时大大忽视了对复杂视觉图表理解和推理的需求。HallusionBench [Guan et al., 2023] 揭示了像GPT-4V [OpenAI, 2023] 和LLaVA-1.5 [Liu et al., 2023a] 这样的强大模型在面对复杂图表时易受到严重的视觉-语言(V-L)幻觉的影响。VisText [Tang et al., 2023] 引入了一个全面的基准测试，包括多级和细粒度的图表标注，涵盖图表构建、摘要统计、关系和复杂趋势等方面。然而，其图表种类有限。SciCap [Hsu et al., 2021]、Chart2Text [Kantharaj et al., 2022]、AutoChart [Zhu et al., 2021] 和ChartSumm [Rahman et al., 2023] 解决图表到文本总结任务。然而，这些方法要么依赖于需要昂贵手工标注的小型数据集，要么生成难以在实际场景中应用的刻板模板。ChartQA [Masry et al., 2022] 和PlotQA [Methani et al., 2020] 检验MLLMs的数字阅读能力，但它们的难度较低，因为MLLMs只需要OCR就能获得合适的候选答案。相比之下，我们的ChartBench提供了更多样化的图表和具有挑战性的问题，要求MLLMs彻底理解图表传达的视觉信息。</p>
+<h2 id="3-chartbench">3 ChartBench</h2>
+<p>本节详细介绍了ChartBench。与现有的基准测试不同，ChartBench主要关注于感知能力和视觉逻辑推理能力。具体而言，我们强调评估在图表中未标注数据的值提取能力，而不是直接的OCR或定位问题。我们直接评估MLLMs的基本视觉推理能力，而不是将图表转换为文本描述并进行进一步的文本推理。</p>
+<h3 id="3-1-设计原则">3.1 设计原则</h3>
+<p>ChartBench通过两个基本设计原则与现有基准测试区分开来。<strong>1) 更广泛的图表类型范围</strong>。ChartBench将ChartQA中的3种常见图表类型（线图、条形图和饼图）扩展到现实世界中的9种代表性图表类型（见图1&amp;2a）。常规类别占54.8%，而新添加的类别占45.2%。ChartBench进一步将每个主要类别细分为多个子类别，使得MLLM性能的分析更加细致。2) 更直观的视觉逻辑。之前的基准测试只提供标注的图表，甚至包括元表数据作为输入提示，允许MLLMs仅基于文本逻辑推断出正确答案。相比之下，<strong>ChartBench包含更大比例的未标注图表</strong>（在图2b中占76.2%）。以图3中的图表为例。MLLMs需要依赖颜色或点形状来识别类别及其对应的坐标系统，并像人类一样准确地确定值，而不是仅依赖OCR进行提取。这一流程提供了对MLLMs在图表视觉推理能力的更现实的评估。</p>
+<h3 id="3-2-数据源与准备">3.2 数据源与准备</h3>
+<p>为设计与现实世界密切相似的图表，我们从Kaggle收集了多组适合科学研究的主题和数据。为了确保数据隐私和安全，我们对所有真实姓名或其他可识别实体进行匿名处理。为了确保图表类型的多样性，我们仔细策划了各种数据格式，并主要依赖于专门为科学研究目的设计的在线绘图网站，使我们能够创建真实的图表。为了确保图表类型的多样性，我们利用ChatGPT [Radford et al., 2019] 生成虚拟但现实的主题和数据，并通过Matplotlib进一步增强图表多样性。随后，我们经过专家审查以消除缺陷样本（例如，标签遮挡）。这一过程产生了元数据和渲染的图表图像。</p>
+<h3 id="3-3-图表分类">3.3 图表分类</h3>
+<p>先前的基准测试（例如，ChartQA [Masry et al., 2022]）缺乏图表多样性，主要关注于条形图、线图和饼图。为了解决这一问题，ChartBench提供了共9个主要类别（见图2a分布）和42个子类别的图表，包括常规和专业图表。重要的是，ChartBench收集了大量未标注的图表。因此，MLLMs需要基于图表图例、轴对应关系和其他视觉提示进行视觉逻辑推理。</p>
+<p>为了促进更全面的比较，我们为每个主要类别引入了带有标注数据的专用类别（见图2b分布），与ChartQA采取的方法保持一致。特别地，ChartBench主要关注于1) 常规图表，包括线图、条形图和饼图；2) 额外图表，包括散点图、雷达图、面积图、节点图、盒图和组合图表。请参考附录以获取详细描述和缩略图可视化。</p>
+<h3 id="3-4-自动化问答生成">3.4 自动化问答生成</h3>
+<p>特别地，ChartBench关注于MLLMs在两个类别的能力：感知和概念 [Fu et al., 2023a]。感知任务主要涉及感知和处理原始数据以提取有价值的特征和信息。相反，认知任务涉及处理和理解抽象概念和更高层次的信息。</p>
+<p><strong>感知任务</strong>主要包含两种类型的问答(QAs)：<strong>1) 图表类型识别</strong>（CR, 图3 A）任务旨在评估MLLMs准确识别图表类型的能力。<strong>2) 值提取</strong>（VE, 图3 B）任务旨在评估MLLMs在面对复杂视觉逻辑时是否能正确提取相关值。在没有标注数据的情况下，MLLMs需要依靠图例、坐标轴和相应的图形元素来提供答案。</p>
+<p><strong>认知任务</strong>包括两种类型的问答(QAs)：1) 值比较（VC, 图3 C）任务评估MLLMs的视觉推理能力，其中它们不需要识别图表的所有元数据。相反，它们仅依赖图形元素来确定比较答案。2) 全局概念（GC, 图3 D）任务评估从整体角度感知全局指标（如最大值）的能力。重要的是，MLLMs不需要识别所有图表元数据或元素布局。相反，仅通过观察图形元素和识别关键组成部分就足以得出准确结论。</p>
+<h3 id="3-5-评估指标">3.5 评估指标</h3>
+<p>为了定量分析MLLMs的性能，我们探索了各种指令设计和评估指标。考虑到MLLMs对指令遵循的潜在变异性，我们采用了在MME [Fu et al., 2023a]中使用的是/否度量标准，这种度量标准从正面和负面两个角度提出问题。</p>
+<p><strong>改进的 Acc+。</strong> 考虑一个基本的查询 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">Q_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和图表 c，将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">Q_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 扩展到正确的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>r</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 和错误的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>w</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 判定，并给定查询提示。ChartBench 需要 MLLM <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">M</mi></mrow><annotation encoding="application/x-tex">\mathcal{M}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal">M</span></span></span></span></span> 来确定查询是否正确，并提供布尔输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mi>i</mi><mi>r</mi></msubsup><mo>:</mo><mo>=</mo><mi mathvariant="script">M</mi><mo stretchy="false">(</mo><msubsup><mi>Q</mi><mi>i</mi><mi>r</mi></msubsup><mo separator="true">;</mo><mi>c</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">A_i^r := \mathcal{M}(Q_i^r;c)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.008664em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathcal">M</span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">c</span><span class="mclose">)</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mi>i</mi><mi>w</mi></msubsup><mo>:</mo><mo>=</mo><mi mathvariant="script">M</mi><mo stretchy="false">(</mo><msubsup><mi>Q</mi><mi>i</mi><mi>w</mi></msubsup><mo separator="true">;</mo><mi>c</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">A_i^w := \mathcal{M}(Q_i^w;c)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.008664em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathcal">M</span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">c</span><span class="mclose">)</span></span></span></span> 。由于简明的输出约束，不需要额外的语言模型来确定输出（如GPT得分）。相反，我们直接采用正则表达式匹配来确定模型的回复。注意：1）<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>r</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>w</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 仅在GT值上有所不同，这导致它们具有类似的句子标记序列。2）获得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mi>i</mi><mi>r</mi></msubsup></mrow><annotation encoding="application/x-tex">A_i^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 和  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mi>i</mi><mi>w</mi></msubsup></mrow><annotation encoding="application/x-tex">A_i^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 涉及两个独立的推理，而不是顺序的推理。3）<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>w</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 中的非 GT 值是从元数据中随机选择的。基于这些定义，我们提出了改进的 Acc+ 指标。给定 ChartBench 中的 N 个基本查询，我们有</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/e782e2a5/image-20240308230347910.png" class title="image-20240308230347910">
+<p>其中 ∧, ¬ 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn mathvariant="double-struck">1</mn><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbb{1}(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">1</span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span> 分别表示逻辑与、非和指数函数。只有当 MLLM 同时准确回答了问题 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>r</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>w</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 时，才能确定其对查询图表的真正理解。</p>
+<p><strong>混淆率（CoR）。</strong> 基于Acc+，我们进一步提出了混淆率（CoR）指标来评估MLLMs未能理解图表的情况。给定一个图表和基本查询，积极 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>r</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 和消极 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>w</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 之间唯一的区别是GT真值的数值。因此，查询的文本特征非常相似，导致MLLMs如果未能理解图表c，则对于积极 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>r</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span> 和消极 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Q</mi><mi>i</mi><mi>w</mi></msubsup></mrow><annotation encoding="application/x-tex">Q_i^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.941994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span>都会提供相同的响应 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>:</mo><mo>=</mo><mrow><mi mathvariant="script">M</mi><mo stretchy="false">(</mo><mi mathvariant="script">Q</mi><mo separator="true">;</mo><mi mathvariant="script">c</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">A := \mathcal{M(Q;c)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal">M</span><span class="mopen">(</span><span class="mord mathcal">Q</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">c</span><span class="mclose">)</span></span></span></span></span> 。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/e782e2a5/image-20240310214447895.png" class title="image-20240310214447895">
+<p>其中 ⊕ 是异或（XOR）操作符。通常，对于基本的 Acc+，随机猜测的预期概率为25%。然而，对于具有不足的图表识别能力的MLLM，混淆率（CoR）往往为100%，因此 Acc+ 的趋势是0%，而不是25%的基准线。</p>
+<h3 id="3-6-chartcot">3.6 ChartCoT</h3>
+<p>如图4所示，我们基于思维链[Wei et al., 2022]提出了一个简单而有效的基线（ChartCoT），以增强视觉推理能力，而无需参数训练。具体而言，我们设计了一系列分解用户查询的问题，并采用提示来指导MLLMs模仿人类对图表识别的视觉推理。在没有表格数据或OCR可用的情况下非常有效。更直观的方法将是直接使用ChartBench数据进行指导调整。然而，这将导致数据泄露和在ChartBench上的不公平比较，如在ChartLlama [Han et al., 2023]和MVBench [Li et al., 2023d]中所观察到的。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/e782e2a5/image-20240308230827568.png" class title="image-20240308230827568">
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io">tomatoyuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io/p/e782e2a5.html">https://tomatoyuan.github.io/p/e782e2a5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://tomatoyuan.github.io" target="_blank">番茄元🍅の小窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/nlp/">nlp</a></div><div class="post_share"><div class="social-share" data-image="/img/bg74.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/p/734809d2.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg72.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">PlotQA</div></div></a></div><div class="next-post pull-right"><a href="/p/9cfb766.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg20.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ChartInstruct</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/5743e977.html" title="A Survey on Automatic Chart Understanding in the Era of Large Foundation Models"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg38.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-16</div><div class="title">A Survey on Automatic Chart Understanding in the Era of Large Foundation Models</div></div></a></div><div><a href="/p/9cfb766.html" title="ChartInstruct"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg20.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-22</div><div class="title">ChartInstruct</div></div></a></div><div><a href="/p/98cfd6d8.html" title="ChartQA"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg43.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-06</div><div class="title">ChartQA</div></div></a></div><div><a href="/p/2106501d.html" title="ChartReader"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg104.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-16</div><div class="title">ChartReader</div></div></a></div><div><a href="/p/734809d2.html" title="PlotQA"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg72.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-15</div><div class="title">PlotQA</div></div></a></div><div><a href="/p/741a81c5.html" title="RealCQA"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg87.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-30</div><div class="title">RealCQA</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">tomatoyuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tomatoyuan"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tomatoyuan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://tomatoyuan.github.io"><b><font color="#5ea6e5">tomatoyuan.github.io</font></b></a></center></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">ChartBench: A Benchmark for Complex Visual Reasoning in Charts</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-introduction"><span class="toc-text">1. INTRODUCTION</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-related-works"><span class="toc-text">2. Related Works</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E5%9E%8B%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B-mllms"><span class="toc-text">2.1 多模态大型语言模型（MLLMs）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="toc-text">2.2 多模态基准测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-chartbench"><span class="toc-text">3 ChartBench</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">3.1 设计原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%95%B0%E6%8D%AE%E6%BA%90%E4%B8%8E%E5%87%86%E5%A4%87"><span class="toc-text">3.2 数据源与准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%9B%BE%E8%A1%A8%E5%88%86%E7%B1%BB"><span class="toc-text">3.3 图表分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%97%AE%E7%AD%94%E7%94%9F%E6%88%90"><span class="toc-text">3.4 自动化问答生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="toc-text">3.5 评估指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-chartcot"><span class="toc-text">3.6 ChartCoT</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By tomatoyuan</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script defer src="/js/light.js"></script><script defer src="/js/cursor.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'c189a6faa11e45499d5f54f4af4961b9';
+  var gaud_map_key = 'f373eae7d7ddbee8cd012fdc2720f4e5';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

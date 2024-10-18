@@ -1,0 +1,507 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>计算机网络（四） | 番茄元🍅の小窝</title><meta name="author" content="tomatoyuan"><meta name="copyright" content="tomatoyuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="计算机网络（四） 第4章 网络层：数据平面 在网络中的每一台主机和路由器中都有一个网络层部分。 网络层能够被分解为两个相互作用的部分，即 数据平面 和 控制平面 。  数据平面功能： 即网络中每台 路由器 的功能，该数据平面功能决定到达路由器输入链路之一的数据报（即网络层分组）如何转发到该路由器的输出链路之一。 控制平面功能： 即网络范围逻辑，控制数据报沿着从源主机到目的主机的端到端路径中路由器之">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络（四）">
+<meta property="og:url" content="https://tomatoyuan.github.io/p/143a9bc4.html">
+<meta property="og:site_name" content="番茄元🍅の小窝">
+<meta property="og:description" content="计算机网络（四） 第4章 网络层：数据平面 在网络中的每一台主机和路由器中都有一个网络层部分。 网络层能够被分解为两个相互作用的部分，即 数据平面 和 控制平面 。  数据平面功能： 即网络中每台 路由器 的功能，该数据平面功能决定到达路由器输入链路之一的数据报（即网络层分组）如何转发到该路由器的输出链路之一。 控制平面功能： 即网络范围逻辑，控制数据报沿着从源主机到目的主机的端到端路径中路由器之">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tomatoyuan.github.io/img/bg26.jpg">
+<meta property="article:published_time" content="2023-02-12T02:50:56.000Z">
+<meta property="article:modified_time" content="2023-02-20T09:34:18.049Z">
+<meta property="article:author" content="tomatoyuan">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tomatoyuan.github.io/img/bg26.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://tomatoyuan.github.io/p/143a9bc4"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: tomatoyuan","link":"链接: ","source":"来源: 番茄元🍅の小窝","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机网络（四）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-20 17:34:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg26.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">番茄元🍅の小窝</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机网络（四）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-12T02:50:56.000Z" title="发表于 2023-02-12 10:50:56">2023-02-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-20T09:34:18.049Z" title="更新于 2023-02-20 17:34:18">2023-02-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机网络（四）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>计算机网络（四）</h1>
+<h1>第4章 网络层：数据平面</h1>
+<p>在网络中的每一台主机和路由器中都有一个网络层部分。</p>
+<p>网络层能够被分解为两个相互作用的部分，即 <strong>数据平面</strong> 和 <strong>控制平面</strong> 。</p>
+<ul>
+<li><strong>数据平面功能：</strong> 即网络中每台 <em>路由器</em> 的功能，该数据平面功能决定到达路由器输入链路之一的数据报（即网络层分组）如何转发到该路由器的输出链路之一。</li>
+<li><strong>控制平面功能：</strong> 即网络范围逻辑，控制数据报沿着从源主机到目的主机的端到端路径中路由器之间的路由方式。</li>
+</ul>
+<h2 id="4-1-网络层概述">4.1 网络层概述</h2>
+<p>下图显示了一个简单网络，其中有 H1 和 H2 两台主机，在 H1 与 H2 之间的路径上有几台路由器。假设 H1 正在向 H2 发送信息。H1 中的网络层取得来自于 H1 运输层的报文段，将每个报文段封装成一个数据报，然后向相邻路由器 R1 发送该数据报。在接收方主机 H2，网络层接收接收来自相邻路由器 R2 的数据报，提取出运输层报文段，并将其向上交付给 H2 的运输层。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212120124106.png" class title="image-20230212120124106">
+<h3 id="4-1-1-转发和路由选择：数据平面和控制平面">4.1.1 转发和路由选择：数据平面和控制平面</h3>
+<p>网络层的作用表面上看就是把分组从一台发送主机移动到另一台接收主机。为此，需要两种重要的网络层功能：</p>
+<ul>
+<li>
+<p>转发（forwarding）。将分组从一个输入链路接口转移到适当的输出链路接口的路由器本地动作。</p>
+<p>转发发生的事件尺度很短（通常为几纳秒），因此通常用硬件来实现。</p>
+</li>
+<li>
+<p>路由选择（routing）。确定分组从源到目的地所采用的端到端路径的网络范围处理过程。</p>
+<p>路由选择发生的时间尺度长的多（通常为几秒），因此通常用软件来实现。</p>
+</li>
+</ul>
+<p>每台网络路由器中有一个关键元素是它的 <strong>转发表（forwarding table）</strong> 。路由器检查到达分组首部的一个或多个字段值，进而使用这些首部值在其转发表中索引，通过这种方法转发分组。</p>
+<blockquote>
+<p>例如，一个首部字段值为 0111 的分组到达路由器。该路由器在它的分组转发表中索引，并确定该分组的输出链路接口是接口 2。</p>
+  <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212154439064.png" class title="image-20230212154439064">
+</blockquote>
+<p><font color="blue" size="4">1. 控制平面：传统的方法</font></p>
+<p>那么路由表如何建立起来？</p>
+<p>最简单的方法可以由路由器的管理员们彼此交换信息，并由它们来自行配置路由表。这个方案可行，但是人工配置慢，不容易反映出网络中实时的变化且容易出错。所以，需要网络中的路由器遵循某种<strong>路由选择协议/算法</strong>，每台路由器的路由选择协议之间会进行通信，完成管理员的要做的事。</p>
+<p><font color="blue" size="4">2. 控制平面：SDN 方法</font></p>
+<p>控制平面路由选择功能与物理的路由器是分离的，即路由选择设备仅执行转发，而远程控制器计算并分发转发表。</p>
+<blockquote>
+<p>路由器和远程控制器是如何通信的？</p>
+<p>通过交换包含转发表和其他路由选择信息的报文。</p>
+</blockquote>
+<p>下图控制平面方法是 <strong>软件定义网络（Software-Defined Networking，SDN）</strong> 的本质，因为计算转发发表并与路由器交互的控制器是用软件实现的，故网络是“软件定义”的。</p>
+<h3 id="4-1-2-网络服务模型">4.1.2 网络服务模型</h3>
+<p><strong>网络服务模型（network service model）</strong> 定义了分组在发送与接收端系统之间的端到端运输特性。</p>
+<p>网络层能提供的服务可能有：</p>
+<ul>
+<li>确保交付。</li>
+<li>具有时延上界的确保交付。</li>
+<li>有序分组交付。</li>
+<li>确保最小带宽。这种网络层服务模仿在发送端和接收主机之间一条特定比特率的传输链路的行为。只要发送主机以低于特定比特率的速率传输比特（作为分组的组成部分），则所有分组最终会交付到目的主机。</li>
+<li>安全性。网络层能够在源加密所有数据报并在目的地解密这些分组，从而对所有运输层报文段提供机密性。</li>
+</ul>
+<p>尽管有这些研发良好的供选方案，但因特网的尽力而为服务模型与适当带宽供给相结合已被证明超过“足够好”，能够用于大量的应用，包括诸如 Netflix、IP 语音和视频等流式视频服务，以及诸如 Skype 和 Facetime 等实时会议应用。</p>
+<h2 id="4-2-路由器工作原理">4.2 路由器工作原理</h2>
+<p>关注网络层的转发功能，下图显示了一个通用路由器体系结构的总体视图，其中标识了一台路由器的 4 个组件。</p>
+<blockquote>
+<p>这里的“端口”指路由器的物理输入和输出接口。</p>
+</blockquote>
+<ul>
+<li>输入端口。
+<ul>
+<li>输入端口的线路端接 功能与链路层处理实现了用于各个输入链路的物理层和链路层。</li>
+<li>查找功能。通过查询转发表决定路由器的输出端口，到达的分组通过路由器的交换结构转发到输出端口。</li>
+</ul>
+</li>
+<li>交换结构。将路由器的输入端口连接到它的输出端口。</li>
+<li>输出端口。输出端口存储从交换结构接收的分组，并通过执行必要的链路层和物理层功能在输出链路上传输这些分组。</li>
+<li>路由选择处理器。路由选择处理器执行控制平面功能。这些控制功能包括
+<ul>
+<li>路由选择协议</li>
+<li>对上线或下线的连接链路进行响应</li>
+<li>与远程控制器通信（在 SDN 场合）</li>
+<li>执行网络管理能力</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>路由器的输入端口、输出端口和交换结构几乎总是用硬件实现。而路由选择处理器的控制平面功能通常用软件实现。</p>
+</blockquote>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212204315410.png" class title="image-20230212204315410">
+<p>下面假设转发决定仅基于分组的目的地址，而非基于通用的分组首部字段。</p>
+<h3 id="4-2-1-输入端口处理和基于目的地转发">4.2.1 输入端口处理和基于目的地转发</h3>
+<p>输入端口的线路端接 功能与链路层处理实现了用于各个输入链路的物理层和链路层。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212205340534.png" class title="image-20230212205340534">
+<p>对于 32 比特的 IP 地址，因为有超过 40 亿个可能的地址，这种路由表的设置不可行。</p>
+<p>可以使用如下方法：假设路由器具有 4 条链路，编号 0 ~ 3</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212205609628.png" class title="image-20230212205609628">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212205705136.png" class title="image-20230212205705136">
+<p>该路由器使用 <strong>最长前缀匹配规则（longest prefix matching rule）</strong> 。</p>
+<blockquote>
+<p>硬件逻辑上讲，表查找是简单的，硬件逻辑只是搜索转发表查找最长前缀匹配。但在吉比特速率下，这种查找必须在纳秒级执行。因此，不仅必须要用硬件执行查找，而且需要对大型转发表使用超出简单线性搜索的技术。同时必须对内存访问时间给与特别关注，这导致用嵌入式片上 DRAM 和更快的 SRAM（用作一种 DRAM 缓存）内存来设计。</p>
+</blockquote>
+<p>如果其他来自其它端口的分组正在使用该交换结构，一个分组可能会在进入交换结构时被暂时阻塞。一个被阻塞的分组必须在输入端口处排队，并等待稍后阻塞、排队与调度。输入端口除了“查找”外，还需要①出现物理层和链路层处理；②必须检查分组的版本号、检验和以及寿命字段，并且重写后两个字段；③必须更新用于网络管理的计数器（如接收到的 IP 数据报的数目）。</p>
+<h3 id="4-2-2-交换">4.2.2 交换</h3>
+<p>交换可以用许多方式完成：</p>
+<ul>
+<li><strong>经内存交换</strong> 。交换是在 CPU （路由选择处理器）的直接控制下完成的。许多现代路由器通过内存进行交换。与早期路由器的一个主要差别是，目的地址的查找和将分组存储（交换）进适当的内存存储位置是由输入线路卡来处理的。</li>
+<li><strong>经总线交换</strong> 。分组在总线上传送到输出端口。该分组能由所有输出端口收到，但只有与该标签匹配的端口才能保存该分组。如果多个分组同时到达路由器，每个位于不同的输出端口，除了一个分组外所有其他分组必须等待，因为一次只有一个分组能够跨越总线。</li>
+<li><strong>经互联网络交换</strong> 。当某个分组到达端口 A ，需要转发到端口 Y 时，交换机控制器闭合总线 A 和 Y 交叉部位的交叉点，然后端口 A 在其总线上发送该分组，该分组仅由总线 Y 接收。注意到来自端口 B 的一个分组在同一时间能够转发到端口 X，因为 A 到 Y 和 B 到 X 的分组使用不同的输入和输出总线。与前面两种交换方式不同，纵横式网络能够并行转发多个分组。纵横式交换机是 <strong>非阻塞的（not-blocking）</strong> 。然而，如果来自两个不同输入端口的两个分组其目的地为相同的输出端口，则一个分组必须在输入端等待就，因为在某个时刻经给定总线仅能够发送一个分组。</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212211100045.png" class title="image-20230212211100045">
+<h3 id="4-2-3-输出端口处理">4.2.3 输出端口处理</h3>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212212450671.png" class title="image-20230212212450671">
+<h3 id="4-2-4-何处出现排队">4.2.4 何处出现排队</h3>
+<p><font color="blue" size="4">1. 输入排队</font></p>
+<p>只要输出端口不同，多个分组可以被并行传送。然而，如果位于两个输入队列前端的两个分组是发往同一输出队列的，则其中的一个分组将被阻塞，且必须在输入队列中等待，因为交换结构一次只能传送一个分组到某个指定端口。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212212651121.png" class title="image-20230212212651121">
+<p><font color="blue" size="4">2. 输出排队</font></p>
+<p>如果输出端口的排队分组数量能够变得足够大，耗尽输出端口的可用内存。</p>
+<p>当没有足够的内存来缓存一个入分组时，就必须做出决定：①要么丢弃到达的分组（弃尾）；②删除一个或多个已排队的分组为新来的分组腾出空间。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212212702409.png" class title="image-20230212212702409">
+<p>上图下半部分，又有两个新分组已到达交换机的入端，这些分组之一又要发往最上侧得输出端口。这样得后果是，输出端口的 <strong>分组调度（packet scheduler）</strong> 在这些排队分组中选择一个分组来传输。</p>
+<h3 id="4-2-5-分组调度">4.2.5 分组调度</h3>
+<p><font color="blue" size="4">1. 先进先出</font></p>
+<p>FIFO（也称先来先服务，FCFS）。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212214104259.png" class title="image-20230212214104259">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212214123715.png" class title="image-20230212214123715">
+<p><font color="blue" size="4">2. 优先权排队</font></p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212214345564.png" class title="image-20230212214345564">
+<p>分组 1 先到，然后分组 2 和 3 同时到，分组 4 在分组 2 发送的时候到达，分组 5 最后到。传输顺序如下：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212214449201.png" class title="image-20230212214449201">
+<blockquote>
+<p>在 <strong>非抢占式优先权排队（non-preemptive priority queuing）</strong> 规则下，一旦分组开始传输，就不能打断。</p>
+</blockquote>
+<p><font color="blue" size="4">3. 循环和加权公平排队</font></p>
+<p>几个类交替传送。</p>
+<p><strong>保持工作排队（work-conserving queuing）</strong> 规则在有（任何类的）分组排队等待传输时，不允许链路保持空闲。</p>
+<p>如下图，分组 1、2 和 4 属于第一类，分组 3 和 5 属于第二类。分组 1 已到达输出队列就开始传输。分组 2 和 3 在 1 传输过程中到达，因此排队等待传输。在分组 1 传输后，链路调度器查找类 2 的分组，因此传输分组 3 。分组3 传完后，调度器查找类 1 的分组，因此传输分组 2。在分组 2 传输完后，分组 4 是唯一排队的分组，因此在分组 2 后立即传输分组 4。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212214758138.png" class title="image-20230212214758138">
+<p>一种通用形式的循环排队已经广泛地实现在路由器中，他就是所谓的 <strong>加权公平排队（Weighted Fair Queuing，WFQ）</strong> 规则。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230212215324903-16762100063231.png" class title="image-20230212215324903">
+<p>WFQ 与循环排队的不同之处在于，每个类在任何时间间隔内可能收到不同数量的服务。每个类被分配一个权 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">w_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 。第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span> 类将确保接收到的服务部分等于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><mo>∑</mo><msub><mi>w</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">w_i/(\sum{w_j})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mopen">(</span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 。</p>
+<h2 id="4-3-网际协议：ipv4-寻址-ipv6-及其他">4.3 网际协议：IPv4、寻址、IPv6 及其他</h2>
+<p>网际协议（IP），今天有两个版本的 IP 正在使用，IPv4 和 IPv6。</p>
+<h3 id="4-3-1-ipv4-数据报格式">4.3.1 IPv4 数据报格式</h3>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230213084842026.png" class title="image-20230213084842026">
+<p>网络层分组被称为 <em>数据报</em> 。</p>
+<p>IPv4 数据报中的关键字段如下：</p>
+<ul>
+<li>版本（号）。</li>
+<li>首部长度。</li>
+<li>服务类型。</li>
+<li>数据报长度。</li>
+<li>标识、标志、片偏移。</li>
+<li>协议。</li>
+<li>首部检验和。</li>
+<li>源和目的 IP 地址。</li>
+<li>选项。</li>
+<li>数据（有效载荷）。</li>
+</ul>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217083346634.png" class title="image-20230217083346634">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217083411830.png" class title="image-20230217083411830">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217083444344.png" class title="image-20230217083444344">
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217084250834.png" class title="image-20230217084250834">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217102327142.png" class title="image-20230217102327142">
+<p><font color="red" size="4">子网的划分是重点！！！我不熟练，考试吃大亏。</font></p>
+<ol>
+<li>等长划分：根据需要划分的子网的个数和子网中的主机数，选择掩码的长度，新增的分配位排列组合（比如选择掩码最低 N 位，可以划分出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">2^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span> 个等长的子网）。</li>
+<li>不等长划分：首先根据要划分的子网个数和子网中的主机数选择掩码长度。然后一个一个划分子网，从最小的开始，根据子网可分配的 ip 范围划分，注意不要重复即可。（一般题目都是成 2 的倍数给出子网的主机数，方便成块分配和不浪费 ip 。）</li>
+</ol>
+<p><font color="blue" size="5">我记录到这里就去考试了，之后有机会的话自己再记录一些，为了内容的完整性，我先贴上窝工颜牛🐂（我男神）的讲座 PPT （这里声明我是转载颜🐂的原创，无私的颜🐂将其公开给了窝工学子，精彩的内容也分享给大家），只能说对比之下，人家的叫做概括（用简炼的语言让人理解计算机网络），我写的和摘抄差不多。</font></p>
+<h3 id="swig-22"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172353362.png" class title="image-20230220172353362"></h3>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172457067.png" class title="image-20230220172457067">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172528811.png" class title="image-20230220172528811">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172546893.png" class title="image-20230220172546893">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172558445.png" class title="image-20230220172558445">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172610413.png" class title="image-20230220172610413">
+<h2 id="第5章-网络层：控制平面">第5章 网络层：控制平面</h2>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172618508.png" class title="image-20230220172618508">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172626692.png" class title="image-20230220172626692">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172632999.png" class title="image-20230220172632999">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172639878.png" class title="image-20230220172639878">
+<h2 id="第6章-链路层和局域网">第6章 链路层和局域网</h2>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172646011.png" class title="image-20230220172646011">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172653378.png" class title="image-20230220172653378">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217131517301.png" class title="image-20230217131517301">
+<p>通过重复数据一次或两次，得到检错码和纠错码</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217131812221.png" class title="image-20230217131812221">
+<p>二维也是在每行每列加入一个校验位</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217132615593.png" class title="image-20230217132615593">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217132911801.png" class title="image-20230217132911801">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172702011.png" class title="image-20230220172702011">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172707534.png" class title="image-20230220172707534">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172717274.png" class title="image-20230220172717274">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172735715.png" class title="image-20230220172735715">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172741671.png" class title="image-20230220172741671">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172757621.png" class title="image-20230220172757621">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172806565.png" class title="image-20230220172806565">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172812511.png" class title="image-20230220172812511">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172818613.png" class title="image-20230220172818613">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172824877.png" class title="image-20230220172824877">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230220172831699.png" class title="image-20230220172831699">
+<h2 id="英文缩写">英文缩写</h2>
+<p>感谢颜🐂。</p>
+ <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217102203980.png" class title="image-20230217102203980">
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/p/143a9bc4/image-20230217161704210.png" class title="image-20230217161704210">
+<p><font color="blue" size="5">再次为颜🐂呐喊：男神！</font></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io">tomatoyuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://tomatoyuan.github.io/p/143a9bc4.html">https://tomatoyuan.github.io/p/143a9bc4.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://tomatoyuan.github.io" target="_blank">番茄元🍅の小窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="/img/bg26.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/p/a31782a1.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg14.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">计算机网络（三）</div></div></a></div><div class="next-post pull-right"><a href="/p/fbb7a859.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">体系结构（一）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/p/de1fcd2b.html" title="计算机网络（一）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg44.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-28</div><div class="title">计算机网络（一）</div></div></a></div><div><a href="/p/a31782a1.html" title="计算机网络（三）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg14.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-08</div><div class="title">计算机网络（三）</div></div></a></div><div><a href="/p/ee0921f3.html" title="计算机网络（二）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-03</div><div class="title">计算机网络（二）</div></div></a></div><div><a href="/p/791d6685.html" title="计网错题整理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bg47.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-18</div><div class="title">计网错题整理</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/mylogo.bmp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">tomatoyuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tomatoyuan"><i class="fab fa-github"></i><span>🛴带你去我家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tomatoyuan" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:Awellfrog@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>主域名：<br><a href="https://tomatoyuan.github.io"><b><font color="#5ea6e5">tomatoyuan.github.io</font></b></a></center></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">计算机网络（四）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">第4章 网络层：数据平面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%A6%82%E8%BF%B0"><span class="toc-text">4.1 网络层概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%E8%BD%AC%E5%8F%91%E5%92%8C%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2%E5%92%8C%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-text">4.1.1 转发和路由选择：数据平面和控制平面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9E%8B"><span class="toc-text">4.1.2 网络服务模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">4.2 路由器工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E8%BE%93%E5%85%A5%E7%AB%AF%E5%8F%A3%E5%A4%84%E7%90%86%E5%92%8C%E5%9F%BA%E4%BA%8E%E7%9B%AE%E7%9A%84%E5%9C%B0%E8%BD%AC%E5%8F%91"><span class="toc-text">4.2.1 输入端口处理和基于目的地转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E4%BA%A4%E6%8D%A2"><span class="toc-text">4.2.2 交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E8%BE%93%E5%87%BA%E7%AB%AF%E5%8F%A3%E5%A4%84%E7%90%86"><span class="toc-text">4.2.3 输出端口处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E4%BD%95%E5%A4%84%E5%87%BA%E7%8E%B0%E6%8E%92%E9%98%9F"><span class="toc-text">4.2.4 何处出现排队</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-5-%E5%88%86%E7%BB%84%E8%B0%83%E5%BA%A6"><span class="toc-text">4.2.5 分组调度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE%EF%BC%9Aipv4-%E5%AF%BB%E5%9D%80-ipv6-%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="toc-text">4.3 网际协议：IPv4、寻址、IPv6 及其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-ipv4-%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-text">4.3.1 IPv4 数据报格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swig-22"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC5%E7%AB%A0-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%9A%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-text">第5章 网络层：控制平面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC6%E7%AB%A0-%E9%93%BE%E8%B7%AF%E5%B1%82%E5%92%8C%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-text">第6章 链路层和局域网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8B%B1%E6%96%87%E7%BC%A9%E5%86%99"><span class="toc-text">英文缩写</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By tomatoyuan</div><div class="footer_custom_text">I am a frog at the bottom of a well, but I never give up climbing up.</br>我多努力一点，我爱的人就可以多休息一会儿😊<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a>&nbsp;<a target="_blank" href="https://icp.gov.moe/?keyword=20230070"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E8%90%8CICP%E5%A4%87-20230070-fe1384?style-flat&logo=data:image/png" title="萌ICP备20230070号"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-api-beta-two.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script defer src="/js/light.js"></script><script defer src="/js/cursor.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'c189a6faa11e45499d5f54f4af4961b9';
+  var gaud_map_key = 'f373eae7d7ddbee8cd012fdc2720f4e5';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
