@@ -34,12 +34,12 @@ function clockUpdateTime(e, city, lang) {
     case "901": a = "#179fff"; break;
   }
 
-  // 确保容器存在（适配Pjax切换后容器可能被重建的情况）
+  // 确保容器存在
   let t = document.getElementById("hexo_electric_clock");
   if (!t) {
     t = document.createElement("div");
     t.id = "hexo_electric_clock";
-    const container = document.querySelector(".sticky_layout"); // 主题挂载容器
+    const container = document.querySelector(".sticky_layout");
     if (container) container.appendChild(t);
     else document.body.appendChild(t);
   }
@@ -60,7 +60,7 @@ function clockUpdateTime(e, city, lang) {
     </div>
   `;
 
-  // 清理旧的加载动画和定时器
+  // 清理旧实例
   const n = document.getElementById("card-clock-loading");
   if (n) n.remove();
   if (window.clockInterval) clearInterval(window.clockInterval);
@@ -75,7 +75,6 @@ function clockUpdateTime(e, city, lang) {
     const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1, 2)}-${pad(now.getDate(), 2)} ${currentLang.week[now.getDay()]}`;
     const period = now.getHours() >= 12 ? currentLang.pm : currentLang.am;
 
-    // 容错处理：防止DOM元素不存在导致的错误
     const timeEl = document.getElementById("card-clock-time");
     const dateEl = document.getElementById("card-clock-clockdate");
     const periodEl = document.getElementById("card-clock-dackorlight");
@@ -84,17 +83,15 @@ function clockUpdateTime(e, city, lang) {
     if (periodEl) periodEl.textContent = period;
   }
 
-  // 数字补零工具
   function pad(num, len) {
     return num.toString().padStart(len, "0");
   }
 
-  // 启动定时器并立即执行一次
   window.clockInterval = setInterval(updateTime, 1000);
   updateTime();
 }
 
-// 封装初始化逻辑（核心：可重复调用）
+// 封装初始化逻辑（替换为ipapi.co接口）
 function initElectricClock() {
   // 基础配置
   const defaultRectangle = window.clock_default_rectangle_enable === "true";
@@ -103,35 +100,30 @@ function initElectricClock() {
   const defaultCityEn = "Changsha";
   const qweatherKey = window.qweather_key;
 
-  // 步骤1：获取国家代码（判断语言）
-  const initialIpApi = "http://ip-api.com/json/";
-  fetch(initialIpApi)
-    .then(response => response.ok ? response.json() : Promise.reject("IP接口失败"))
-    .then(initialData => {
-      if (initialData.status !== "success") throw new Error("IP定位失败");
+  // 核心修改：使用ipapi.co的HTTPS接口（无SSL限制）
+  const ipApi = "https://ipapi.co/json/"; 
+  fetch(ipApi)
+    .then(response => response.ok ? response.json() : Promise.reject("IP接口请求失败"))
+    .then(ipData => {
+      console.log("ipapi.co返回数据：", ipData);
       
-      const countryCode = initialData.countryCode;
-      const { ipApi, lang } = countryCode === "CN" 
-        ? { ipApi: "http://ip-api.com/json/?lang=zh-CN", lang: "zh-CN" }
-        : { ipApi: "http://ip-api.com/json/?lang=en", lang: "en-US" };
+      // 提取国家代码、城市、经纬度
+      const countryCode = ipData.country_code; // 国家代码（CN/US/SG等）
+      const lang = countryCode === "CN" ? "zh-CN" : "en-US"; // 判断语言
+      // 城市名：中国显示中文（需接口支持），其他显示英文
+      const city = countryCode === "CN" 
+        ? (ipData.city || defaultCityZh) 
+        : (ipData.city || defaultCityEn);
+      
+      const lon = ipData.longitude;
+      const lat = ipData.latitude;
+      if (!lon || !lat) throw new Error("经纬度缺失");
 
-      // 步骤2：获取城市和经纬度
-      return fetch(ipApi)
-        .then(response => response.ok ? response.json() : Promise.reject("细分IP接口失败"))
-        .then(detailedData => {
-          if (detailedData.status !== "success") throw new Error("细分定位失败");
-          
-          const city = detailedData.city || (countryCode === "CN" ? defaultCityZh : defaultCityEn);
-          const lon = detailedData.lon;
-          const lat = detailedData.lat;
-          if (!lon || !lat) throw new Error("经纬度缺失");
-
-          // 步骤3：获取天气（固定中文）
-          fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=${qweatherKey}&lang=zh`)
-            .then(response => response.ok ? response.json() : Promise.reject("天气接口失败"))
-            .then(weatherData => clockUpdateTime(weatherData, city, lang))
-            .catch(() => clockUpdateTime({ now: {} }, city, lang));
-        });
+      // 获取天气（固定中文）
+      fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=${qweatherKey}&lang=zh`)
+        .then(response => response.ok ? response.json() : Promise.reject("天气接口失败"))
+        .then(weatherData => clockUpdateTime(weatherData, city, lang))
+        .catch(() => clockUpdateTime({ now: {} }, city, lang));
     })
     .catch(error => {
       console.error("初始化失败：", error);
@@ -140,26 +132,24 @@ function initElectricClock() {
     });
 }
 
-// 关键：适配Pjax和常规页面加载
+// 适配Pjax和页面事件
 function setupClock() {
-  // 页面首次加载时初始化
+  // 页面加载完成后初始化
   if (document.readyState === "complete") {
     initElectricClock();
   } else {
     window.addEventListener("load", initElectricClock);
   }
 
-  // 监听Pjax跳转完成事件（Butterfly主题核心适配）
+  // Pjax跳转完成后重新初始化
   document.addEventListener("pjax:complete", initElectricClock);
-
-  // 监听浏览器前进/后退按钮
+  // 浏览器前进/后退事件
   window.addEventListener("popstate", initElectricClock);
-
-  // 监听页面可见性变化（切回标签页时刷新）
+  // 页面切回可见时刷新
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") initElectricClock();
   });
 }
 
-// 启动配置
+// 启动
 setupClock();
