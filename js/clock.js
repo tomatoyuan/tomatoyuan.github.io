@@ -91,7 +91,37 @@ function clockUpdateTime(e, city, lang) {
   updateTime();
 }
 
-// 封装初始化逻辑（替换为ipapi.co接口）
+// 高德逆地理编码API：将经纬度转换为中文城市名
+function getChineseCityByLocation(lon, lat, gaodeKey) {
+  // 高德逆地理编码API endpoint (HTTPS)
+  const apiUrl = `https://restapi.amap.com/v3/geocode/regeo?location=${lon},${lat}&key=${gaodeKey}&extensions=base`;
+  
+  return fetch(apiUrl)
+    .then(response => response.ok ? response.json() : Promise.reject("高德API请求失败"))
+    .then(data => {
+      if (data.status !== "1") {
+        throw new Error(`高德API错误: ${data.info || "未知错误"}`);
+      }
+      
+      // 解析返回结果，提取城市名（优先取市级别，没有则取省或区）
+      const addressComponent = data.regeocode.addressComponent;
+      let city = addressComponent.city;
+      
+      // 特殊处理：部分城市（如北京、上海）在高德返回中city字段为空，需用province
+      if (!city || city === "") {
+        city = addressComponent.province;
+      }
+      
+      // 若仍无结果，使用区县级名称
+      if (!city || city === "") {
+        city = addressComponent.district;
+      }
+      
+      return city || "未知城市";
+    });
+}
+
+// 初始化逻辑
 function initElectricClock() {
   // 基础配置
   const defaultRectangle = window.clock_default_rectangle_enable === "true";
@@ -99,34 +129,47 @@ function initElectricClock() {
   const defaultCityZh = "长沙市";
   const defaultCityEn = "Changsha";
   const qweatherKey = window.qweather_key;
+  const gaodeKey = window.gaud_map_key; // 从配置中获取高德Key
 
-  // 核心修改：使用ipapi.co的HTTPS接口（无SSL限制）
-  const ipApi = "https://ipapi.co/json/"; 
+  // 步骤1：使用ipapi.co获取经纬度和国家代码（HTTPS兼容）
+  const ipApi = "https://ipapi.co/json/";
   fetch(ipApi)
     .then(response => response.ok ? response.json() : Promise.reject("IP接口请求失败"))
     .then(ipData => {
-      console.log("ipapi.co返回数据：", ipData);
-      
-      // 提取国家代码、城市、经纬度
-      const countryCode = ipData.country_code; // 国家代码（CN/US/SG等）
-      const lang = countryCode === "CN" ? "zh-CN" : "en-US"; // 判断语言
-      // 城市名：中国显示中文（需接口支持），其他显示英文
-      const city = countryCode === "CN" 
-        ? (ipData.city || defaultCityZh) 
-        : (ipData.city || defaultCityEn);
-      
+      console.log("IP数据:", ipData);
+      const countryCode = ipData.country_code; // 国家代码（CN/US等）
+      const lang = countryCode === "CN" ? "zh-CN" : "en-US";
       const lon = ipData.longitude;
       const lat = ipData.latitude;
+      
       if (!lon || !lat) throw new Error("经纬度缺失");
 
-      // 获取天气（固定中文）
+      // 步骤2：中国地区使用高德API转换为中文城市名，其他地区直接使用英文城市
+      if (countryCode === "CN" && gaodeKey) {
+        // 调用高德API获取中文城市名
+        return getChineseCityByLocation(lon, lat, gaodeKey)
+          .then(chineseCity => {
+            return { city: chineseCity, lon, lat, lang };
+          })
+          .catch(error => {
+            console.warn("高德API转换失败，使用默认中文城市:", error);
+            return { city: defaultCityZh, lon, lat, lang };
+          });
+      } else {
+        // 非中国地区直接使用英文城市名
+        const city = ipData.city || defaultCityEn;
+        return { city, lon, lat, lang };
+      }
+    })
+    .then(({ city, lon, lat, lang }) => {
+      // 步骤3：获取天气（固定中文）
       fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=${qweatherKey}&lang=zh`)
         .then(response => response.ok ? response.json() : Promise.reject("天气接口失败"))
         .then(weatherData => clockUpdateTime(weatherData, city, lang))
         .catch(() => clockUpdateTime({ now: {} }, city, lang));
     })
     .catch(error => {
-      console.error("初始化失败：", error);
+      console.error("初始化失败:", error);
       const [lon, lat] = defaultLocation.split(',').map(Number);
       clockUpdateTime({ now: {} }, defaultCityZh, "zh-CN");
     });
