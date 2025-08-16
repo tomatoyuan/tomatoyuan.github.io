@@ -4,15 +4,15 @@ const langConfig = {
     week: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
     am: "上午",
     pm: "下午",
-    unknownCity: "未知城市",
-    unknownWeather: "未知天气"
+    unknownCity: "哈尔滨",
+    unknownWeather: "晴天"
   },
   "en-US": {
     week: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
     am: "AM",
     pm: "PM",
-    unknownCity: "Unknown City",
-    unknownWeather: "Unknown Weather"
+    unknownCity: "Harbin",
+    unknownWeather: "Sunny"
   }
 };
 
@@ -125,9 +125,9 @@ function getChineseCityByLocation(lon, lat, gaodeKey) {
 function initElectricClock() {
   // 基础配置
   const defaultRectangle = window.clock_default_rectangle_enable === "true";
-  const defaultLocation = window.clock_rectangle || "112.982279,28.19409";
-  const defaultCityZh = "长沙市";
-  const defaultCityEn = "Changsha";
+  const defaultLocation = window.clock_rectangle || "45.6774716,126.3829968";
+  const defaultCityZh = "哈尔滨";
+  const defaultCityEn = "Harbin";
   const qweatherKey = window.qweather_key;
   const gaodeKey = window.gaud_map_key; // 从配置中获取高德Key
 
